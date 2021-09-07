@@ -58,6 +58,28 @@ alter table table_name modify (column datatype [default value][null/not null],�
 alter table t_users modify (BILLCODE number(4));
 ```
 
+高级玩法：
+
+
+```SQL
+-- 查出所有需要修改的字段：
+select distinct t1.TABLE_NAME,t.COLUMN_NAME
+from DBA_TAB_COLS t,
+     DBA_TABLES t1
+where t.TABLE_NAME = t1.TABLE_NAME
+  and t.OWNER = 'PAYMT' -- 用户
+  and t.COLUMN_NAME = 'VEHKIND' --列表
+order by t1.TABLE_NAME,t.COLUMN_NAME;
+
+-- 生成对应的修改命令
+select 'alter table ' || t.TABLE_NAME || ' modify ' || t.COLUMN_NAME || ' varchar2(30);'
+from DBA_TAB_COLS t,
+     DBA_TABLES t1
+where t.TABLE_NAME = t1.TABLE_NAME
+  and t.OWNER = 'PAYMT' -- 用户
+  and t.COLUMN_NAME = 'VEHKIND' --列表
+order by t1.TABLE_NAME,t.COLUMN_NAME;
+```
  
 
 （3）**删除字段的语法：**
