@@ -144,7 +144,9 @@ D:\idea-Work\XianDai-TrunkNew\cm-web\web\pages
 参数解释
 
 1、firwall-cmd：是Linux提供的操作firewall的一个工具；
+
 2、--permanent：表示设置为持久；
+
 3、--add-port：标识添加的端口；
 
 
