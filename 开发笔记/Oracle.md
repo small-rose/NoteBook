@@ -62,7 +62,7 @@ alter table t_users modify (BILLCODE number(4));
 
 
 ```SQL
--- 查出所有需要修改的字段：
+-- 搜索用户下的某个字段，都存在于哪张表（t.OWNER指定用户，大写；t.COLUMN_NAME要搜索的字段）
 select distinct t1.TABLE_NAME,t.COLUMN_NAME
 from DBA_TAB_COLS t,
      DBA_TABLES t1
@@ -71,7 +71,7 @@ where t.TABLE_NAME = t1.TABLE_NAME
   and t.COLUMN_NAME = 'VEHKIND' --列表
 order by t1.TABLE_NAME,t.COLUMN_NAME;
 
--- 生成对应的修改命令
+-- 拼接出字段修改类型修改sql（t.OWNER指定用户，大写；t.COLUMN_NAME要搜索的字段；字段类型及长度需要修改为自己想要的）
 select 'alter table ' || t.TABLE_NAME || ' modify ' || t.COLUMN_NAME || ' varchar2(30);'
 from DBA_TAB_COLS t,
      DBA_TABLES t1
