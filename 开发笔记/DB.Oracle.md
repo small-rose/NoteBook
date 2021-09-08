@@ -143,6 +143,66 @@ select sysdate from dual;
 select CURRENT_TIMESTAMP ;
 ```
 
+#### 查询表-字段-注释
+
+查用户所有的表:
+
+```SQL
+-- 查用户所有的表
+SELECT TABLE_NAME FROM DBA_TABLES WHERE OWNER='BPJYDATA';
+```
+
+查表对应的注释:
+
+```SQL
+-- 查表对应的注释
+SELECT distinct
+        t1.TABLE_NAME,t.COMMENTS
+FROM DBA_TAB_COMMENTS t,
+     DBA_TABLES t1
+WHERE t.TABLE_NAME = t1.TABLE_NAME
+  AND t.OWNER = 'BPJYDATA' AND T1.OWNER='BPJYDATA'
+  --AND t.TABLE_NAME = 'T_APPLICATIONS'
+;
+```
+
+查表对应的主键:
+
+```SQL
+-- 查表对应的主键
+SELECT
+       a.TABLE_NAME AS 表名,
+       a.constraint_name AS 主键名称,
+       a.column_name AS 列名,
+       b.constraint_type
+FROM user_cons_columns a, user_constraints b
+WHERE a.constraint_name = b.constraint_name
+AND b.constraint_type = 'P'
+AND a.OWNER ='BPJYDATA' AND a.TABLE_NAME IN (
+    SELECT TABLE_NAME FROM DBA_TABLES WHERE OWNER='BPJYDATA'
+    ) ;
+```
+
+查表对应的列:
+
+```SQL
+-- 查表对应的列
+SELECT distinct
+        T.TABLE_NAME,
+        TC.COLUMN_NAME,
+        CASE TC.DATA_TYPE WHEN 'DATE' THEN  TC.DATA_TYPE
+            ELSE    TC.DATA_TYPE || '(' || TC.DATA_LENGTH || ')'
+        END CASE ,
+        U.COMMENTS
+FROM DBA_TAB_COLS TC,
+     DBA_TABLES T,
+     USER_COL_COMMENTS U
+WHERE TC.TABLE_NAME = T.TABLE_NAME AND T.TABLE_NAME=U.TABLE_NAME
+  AND TC.COLUMN_NAME = U.COLUMN_NAME
+  AND TC.OWNER = 'BPJYDATA' AND T.OWNER='BPJYDATA'
+  AND U.TABLE_NAME = 'T_APPLICATIONS'
+;
+```
 
 
 #### decode 函数
