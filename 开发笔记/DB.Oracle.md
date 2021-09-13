@@ -135,13 +135,6 @@ select * from v$version;
 |TNS for 64-bit Windows: Version 12.2.0.1.0 - Production| 0 |
 |NLSRTL Version 12.2.0.1.0 - Production | 0 |
 
-#### 查看空表-函数：
-
-```sql
-select sysdate from dual;
--- 等价于mysql
-select CURRENT_TIMESTAMP ;
-```
 
 #### 查询表-字段-注释
 
@@ -204,6 +197,72 @@ WHERE TC.TABLE_NAME = T.TABLE_NAME AND T.TABLE_NAME=U.TABLE_NAME
 ;
 ```
 
+#### 查看空表-函数：
+
+```sql
+select sysdate from dual;
+-- 等价于mysql
+select CURRENT_TIMESTAMP ;
+```
+
+#### TO_CHAR()函数
+
+ （1）用作日期转换：
+
+to_char(date,'格式');
+
+```SQL
+SELECT TO_DATE('2021-09-13', 'YYYY-MM-DD') FROM DUAL ;
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD') FROM DUAL ;
+```
+
+（2）处理数字：
+
+to_char(number,'格式');
+
+to_char 例子 
+输入	                                 输出
+to_char(now(),'Day, HH12:MI:SS') 	'Tuesday , 05:39:18'
+to_char(now(),'FMDay, HH12:MI:SS') 	'Tuesday, 05:39:18'
+to_char(-0.1,'99.99') 	' -.10'
+to_char(-0.1,'FM9.99') 	'-.1'
+to_char(0.1,'0.9') 	' 0.1'
+to_char(12,'9990999.9') 	' 0012.0'
+to_char(12,'FM9990999.9') 	'0012'
+to_char(485,'999') 	' 485'
+to_char(-485,'999') 	'-485'
+to_char(485,'9 9 9') 	' 4 8 5'
+to_char(1485,'9,999') 	' 1,485'
+to_char(1485,'9G999') 	' 1 485'
+to_char(148.5,'999.999') 	' 148.500'
+to_char(148.5,'999D999') 	' 148,500'
+to_char(3148.5,'9G999D999') 	' 3 148,500'
+to_char(-485,'999S') 	'485-'
+to_char(-485,'999MI') 	'485-'
+to_char(485,'999MI') 	'485'
+to_char(485,'PL999') 	'+485'
+to_char(485,'SG999') 	'+485'
+to_char(-485,'SG999') 	'-485'
+to_char(-485,'9SG99') 	'4-85'
+to_char(-485,'999PR') 	'<485>'
+to_char(485,'L999') 	'DM 485
+to_char(485,'RN') 	' CDLXXXV'
+to_char(485,'FMRN') 	'CDLXXXV'
+to_char(5.2,'FMRN') 	V
+to_char(482,'999th') 	' 482nd'
+to_char(485, '"Good number:"999') 	'Good number: 485'
+to_char(485.8,'"Pre-decimal:"999" Post-decimal:" .999') 	'Pre-decimal: 485 Post-decimal: .800'
+to_char(12,'99V999') 	' 12000'
+to_char(12.4,'99V999') 	' 12400'
+to_char(12.45, '99V9') 	' 125'
+
+ 
+
+（3）to_char(salary,'$99,99');
+
+（4）用于进制转换：将10进制转换为16进制；
+
+例子：
 
 #### decode 函数
 
