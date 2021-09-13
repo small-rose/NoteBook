@@ -214,55 +214,59 @@ to_char(date,'格式');
 ```SQL
 SELECT TO_DATE('2021-09-13', 'YYYY-MM-DD') FROM DUAL ;
 SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD') FROM DUAL ;
+
+SELECT to_char(now(),'Day, HH12:MI:SS')  FROM DUAL ;   // 'Tuesday , 05:39:18'
+SELECT to_char(now(),'FMDay, HH12:MI:SS')  FROM DUAL ;   // 'Tuesday, 05:39:18'
 ```
 
 （2）处理数字：
 
 to_char(number,'格式');
 
-to_char 例子 
-输入	                                 输出
-to_char(now(),'Day, HH12:MI:SS') 	'Tuesday , 05:39:18'
-to_char(now(),'FMDay, HH12:MI:SS') 	'Tuesday, 05:39:18'
-to_char(-0.1,'99.99') 	' -.10'
-to_char(-0.1,'FM9.99') 	'-.1'
-to_char(0.1,'0.9') 	' 0.1'
-to_char(12,'9990999.9') 	' 0012.0'
-to_char(12,'FM9990999.9') 	'0012'
-to_char(485,'999') 	' 485'
-to_char(-485,'999') 	'-485'
-to_char(485,'9 9 9') 	' 4 8 5'
-to_char(1485,'9,999') 	' 1,485'
-to_char(1485,'9G999') 	' 1 485'
-to_char(148.5,'999.999') 	' 148.500'
-to_char(148.5,'999D999') 	' 148,500'
-to_char(3148.5,'9G999D999') 	' 3 148,500'
-to_char(-485,'999S') 	'485-'
-to_char(-485,'999MI') 	'485-'
-to_char(485,'999MI') 	'485'
-to_char(485,'PL999') 	'+485'
-to_char(485,'SG999') 	'+485'
-to_char(-485,'SG999') 	'-485'
-to_char(-485,'9SG99') 	'4-85'
-to_char(-485,'999PR') 	'<485>'
-to_char(485,'L999') 	'DM 485
-to_char(485,'RN') 	' CDLXXXV'
-to_char(485,'FMRN') 	'CDLXXXV'
-to_char(5.2,'FMRN') 	V
-to_char(482,'999th') 	' 482nd'
-to_char(485, '"Good number:"999') 	'Good number: 485'
-to_char(485.8,'"Pre-decimal:"999" Post-decimal:" .999') 	'Pre-decimal: 485 Post-decimal: .800'
-to_char(12,'99V999') 	' 12000'
-to_char(12.4,'99V999') 	' 12400'
-to_char(12.45, '99V9') 	' 125'
+```SQL
+SELECT to_char(-0.1,'99.99')  FROM DUAL ;   // ' -.10'
+SELECT to_char(-0.1,'FM9.99')  FROM DUAL ;   // '-.1'
+SELECT to_char(0.1,'0.9')  FROM DUAL ;   // ' 0.1'
+SELECT to_char(12,'9990999.9')  FROM DUAL ;   // ' 0012.0'
+SELECT to_char(12,'FM9990999.9')  FROM DUAL ;   // '0012'
+SELECT to_char(485,'999')  FROM DUAL ;   // ' 485'
+SELECT to_char(-485,'999')  FROM DUAL ;   // '-485'
+SELECT to_char(485,'9 9 9')  FROM DUAL ;   // ' 4 8 5'
+SELECT to_char(1485,'9,999')  FROM DUAL ;   // ' 1,485'
+SELECT to_char(1485,'9G999')  FROM DUAL ;   // ' 1 485'
+SELECT to_char(148.5,'999.999')  FROM DUAL ;   // ' 148.500'
+SELECT to_char(148.5,'999D999')  FROM DUAL ;   // ' 148,500'
+SELECT to_char(3148.5,'9G999D999')  FROM DUAL ;   // ' 3 148,500'
+SELECT to_char(-485,'999S')  FROM DUAL ;   // '485-'
+SELECT to_char(-485,'999MI')  FROM DUAL ;   // '485-'
+SELECT to_char(485,'999MI')  FROM DUAL ;   // '485'
+SELECT to_char(485,'PL999')  FROM DUAL ;   // '+485'
+SELECT to_char(485,'SG999')  FROM DUAL ;   // '+485'
+SELECT to_char(-485,'SG999')  FROM DUAL ;   // '-485'
+SELECT to_char(-485,'9SG99')  FROM DUAL ;   // '4-85'
+SELECT to_char(-485,'999PR')  FROM DUAL ;   // '<485>'
+SELECT to_char(485,'L999')  FROM DUAL ;   // 'DM 485
+SELECT to_char(485,'RN')  FROM DUAL ;   // ' CDLXXXV'
+SELECT to_char(485,'FMRN')  FROM DUAL ;   // 'CDLXXXV'
+SELECT to_char(5.2,'FMRN')  FROM DUAL ;   // V
+SELECT to_char(482,'999th')  FROM DUAL ;   // ' 482nd'
+SELECT to_char(485, '"Good number:"999')  FROM DUAL ;   // 'Good number: 485'
+SELECT to_char(485.8,'"Pre-decimal:"999" Post-decimal:" .999')  FROM DUAL ;   // 'Pre-decimal: 485 Post-decimal: .800'
+SELECT to_char(12,'99V999')  FROM DUAL ;   // ' 12000'
+SELECT to_char(12.4,'99V999')  FROM DUAL ;   // ' 12400'
+SELECT to_char(12.45, '99V9')  FROM DUAL ;   // ' 125'
+SELECT TO_CHAR(4567, '$99,99') FROM DUAL ;
+```
 
- 
-
-（3）to_char(salary,'$99,99');
 
 （4）用于进制转换：将10进制转换为16进制；
 
 例子：
+```SQL
+SELECT TO_CHAR(123,'XXX') FROM DUAL ;
+
+SELECT TO_CHAR(4567, 'XXXX') FROM DUAL ;
+```
 
 #### decode 函数
 
