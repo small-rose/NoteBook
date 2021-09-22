@@ -32,6 +32,8 @@ public class MyBean implements Serializable {
 }
 ```
 
+使用将JSON字符串解析成对应的Bean:
+
 ```java
 String data = "{Status":"0","RETURN_MSG":success"}";
 MyBean request = JSON.parseObject(data, MyBean.class);
