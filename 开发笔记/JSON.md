@@ -50,3 +50,22 @@ public class ParseTest {
 ```
 MyBean(status=0, returnMsg=SUCCESS)
 ```
+Bean转成对应的JSON字符串:
+```java
+public class FormatTest {
+
+    public static void main(String[] args) {
+
+        MyBean bean = new MyBean();
+        bean.setStatus("1");
+        bean.setReturnMsg("你的参数没有输入");
+        String data = JSONObject.toJSONString(bean);
+        System.out.println(data);
+    }
+}
+```
+输出结果：
+```
+{"FLAG":"1","RETURN_MSG":"你的参数没有输入"}
+```
+
