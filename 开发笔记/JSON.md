@@ -22,19 +22,31 @@
 
 ```java
 @Data
-public class MyBean implements Serializable {
+public class MyBean {
 
-    @JSONField(name = "Status")
+    @JSONField(name = "FLAG")
     private String status ;
 
     @JSONField(name = "RETURN_MSG")
-    private String ReturnMsg ;
+    private String returnMsg ;
 }
 ```
 
 使用将JSON字符串解析成对应的Bean:
 
 ```java
-String data = "{Status":"0","RETURN_MSG":success"}";
-MyBean request = JSON.parseObject(data, MyBean.class);
+public class ParseTest {
+
+    public static void main(String[] args) {
+
+        String data = "{\"FLAG\":\"0\",\"RETURN_MSG\":\"SUCCESS\"}";
+        MyBean request = JSON.parseObject(data, MyBean.class);
+        System.out.println(request);
+    }
+}
+```
+
+输出结果：
+```
+MyBean(status=0, returnMsg=SUCCESS)
 ```
