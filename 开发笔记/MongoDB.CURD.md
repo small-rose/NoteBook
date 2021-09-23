@@ -7,21 +7,23 @@
 
 有关不同BSON类型值的比较，请参见指定的BSON比较顺序。
 
-$eq 匹配等于指定值的值。
+名称 |  用法 示例 | 描述 | 
+$eq  | {field:{$eq:value}} | 匹配字段field值等于指定值value的文档	|
 
-$gt 匹配大于指定值的值。
+$gt | {field:{$gt:value} |  匹配字段field值大于指定值value的文档 |
 
-$gte 匹配大于或等于指定值的值。
+{field:{$gte:value}}	匹配字段field值≥指定值value的文档
 
-$in 匹配数组中指定的任何值。
+{field:{$lt:value}}	匹配字段field值<指定值value的文档
 
-$lt 匹配小于指定值的值。
+{field:{$lte:value}}	匹配字段field值≤指定值value的文档
 
-$lte 匹配小于或等于指定值的值。
+{field:{$ne:value}}	匹配字段field值≠指定值value的文档
 
-$ne 匹配所有不等于指定值的值。
+{field:$in:[value1,value2,...]}	匹配字段field值 in 指定数组中的value值的文档
 
-$nin 不匹配数组中指定的任何值。
+{field:$nin:[value1,value2,…]}	匹配字段field值 not in 指定数组中的value值的文档
+ 
 
 
 ### 2、映射运算符
