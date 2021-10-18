@@ -117,7 +117,14 @@ alter table t_users rename column  nlcke_name  to  nick_name;
 
 ### 常用查询
 
+#### 查询数据库全部序列
 
+ 
+--查看当前用户的所有序列 PAYMT 为数据库名称
+
+```SQL
+select SEQUENCE_OWNER,SEQUENCE_NAME from dba_sequences where sequence_owner='PAYMT';
+```
 
 #### 查看数据库版本：
 
