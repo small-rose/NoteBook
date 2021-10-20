@@ -408,7 +408,9 @@ end  ;
 
 ### 常见错误
 
-#### 账号被锁定的解决办法
+#### 锁账户
+
+账号被锁定的解决办法
 
 错误场景：当使用sqlplus进行登录时报错：ORA-28000 账号被锁定。
 错误原因：由于oracle 11g 在默认在default概要文件中设置了密码最大错误次数为10，“FAILED_LOGIN_ATTEMPTS=10”，密码错误的次数超过10次，账号就会被锁定。
@@ -453,6 +455,8 @@ select username,account_status from dba_users;
 alter user user_name account unlock;
 ```
 
+
+#### 锁表
 
 查看被锁的表和解锁
 
