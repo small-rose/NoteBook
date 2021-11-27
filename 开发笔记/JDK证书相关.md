@@ -1,7 +1,7 @@
 
 ### keytool 命令:
 
-````bash
+```
  -certreq            生成证书请求
  -changealias        更改条目的别名
  -delete             删除条目
