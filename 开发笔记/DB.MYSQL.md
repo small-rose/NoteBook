@@ -280,3 +280,69 @@ from information_schema.tables where table_schema = 'bp_test'
 group by table_name
 order by data_size_MB desc; 
 ```
+
+
+MySQL数据库备份
+--------------------------
+
+1、直接备份库
+
+语法：
+
+（A）备份一个库
+
+```bash
+## 备份指定主机某个库
+mysqldump -h host_name -P port -u user_name -p user_pass –database database_name > bak_file_name.sql
+
+## 备份本地数据库，执行时输密码
+mysqldump -u user_name –p –database database_name  >  bak_file_name.suffix
+```
+
+实例：
+
+```bash
+## 备份192.168.66.82上的数据库DBCM
+mysqldump -h 192.168.66.82 -u root –p123456  –database dbcm  >  dbcm_20200617.sql
+
+## 备份数据库DBCM，执行时输密码
+mysqldump -u root –p  –database dbcm  >  dbcm_20200617.sql
+```
+
+（B）备份多个库
+
+```bash
+## 备份指定主机里的多个库
+mysqldump -h hostname -u username -p user_pass –databases db_name1 db_name2 db_name3 > more_dbname_file.suffix
+```
+
+备份指定库的指定表
+
+```bash
+mysqldump -u user_name –p –database database_name  table_name1  table_name2 >  bak_fileName.suffix
+```
+
+例如：
+```bash
+##备份数据库DBCM里的loginfo表
+mysqldump -u root –p –database dbcm loginfo  >  dbcm_loginfo_20200617.sql
+## 多张表
+mysqldump -u root –p –database dbcm loginfo user >  dbcm_log_user_20200617.sql
+```
+
+3、压缩备份
+
+```BASH
+mysqldump -h host_name -u user_name -p user_pass -database db_name | gzip > backup_file.sql.gz
+```
+
+4、只备份数据库表结构
+
+```bash
+mysqldump  –no-data -u user_name -p user_pass –databases db_name1 db_name2 db_name3 > db_table_bak.sql
+```
+
+5、备份所有数据库
+```bash
+mysqldump –all-databases -u user_name -p user_pass > all_db.sql
+```
