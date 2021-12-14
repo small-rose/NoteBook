@@ -148,9 +148,32 @@ select * from v$version;
 查用户所有的表:
 
 ```SQL
+-- 查指定用户的所有表
+SELECT TABLE_NAME FROM DBA_TABLES WHERE OWNER='用户名' ;
+```
+
+```SQL
 -- 查用户所有的表
 SELECT TABLE_NAME FROM DBA_TABLES WHERE OWNER='BPJYDATA';
+
+-- 当前用户拥有的表
+SELECT U.TABLE_NAME,U.* FROM USER_TABLES U;
+-- 所有用户的表
+SELECT TABLE_NAME FROM ALL_TABLES;
+-- 包括系统表
+SELECT TABLE_NAME FROM DBA_TABLES;
+
 ```
+
+```
+-- 描述当前用户有访问权限的所有对象
+-- ALL_OBJECTS describes all objects accessible to the current user.
+-- 描述了数据库中的所有对象
+-- DBA_OBJECTS     describes all objects in the database.
+-- 描述了当前用户所拥有的所有对象
+-- USER_OBJECTS    describes all objects owned by the current user.
+```
+
 
 查表对应的注释:
 
