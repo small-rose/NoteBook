@@ -209,6 +209,15 @@ AND a.OWNER ='BPJYDATA' AND a.TABLE_NAME IN (
 查表对应的列:
 
 ```SQL
+-- 查（当前用户）表对应的列
+select * from user_tab_columns where Table_Name='T_APPLICATIONS' ORDER BY COLUMN_ID ASC;
+-- 查（全部用户）表名全部的列
+select * from all_tab_columns where Table_Name='T_APPLICATIONS';
+-- 查（全部用户，含系统表）表名全部的列
+select * from dba_tab_columns where Table_Name='T_APPLICATIONS';
+```
+
+```SQL
 -- 查表对应的列
 SELECT distinct
         T.TABLE_NAME,
