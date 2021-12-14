@@ -24,7 +24,35 @@ tar -zxvf redis-5.0.9.tar.gz
 mv  redis-5.0.9  /usr/local/
 ```
 
-2、 处理配置
+
+2.检查gcc环境
+
+```bash
+whereis gcc
+
+# 没有就安装
+yum install -y gcc g++ gcc-c++
+```
+
+
+3.编译安装
+
+```bash
+
+cd /usr/local/redis-5.0.9
+
+make
+
+#如果make报错 就执行这个，否则跳过 
+make MALLOC=libc
+
+make  install PREFIX=/usr/local/redis-5.0.9
+
+```
+
+
+
+4、 处理配置
 
 ```bash
 mkdir -p  /etc/redis
@@ -33,6 +61,8 @@ cd /usr/local/redis-5.0.9
 
 cp redis.conf  /etc/redis/6379.conf
 ```
+
+
 
 3、启动处理
 
@@ -61,9 +91,9 @@ vi /etc/init.d/redisd
 
 修改：
 ```
-EXEC=/opt/redis/redis-4.0.11/src/redis-server
-CLIEXEC=/opt/redis/redis-4.0.11/src/redis-cli
-PIDFILE=/opt/redis/redis-4.0.11/redis_${REDISPORT}.pid
+EXEC=/usr/local/bin/redis-server
+CLIEXEC=/usr/local/bin/redis-cli
+PIDFILE=/var/run/redis_${REDISPORT}.pid
 ```
 
 修改之后：
@@ -79,8 +109,8 @@ PIDFILE=/opt/redis/redis-4.0.11/redis_${REDISPORT}.pid
 
 REDISPORT=6379
 
-EXEC=/usr/local/bin/redis-server
-CLIEXEC=/usr/local/bin/redis-cli
+EXEC=/usr/local/redis-5.0.9/bin/redis-server
+CLIEXEC=/usr/local/redis-5.0.9/bin/redis-cli
 
 PIDFILE=/var/run/redis_${REDISPORT}.pid
 CONF="/etc/redis/${REDISPORT}.conf"
@@ -88,6 +118,7 @@ CONF="/etc/redis/${REDISPORT}.conf"
  ...
 
 ```
+
 
 增加脚本执行权限
 
@@ -103,6 +134,8 @@ chkconfig --add redisd
 chkconfig --list redisd
 ```
 
+
+
 测试
 ```bash
 [root]# service redisd start
@@ -111,4 +144,18 @@ Starting Redis server...
 15019:C 16 Aug 2021 20:49:34.165 # Redis version=5.0.9, bits=64, commit=00000000, modified=0, pid=15019, just started
 15019:C 16 Aug 2021 20:49:34.165 # Configuration loaded
 [root]# ps -aux | grep redis
+```
+
+
+如果可以正常启动之后，就可以配置后台守护进程启动。
+
+配置后台运行
+
+```bash
+vim  /etc/redis/6379.conf
+````
+把守护模式设置成yes
+
+```
+daemonize  yes
 ```
