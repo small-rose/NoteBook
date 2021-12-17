@@ -145,6 +145,13 @@ select * from v$version;
 
 #### 查询表-字段-注释
 
+查表DDL最后更新时间
+
+```SQL
+select uat.table_name as tableName,(select last_ddl_time from user_objects where  OBJECT_TYPE='TABLE' AND object_name = uat.table_name ) as lasDdlTime
+from user_all_tables uat ;
+```
+
 查用户所有的表:
 
 ```SQL
