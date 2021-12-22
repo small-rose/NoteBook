@@ -266,6 +266,29 @@ ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 #### 查询表约束
 
 ```SQL
+--查外键约束
+select * from user_cons_columns cl where cl.constraint_name = 外键名称
+
+--查当前schema的约束
+select table_name,constraint_name,constraint_type from user_constraints
+where table_name='大写的表名'
+
+--查所有的约束
+select table_name,constraint_name,constraint_type from dba_constraints
+where table_name='大写的表名'
+
+
+-- 查约束
+SELECT constraint_name, table_name, r_owner, r_constraint_name
+FROM all_constraints
+WHERE table_name = 'table_name' and owner = 'owner_name';
+
+--另一个视图ALL_CONS_COLUMNS也包括组成表上约束列的信息。
+```
+
+生成启动、禁用约束的SQL
+
+```SQL
 --查询出所有表的唯一键约束的,生成禁用sql
 select 'alter table ' || table_name || ' disable constraint '||constraint_name||';'
 from user_constraints where constraint_type='U';
@@ -298,6 +321,34 @@ alter table ENT_INFO_WUHAN enable constraint SYS_C0024733;
 --查询所有表的所有外键 
 select 'alter table ' || table_name || ' enable constraint '||constraint_name||';'
 from user_constraints where constraint_type='R';
+```
+
+#### 查询表索引
+
+
+```SQL
+
+-- 查用户所有的所有
+select * from USER_INDEXES where table_name = '大写的表名'
+
+-- 查所有的所有
+select* from all_indexes where table_name='T_APPLICATIONS';
+
+
+-- 查表的索引信息
+SELECT UIC.INDEX_NAME as indexName,  -- 索引名称
+       TC.COLUMN_NAME AS columnName, -- 列名称
+       CASE TC.DATA_TYPE WHEN 'DATE' THEN  TC.DATA_TYPE
+            ELSE    TC.DATA_TYPE || '(' || TC.DATA_LENGTH || ')'
+        END columnType ,  -- 列类型
+       TC.*
+FROM USER_IND_COLUMNS UIC,
+DBA_TAB_COLS TC
+WHERE TC.TABLE_NAME = UIC.TABLE_NAME
+  AND TC.COLUMN_NAME = UIC.COLUMN_NAME
+  AND TC.OWNER = 'PAYMT'
+  AND TC.TABLE_NAME='T_CENTRALPAYMENTINFO_TD'
+ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 ```
 
 #### 查看空表-函数：
