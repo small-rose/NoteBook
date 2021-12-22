@@ -263,6 +263,42 @@ WHERE TC.TABLE_NAME = UIC.TABLE_NAME
 ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 ```
 
+#### 查询表约束
+
+```SQL
+--查询出所有表的唯一键约束的,生成禁用sql
+select 'alter table ' || table_name || ' disable constraint '||constraint_name||';'
+from user_constraints where constraint_type='U';
+```
+
+如下：
+
+```SQL
+alter table MM_PERMISSIONS_TD disable constraint MM_PERMISSIONS_TD_UNIQUE ;
+alter table MM_PLAN_TD disable constraint U_PLAN_TD;
+alter table MM_PREPAYINFO_TD disable constraint U_PREPAYINFO_TD_01;
+alter table MM_PREPAYMENTIN_TD disable constraint U_PREPAYMENTID_TD_01;
+```
+
+
+```SQL
+--查询出所有表的唯一键约束的,生成启用sql
+select 'alter table ' || table_name || ' enable constraint '||constraint_name||';'
+from user_constraints where constraint_type='U';
+```
+
+如下：
+```SQL
+alter table SYENTINFO2 enable constraint UQ_SY20180806;
+alter table WEB_INFO enable constraint UQWEBINFO201807211136;
+alter table ENT_INFO_WUHAN enable constraint SYS_C0024733;
+```
+
+```SQL
+--查询所有表的所有外键 
+select 'alter table ' || table_name || ' enable constraint '||constraint_name||';'
+from user_constraints where constraint_type='R';
+```
 
 #### 查看空表-函数：
 
