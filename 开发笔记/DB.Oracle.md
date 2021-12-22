@@ -351,6 +351,14 @@ WHERE TC.TABLE_NAME = UIC.TABLE_NAME
 ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 ```
 
+#### 查视图
+
+```SQL
+select * from all_views WHERE OWNER='PAYMT'
+ORDER BY VIEW_NAME
+```
+
+
 #### 查看空表-函数：
 
 ```sql
