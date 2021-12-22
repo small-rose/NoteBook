@@ -265,6 +265,18 @@ ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 
 #### 查询表约束
 
+查找表约束：`select constraint_name from user_cons_columns a where a.table_name='tablename';`
+
+增加表约束：`alter table tablename add constraint pk_name primary key(column);`
+
+删除表约束：`alter table tablename drop constraint constraint_name `----（SYS_C002715）;
+
+修改表约束：1）禁用表主键：`alter table tablename disable primary key;`
+
+　　　　　　2）启用表主键：`alter table tablename enable primary key;`
+
+　　　　　　3）重命名表主键：`alter table tablename rename constraint pk_id to new_pk_id;`
+
 ```SQL
 --查外键约束
 select * from user_cons_columns cl where cl.constraint_name = 外键名称
