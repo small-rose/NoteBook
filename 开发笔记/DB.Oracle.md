@@ -148,7 +148,8 @@ select * from v$version;
 查表DDL最后更新时间
 
 ```SQL
-select uat.table_name as tableName,(select last_ddl_time from user_objects where  OBJECT_TYPE='TABLE' AND object_name = uat.table_name ) as lasDdlTime
+select uat.table_name as tableName,
+    (select last_ddl_time from user_objects where  OBJECT_TYPE='TABLE' AND object_name = uat.table_name ) as lasDdlTime
 from user_all_tables uat ;
 ```
 
@@ -226,20 +227,22 @@ select * from dba_tab_columns where Table_Name='T_APPLICATIONS';
 
 ```SQL
 -- 查表对应的列
-SELECT UTC.COLUMN_NAME as columnName,
+SELECT UTC.COLUMN_NAME as columnName, --列名
        CASE UTC.DATA_TYPE WHEN 'DATE' THEN  UTC.DATA_TYPE
             ELSE    UTC.DATA_TYPE || '(' || UTC.DATA_LENGTH || ')'
-       END columnType,
-       UCC.COMMENTS as columnComment,
-       UTC.NULLABLE
-FROM USER_TAB_COLUMNS  UTC ,
+       END columnType,  -- 类型
+       UCC.COMMENTS as columnComment,  -- 表字段的注释
+       UTC.DATA_DEFAULT as dataDefault,  -- 默认值
+        UTC.NULLABLE as nullable ,  -- 是否为空
+       UTC.DEFAULT_ON_NULL   
+ FROM USER_TAB_COLUMNS  UTC ,
      DBA_TABLES T,
      USER_COL_COMMENTS UCC
 WHERE UTC.TABLE_NAME = T.TABLE_NAME AND T.TABLE_NAME=UCC.TABLE_NAME
   AND UTC.COLUMN_NAME = UCC.COLUMN_NAME
-  AND T.OWNER= 'PAYMT'  -- 库名
-  AND UTC.TABLE_NAME='T_APPLICATIONS'  --表名
-ORDER BY UTC.COLUMN_ID ASC;
+  AND T.OWNER= 'PAYMT'    
+  AND UTC.TABLE_NAME= 'T_APPLICATIONS'  
+  ORDER BY UTC.COLUMN_ID ASC
 
 ```
 
