@@ -69,3 +69,66 @@ public class FormatTest {
 {"FLAG":"1","RETURN_MSG":"你的参数没有输入"}
 ```
 
+
+### fastjson 排序 
+
+（1）可以通过ordinal指定字段的顺序。这个特性需要1.1.42以上版本。
+
+```java
+@Data
+public class Rules {
+
+    @JSONField(ordinal = 1)
+    private String id ;
+
+    @JSONField(ordinal = 2)
+    private String door ;
+    
+    @JSONField(ordinal = 3)
+    private Category category ;
+    
+    @JSONField(ordinal = 4)
+    private CategoryPages categoryPages;
+    
+    @JSONField(ordinal = 5)
+    private LinkGroup linkGroup ;
+
+    @JSONField(ordinal = 6)
+    private LinkGroupPages linkGroupPages ;
+
+    @JSONField(ordinal = 7)
+    private PicLink picLink ;
+}
+
+```
+ 
+
+（2）可以通过name的值大小指定字段的顺序。
+
+```java
+@Data
+public class Rules {
+
+    @JSONField(name="a")
+    private String id ;
+
+    @JSONField(name="b")
+    private String door ;
+    
+    @JSONField(name="c")
+    private Category category ;
+    
+    @JSONField(name="d")
+    private CategoryPages categoryPages;
+    
+    @JSONField(name="e")
+    private LinkGroup linkGroup ;
+
+    @JSONField(name="f")
+    private LinkGroupPages linkGroupPages ;
+
+    @JSONField(name="g")
+    private PicLink picLink ;
+}
+
+```
