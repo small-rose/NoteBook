@@ -93,4 +93,22 @@ try {
     //处理异常
     e.printStackTrace();
 }
+
+
+AlipayClient alipayClient = new DefaultAlipayClient(
+                                WxAliPayConstants.alipay_user_accredit_url, app_id,
+                                WxAliPayConstants.rsa_private_key, "json", "UTF-8",
+                                WxAliPayConstants.alipay_public_key, "RSA2");
+AlipaySystemOauthTokenRequest alipayrequest = new AlipaySystemOauthTokenRequest();
+alipayrequest.setGrantType("authorization_code");
+alipayrequest.setCode(code);
+
+AlipaySystemOauthTokenResponse responseToken = null;
+try {
+	responseToken = alipayClient.execute(alipayrequest);
+} catch (AlipayApiException e) {
+	errormessage = "支付宝授权获取userid链接失败";
+	throw new Exception(errormessage);
+}
+			
 ``` 
