@@ -154,7 +154,7 @@ gem sources -r XXX
 
 #更新安装源缓存
 gem sources -u
- 
+```
 
 升级/更新
 
@@ -164,8 +164,9 @@ gem update --system
 
 #更新所有程序包
 gem update
+```
 
-使用 gem 安装**pod **
+使用 gem 安装 **pod**
 
 ```bash
 sudo gem install cocoapods
