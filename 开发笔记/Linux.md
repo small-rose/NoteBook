@@ -78,6 +78,14 @@ rpm ivh wget-1.12-1.4.el6.x86_64.rpm 安装即可。
 yum -y install wget
 ```
 
+3、如果安装了还是不能使用
+就先卸载再重新安装
+
+```bash
+yum remove wget
+yum install wget -y
+```
+
 centos7默认没netstat命令，需要安装
 
 ```bash
