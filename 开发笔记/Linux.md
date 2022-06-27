@@ -78,138 +78,11 @@ rpm ivh wget-1.12-1.4.el6.x86_64.rpm 安装即可。
 yum -y install wget
 ```
 
-3、如果安装了还是不能使用
-就先卸载再重新安装
+centos7默认没netstat命令，需要安装
 
 ```bash
-yum remove wget
-yum install wget -y
+yum install net-tools 
 ```
-
-### Ruby 安装
-
-在线安装
-
-```bash
-# CentOS, Fedora, 或 RHEL 系统
-sudo yum install ruby   
-
-# Debian 或 Ubuntu 系统
-sudo apt-get install ruby-full    
-```
-离线安装
-
-下载安装包 http://www.ruby-lang.org/en/downloads/ 之后上传，或者使用wget下载。
-
-```bash
-wget -c  https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.0.tar.gz
-tar -xvzf ruby-3.1.0.tar.gz  
-cd ruby-3.1.0
-
-./configure
-make
-sudo make install
-
-ruby -v
-```
-
-### gem 安装
-
-Linux ubuntu 安装gem
-
-```bash
-wget -c http://production.cf.rubygems.org/rubygems/rubygems-1.8.24.tgz
-
-tar xzvf rubygems-1.8.24.tgz
-
-cd rubygems-1.8.24
-
-ruby setup.rb
-```
-
-列出安装源 
-```bash
-gem sources -l
-```
-    http://gems.github.com/
-    http://rubygems.org/
-    https://gems.ruby-china.org
-
-添加安装源 
-```
-gem sources -a XXX
-```
-
-```bash
-gem source -a https://gems.ruby-china.org
-
-gem source -a http://gems.github.com/
-
-gem source -a http://rubygems.org/
-```
-
-```bash
-#删除安装源
-gem sources -r XXX
-
-#更新安装源缓存
-gem sources -u
-```
-
-升级/更新
-
-```bash
-#更新 gem 本身
-gem update --system
-
-#更新所有程序包
-gem update
-```
-
-使用 gem 安装 **pod**
-
-```bash
-sudo gem install cocoapods
-```
-
-### screen 安装
-
-```bash
-yum  -y install screen
-```
-
-命令模板:
-
-```
-screen [-AmRvx -ls -wipe][-d <作业名称>][-h <行数>][-r <作业名称>][-s ][-S <作业名称>]
-```
-
-参数说明
-```
--A 　将所有的视窗都调整为目前终端机的大小。
--d <作业名称> 　将指定的screen作业离线。
--h <行数> 　指定视窗的缓冲区行数。
--m 　即使目前已在作业中的screen作业，仍强制建立新的screen作业。
--r <作业名称> 　恢复离线的screen作业。
--R 　先试图恢复离线的作业。若找不到离线的作业，即建立新的screen作业。
--s 　指定建立新视窗时，所要执行的shell。
--S <作业名称> 　指定screen作业的名称。
--v 　显示版本信息。
--x 　恢复之前离线的screen作业。
--ls或--list 　显示目前所有的screen作业。
--wipe 　检查目前所有的screen作业，并删除已经无法使用的screen作业。
-```
-常用命令
-
-```bash
-screen -S yourname  # 新建一个叫yourname的session
-screen -ls          # 列出当前所有的session
-screen -r yourname  # 回到yourname这个session
-screen -d yourname  # 远程detach某个session
-screen -d -r yourname # 结束当前session并回到yourname这个session
-```
-
-linux screen 命令详解 : https://www.cnblogs.com/mchina/archive/2013/01/30/2880680.html
 
 
 ### tree 安装
@@ -224,13 +97,14 @@ yum install tree
 
 方法二，源码安装
 
-　　1.下载安装包，地址：http://mama.indstate.edu/users/ice/tree/
+1.下载安装包，地址：http://mama.indstate.edu/users/ice/tree/
+
 
 ```bash
 wget  http://mama.indstate.edu/users/ice/tree/src/tree-1.8.0.tgz
-```　
+```
 
-　　2.解压安装
+2.解压安装
 
 ```bash
 # 解压
@@ -246,6 +120,11 @@ make install
 # 使用
 tree
 tree --version
+
+# 显示目录深度3
+tree -L 3
+# 只显示目录不显示文件
+tree -d -L 3
 ```
 
 
@@ -345,6 +224,7 @@ yum install sysstat
 ### Firawalld
 
 1、查看firewall服务状态
+
 ```bash
 systemctl status firewalld
 ```
@@ -400,6 +280,7 @@ D:\idea-Work\XianDai-TrunkNew\cm-web\web\pages
 ```bash
 lsof -i:端口号 ，
 ```
+
 比如查看8000端口使用情况:
 
 ```bash

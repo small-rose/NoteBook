@@ -119,6 +119,8 @@ CONF="/etc/redis/${REDISPORT}.conf"
 
 ```
 
+如果开启了密码，在
+
 
 增加脚本执行权限
 
@@ -154,8 +156,44 @@ Starting Redis server...
 ```bash
 vim  /etc/redis/6379.conf
 ````
+
+bind配置
+
+  1.在bind中配置多个IP地址,bind 192.168.64.129 127.0.0.1
+
+  2.将bind的值配置为bind 0.0.0.0
+
+```
+bind 0.0.0.0
+```
+
 把守护模式设置成yes
 
 ```
 daemonize  yes
 ```
+
+也可以开启保护模式然后设置密码
+
+```
+#开启保护模式
+protected-mode yes
+
+
+# 设置连接密码
+requirepass  test
+```
+vi /etc/init.d/redis
+
+stop 命令中补充 -a "test" 字样
+```
+$CLIEXEC -a "test" -p $REDISPORT shutdown
+```
+
+后续启动停止，可以使用service命令
+
+```bash
+service redisd start
+service redisd stop
+```
+

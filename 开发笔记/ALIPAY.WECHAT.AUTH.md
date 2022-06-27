@@ -19,11 +19,11 @@ PC 网页内获取用户信息 : https://opendocs.alipay.com/open/284/web
 
 1.授权流程
 
-![支付宝用户授权流程图](../images/%E5%9B%BE%E7%89%87.png)
+![支付宝用户授权流程图](../images/alipay_flow.png)
 
 2.商户配置
 
-![商户设置](../%E5%9B%BE%E7%89%87.png)
+![商户设置](../images/alipay_mcht_config.png)
 
 
 需要开发的是：
