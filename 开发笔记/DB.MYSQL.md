@@ -346,3 +346,13 @@ mysqldump  –no-data -u user_name -p user_pass –databases db_name1 db_name2 d
 ```bash
 mysqldump –all-databases -u user_name -p user_pass > all_db.sql
 ```
+
+MySQL常见函数
+---------------------
+
+```SQL
+-- MySQL 取日期所在月的第一天
+select DATE_ADD(curdate(),interval -day(curdate())+1 day);
+-- MySQL 取日期所在月的最后一天
+select last_day(curdate()) from dual;
+```
