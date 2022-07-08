@@ -1,11 +1,11 @@
 ---
 layout: default
-title: JDK cacerts
+title: JDK certificate
 parent: DevNotes
 nav_order: 8
 ---
 
-# JDK cacerts
+# JDK certificate
 {: .no_toc }
 
 ## Table of contents
@@ -68,7 +68,7 @@ keytool -delete -alias emailcert -keystore "D:/Java/jdk1.8/jre/lib/security/cace
 
 Windowns 环境
 
-```bash
+```
 # 切换到命令目录
 C:\Program Files\Java\jdk1.8.0_212\bin
 

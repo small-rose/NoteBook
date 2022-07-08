@@ -5,7 +5,7 @@ parent: DevNotes
 nav_order: 2
 ---
 
-# Git & GitHub
+# Idea
 {: .no_toc }
 
 ## Table of contents

@@ -5,8 +5,9 @@ parent: DevNotes
 nav_order: 1
 ---
 
-# 开发常用
+## 开发常用
 {: .no_toc }
+
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -14,17 +15,13 @@ nav_order: 1
 1. TOC
 {:toc}
 
----
 
-
-## 开发常用
-
-### Markdown 在线
+### MD在线编辑
 
 http://editor.md.ipandao.com/examples/full.html
 
 
-### 护眼色
+### 电脑护眼色
 
 绿豆沙色能有效的减轻长时间用电脑的用眼疲劳！
 
@@ -64,6 +61,7 @@ RGB颜色红：199，绿：237，蓝：204；
 
 </tr>
 </table>
+
 
 
 其他几种电脑窗口视力保护色：
@@ -164,7 +162,6 @@ d:\subversion\bin;
 
 直接放<settings>根节点下即可。
 ```xml
-
  <localRepository>E:/server/MavenRepository/maven_jar</localRepository>
 ```
 如果不配置，默认路径是：C:/Users/${user.home}/.m2/repository
@@ -332,22 +329,31 @@ C:\Windows\System32\drivers\etc
 
 **联想电脑管家**
 
+
+```text
 C:\ProgramData\Lenovo\devicecenter\LockScreen\cache
 
 C:\Program Files (x86)\Lenovo\LockScreen\Modules\LockScreen
-
+```
 
 **联想锁屏**
-
+```
 C:\ProgramData\lLockscreen
+```
+
 
 
 Github
 ----------------------------------
 
+```text
 https://github.com.ipaddress.com/
+```
+
 
 https://ftools.cc/github
+
+
 
 
 IDEA 插件官网
@@ -453,7 +459,7 @@ Spring Boot提供了2种优雅关闭进程的方式：
     - 基于系统服务方式关闭进程
 
 
-#### 基于端口
+### 基于端口
 
 基于管理端口方式实现进程关闭实际上是模块spring-boot-actuator提供的功能。
 
@@ -468,7 +474,7 @@ Spring Boot提供了2种优雅关闭进程的方式：
 
 添加配置
 
-```YAML
+```yaml
 management:
   server:
     address: 127.0.0.1
@@ -595,7 +601,30 @@ esac
 ```
 
 
-将jar包做成系统服务
+### 通过系统服务方式停止进程
+
+Spring Boot支持直接将打包好的可执行jar包以系统服务方式运行，具体实现方式如下所述。
+
+首先，将应用打包为完全可执行的jar包。
+
+Maven打包配配置
+
+```XML
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <configuration>
+        <!-- 这个配置非常重要，使打包好的jar包具备可执行权限-->
+        <executable>true</executable>
+    </configuration>
+</plugin>
+```
+Gradle打包配置
+```
+bootJar {
+    launchScript()
+}
+```
 
 其次，将打包好的应用jar包添加为系统服务（在ubuntu18.04 LTS上实现，基于systemd）
 
@@ -625,36 +654,72 @@ $ sudo systemctl start myapp.service
 ```
 如果需要查看应用启动日志，请执行：$ journalctl -f。
 
-#### 通过系统服务方式停止进程
 
-Spring Boot支持直接将打包好的可执行jar包以系统服务方式运行，具体实现方式如下所述。
 
-首先，将应用打包为完全可执行的jar包。
+## druid 加密
 
-    Maven打包配配置
-```XML
-<plugin>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-maven-plugin</artifactId>
-    <configuration>
-        <!-- 这个配置非常重要，使打包好的jar包具备可执行权限-->
-        <executable>true</executable>
-    </configuration>
-</plugin>
+bpjydata 是数据库密码
+
+```bash
+cd d:\apache\maven-repository
+
+cd com\alibaba\druid\1.0.31
+
+java -cp druid-1.0.31.jar com.alibaba.druid.filter.config.ConfigTools  bpjydata
+
+privateKey:MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAlXK6uwv0SHObw6saUGZDT93uOCL9MJ+ZQerBIFC3yeJfeCaCXxxR28Im4jwzJtSeWBCTtbqOMkyuAYyJVzFsIwIDAQABAkAot9monNkx5E3MQhIpVbOBTzZYlS/mz
+5UyIIP+CgAJQPmM1Ns+woUc8+qeQiYlOjTc+suNBTDPmWy5E+xzjAIBAiEAzS3lTTdHxKcDy8iW4A8SFBmBY08WuzmzzqDT3o4+VFUCIQC6dwI9IeXuBDZysjyox3fX56AKqzeVMkHBwCN74dT2lwIhAMwFWiBY2r1Z0bV+JUBw2+ounnEwgIr1S
+q0pUOPZj3LtAiB6GG013FlzhfylE8KWfa4iiL+J3N0Ta4oVNRvHBXPuVwIhAIi1RTfqJMIVkvlaE8JWmxDXfQmvYN2iNQhptpyqxE+K
+
+publicKey:MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJVyursL9Ehzm8OrGlBmQ0/d7jgi/TCfmUHqwSBQt8niX3gmgl8cUdvCJuI8MybUnlgQk7W6jjJMrgGMiVcxbCMCAwEAAQ==
+
+password:QO3SkdCiTfS263n92Zf8s+DLsmrx7TTCSb/7ZVIphOOoEhFwPfIFvhv0UHdlGq196PBJsooPDjygvbPz9imowQ==
+
 ```
-Gradle打包配置
-```
-bootJar {
-    launchScript()
-}
-```
 
-其次，将打包好的应用jar包添加为系统服务
+对应的配置：
+
+```
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    #开发环境
+    url: jdbc:oracle:thin:@192.168.10.118:1521/orcl
+    username: bpjydata
+    password: bpjydata
+    druid: # 数据源专有配置
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+
+      #配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+      #如果允许时报错  java.lang.ClassNotFoundException: org.apache.log4j.Priority
+      #则导入 log4j 依赖即可，Maven 地址：https://mvnrepository.com/artifact/log4j/log4j
+      filters: stat,wall,log4j
+      maxPoolPreparedStatementPerConnectionSize: 20
+      decrypt: #自定义的配置文件 druid 解密密码使用的公钥
+        publickey: "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAOH4lZpPQRZQMCdb2V618LI6vfTa0tuve1nbiEJEZA6B2kHISbGd8SQvKP9BhSFaaYBMngRTFHVx+ugr2vhhnS8CAwEAAQ=="
+        password: "FMibYKX1bTy7GHyYBNpAWVuV+udlXGvGLtWZnsL4ngHuH5cEpg+abZ1JX/Az7gy/rLmsyWC+Ua3L1GWIxrC/0g=="
+      connectionProperties: druid.log.stmt.executableSql=true;druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=false;config.decrypt.key=${spring.datasource.druid.decrypt.publickey} # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      useGlobalDataSourceStat: false # 合并多个DruidDataSource的监控数据
+```
 
 
 
 MAVEN
 -------------------
+
 ### 常用命令
 
 #### 1、查看依赖关系
@@ -669,7 +734,7 @@ mvn  dependency:tree > tree.txt
 
 #### 2、添加本地jar包依赖以及打包方法
 
-##### 将jar包安装到本地仓库
+**将jar包安装到本地仓库**
 
 1）安装到本地仓库，执行以下命令（其中的-Dfile/-DgroupId/-DartifactId/-Dversion项可以根据pom文件内容填写）：
 
@@ -697,7 +762,7 @@ mvn install:install-file -Dfile=yop-java-sdk-3.3.1-jdk18.jar -DgroupId=com.yeepa
 
 版本可以根据实际情况自行适配更改。
 
-```
+```xml
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
@@ -727,7 +792,7 @@ mvn install:install-file -Dfile=yop-java-sdk-3.3.1-jdk18.jar -DgroupId=com.yeepa
 执行 ** mvn clean ** 安装到本地仓库。
 
 
-##### dependency中指定scope="system"和本地jar包路径
+#### 3、dependency中指定scope="system"和本地jar包路径
 
 这种方法适用于其他方式导出的jar包，jar包中不含有pom信息，从而无法安装进本地仓库的情况。做法是：先配置本地jar包依赖，然后在build时将设置将jar包导出，同时配置manifest。
 
@@ -861,68 +926,8 @@ mvn install:install-file -Dfile=yop-java-sdk-3.3.1-jdk18.jar -DgroupId=com.yeepa
 </build>
 ```
 
-#### druid 加密
 
-bpjydata 是数据库密码
-
-```bash
-cd d:\apache\maven-repository
-
-cd com\alibaba\druid\1.0.31
-
-java -cp druid-1.0.31.jar com.alibaba.druid.filter.config.ConfigTools  bpjydata
-
-privateKey:MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAlXK6uwv0SHObw6saUGZDT93uOCL9MJ+ZQerBIFC3yeJfeCaCXxxR28Im4jwzJtSeWBCTtbqOMkyuAYyJVzFsIwIDAQABAkAot9monNkx5E3MQhIpVbOBTzZYlS/mz
-5UyIIP+CgAJQPmM1Ns+woUc8+qeQiYlOjTc+suNBTDPmWy5E+xzjAIBAiEAzS3lTTdHxKcDy8iW4A8SFBmBY08WuzmzzqDT3o4+VFUCIQC6dwI9IeXuBDZysjyox3fX56AKqzeVMkHBwCN74dT2lwIhAMwFWiBY2r1Z0bV+JUBw2+ounnEwgIr1S
-q0pUOPZj3LtAiB6GG013FlzhfylE8KWfa4iiL+J3N0Ta4oVNRvHBXPuVwIhAIi1RTfqJMIVkvlaE8JWmxDXfQmvYN2iNQhptpyqxE+K
-
-publicKey:MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJVyursL9Ehzm8OrGlBmQ0/d7jgi/TCfmUHqwSBQt8niX3gmgl8cUdvCJuI8MybUnlgQk7W6jjJMrgGMiVcxbCMCAwEAAQ==
-
-password:QO3SkdCiTfS263n92Zf8s+DLsmrx7TTCSb/7ZVIphOOoEhFwPfIFvhv0UHdlGq196PBJsooPDjygvbPz9imowQ==
-
-```
-
-对应的配置：
-
-```
-spring:
-  main:
-    allow-bean-definition-overriding: true
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    #开发环境
-    url: jdbc:oracle:thin:@192.168.10.118:1521/orcl
-    username: bpjydata
-    password: bpjydata
-    druid: # 数据源专有配置
-      initialSize: 5
-      minIdle: 5
-      maxActive: 20
-      maxWait: 60000
-      timeBetweenEvictionRunsMillis: 60000
-      minEvictableIdleTimeMillis: 300000
-      validationQuery: SELECT 1 FROM DUAL
-      testWhileIdle: true
-      testOnBorrow: false
-      testOnReturn: false
-      poolPreparedStatements: true
-
-      #配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
-      #如果允许时报错  java.lang.ClassNotFoundException: org.apache.log4j.Priority
-      #则导入 log4j 依赖即可，Maven 地址：https://mvnrepository.com/artifact/log4j/log4j
-      filters: stat,wall,log4j
-      maxPoolPreparedStatementPerConnectionSize: 20
-      decrypt: #自定义的配置文件 druid 解密密码使用的公钥
-        publickey: "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAOH4lZpPQRZQMCdb2V618LI6vfTa0tuve1nbiEJEZA6B2kHISbGd8SQvKP9BhSFaaYBMngRTFHVx+ugr2vhhnS8CAwEAAQ=="
-        password: "FMibYKX1bTy7GHyYBNpAWVuV+udlXGvGLtWZnsL4ngHuH5cEpg+abZ1JX/Az7gy/rLmsyWC+Ua3L1GWIxrC/0g=="
-      connectionProperties: druid.log.stmt.executableSql=true;druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=false;config.decrypt.key=${spring.datasource.druid.decrypt.publickey} # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-      useGlobalDataSourceStat: false # 合并多个DruidDataSource的监控数据
-```
-
-
-
-### 骨架原型
+### maven骨架原型
 
 maven提供的41个骨架原型分别是：
 

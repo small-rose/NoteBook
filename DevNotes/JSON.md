@@ -31,11 +31,9 @@ nav_order: 6
         </dependency>
 ```
 
-#### @JSONField
+### @JSONField
 
-使用 @JSONField
-
-可以让JSON字符串里的key和Bean的属性不一致时，映射赋值到对应的属性上。
+使用 `@JSONField` 可以让JSON字符串里的key和Bean的属性不一致时，映射赋值到对应的属性上。
 
 ```java
 @Data
