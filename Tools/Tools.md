@@ -17,10 +17,10 @@ nav_order: 5
 ---
 ### Markdown Online
 
-[MarkDown在线](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-purple }
-[MarkDown在线](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-blue  }
-[MarkDown在线](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-green  }
-[MarkDown在线](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline  }
+[MarkDown在线](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-purple fs-5 mb-4 mb-md-0 mr-2 }
+[MarkDown在线](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-blue fs-5 mb-4 mb-md-0 mr-2 }
+[MarkDown在线](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-green fs-5 mb-4 mb-md-0 mr-2 }
+[MarkDown在线](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline fs-5 mb-4 mb-md-0 mr-2 }
  
 
 ### Tools Online
