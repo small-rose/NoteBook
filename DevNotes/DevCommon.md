@@ -1,7 +1,8 @@
 ---
 layout: default
-title: 开发常用
-parent: 开发笔记
+title: DevCommon
+parent: DevNotes
+nav_order: 1
 ---
 
 # 开发常用

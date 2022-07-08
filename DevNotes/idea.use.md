@@ -1,3 +1,22 @@
+---
+layout: default
+title: IDEA About
+parent: DevNotes
+nav_order: 2
+---
+
+# Git & GitHub
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+
 ## 护眼色
 
 

@@ -1,4 +1,20 @@
+---
+layout: default
+title: ORACLE
+nav_order: 2
+parent: Database
+---
 
+# ORACLE
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 ## oracle 
 

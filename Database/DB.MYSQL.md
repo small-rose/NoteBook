@@ -1,3 +1,20 @@
+---
+layout: default
+title: MySQL
+nav_order: 1
+parent: Database
+---
+
+# MySQL
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 MYSQL URL参数
 --------------

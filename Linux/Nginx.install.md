@@ -1,10 +1,11 @@
 ---
 layout: default
-title: Nginx-Linux-Install
-parent: 开发笔记
+title: Nginx Linux Install
+nav_order: 1
+parent: Linux
 ---
 
-# Nginx-Linux-Install
+# Nginx Linux Install
 {: .no_toc }
 
 ## Table of contents

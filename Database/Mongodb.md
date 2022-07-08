@@ -1,10 +1,11 @@
 ---
 layout: default
-title: Mongodb-Fast-In-Door
-parent: 开发笔记
+title: Mongodb Install
+nav_order: 4
+parent: Database
 ---
 
-# Mongodb-Fast-In-Door
+# Mongodb Install
 {: .no_toc }
 
 ## Table of contents
@@ -13,7 +14,8 @@ parent: 开发笔记
 1. TOC
 {:toc}
 
----
+--- 
+
 
 
 ## Mongodb 快速入门

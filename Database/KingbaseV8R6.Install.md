@@ -1,3 +1,22 @@
+---
+layout: default
+title: KingBase V8R6
+nav_order: 3
+parent: Database
+---
+
+# KingBase
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+
 KingBase 在CentOS 7.2 环境安装与卸载
 
 

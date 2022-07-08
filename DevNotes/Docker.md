@@ -1,5 +1,25 @@
+---
+layout: default
+title: Docker Install
+parent: DevNotes
+nav_order: 5
+---
 
-# Docker 安装
+# Docker Install
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+
+Docker 安装
+---------------------------
+
 
 ## 使用 Docker 仓库进行安装
 

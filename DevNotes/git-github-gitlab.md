@@ -1,5 +1,22 @@
-# Git
+---
+layout: default
+title: Git & GitHub
+parent: DevNotes
+nav_order: 3
+---
 
+# Git & GitHub
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+Git
 -----------------------------
 
 ## git 常用命令
@@ -22,8 +39,7 @@ ssh-keygen -t rsa -C 'xxxxx@youremail.com' -f ~/.ssh/git_tencent_id_rsa
 然后将公钥 `id_rsa.pub` 或 `gitee_id_rsa.pub ` 导入要使用的地方。
 
 
-# Github
-
+Github
 -----------------------------
 
 ## github使用Token登录

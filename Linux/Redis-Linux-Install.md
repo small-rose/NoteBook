@@ -1,10 +1,11 @@
 ---
 layout: default
-title: Redis-Linux-Install
-parent: 开发笔记
+title: Redis Linux Install
+nav_order: 2
+parent: Linux
 ---
 
-# Redis-Linux-Install
+# Redis Linux Install
 {: .no_toc }
 
 ## Table of contents

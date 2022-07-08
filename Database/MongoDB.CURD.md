@@ -1,10 +1,11 @@
 ---
 layout: default
-title: Mongodb-Select-In-Door
-parent: 开发笔记
+title: Mongodb-CURD
+nav_order: 5
+parent: Database
 ---
 
-# Mongodb-Select-In-Door
+# Mongodb-CURD
 {: .no_toc }
 
 ## Table of contents
@@ -13,11 +14,9 @@ parent: 开发笔记
 1. TOC
 {:toc}
 
----
+--- 
 
-## mongodb查询入门
-
- 一、查询入门
+## 一、查询入门
 
 ### 1、基础概念
 
@@ -288,3 +287,575 @@ db.users.find({}, {'name' : 1, 'age' : 1});
 
 补充说明： 第一个{} 放where条件 第二个{} 指定那些列显示和不显示 （0表示不显示 1表示显示)
 
+
+
+### 2、查询选择器
+
+
+
+#### （1）比较
+
+有关不同BSON类型值的比较，请参见指定的BSON比较顺序。
+
+ **$eq**  
+
+选择：等于某个值
+
+```SQL
+{ <field>: { $eq: <value> } }
+```
+
+示例：
+
+查询年龄等于18岁的用户：
+
+```SQL
+db.Users.find({ age : {$eq:18} })
+```
+
+等价sql：
+
+```SQL
+SELECT * FROM USERS WHERE age = 18;
+```
+
+
+
+**$gt** 
+
+选择：大于某个值
+
+```SQL
+{field: {$gt: value} }
+```
+
+示例：
+
+查询年龄大于18岁的用户：
+
+```SQL
+db.Users.find({ age : {$gt:18} })
+```
+
+等价sql：
+
+```SQL
+SELECT * FROM USERS WHERE age > 18;
+```
+
+
+
+**$gte**
+
+ 选择：大于等于某个值
+
+```SQL
+{field: {$gte: value} }
+```
+
+示例：
+
+查询年龄大于或等于18岁的用户：
+
+```SQL
+db.Users.find({ age : {$gte:18} })
+```
+
+等价sql：
+
+```SQL
+SELECT * FROM USERS WHERE age >= 18;
+```
+
+
+
+**$lt**
+
+选择：小于某个值
+
+```SQL
+{field: {$lt: value} }
+```
+
+示例：
+
+查询年龄小于22岁的用户：
+
+```SQL
+db.Users.find({ age : {$lt:18} })
+```
+
+等价sql：
+
+```SQL
+SELECT * FROM USERS WHERE age < 22;
+```
+
+
+
+**$lte**
+
+选择：小于等于某个值
+
+```SQL
+{ field: { $lte: value} }
+```
+
+示例：
+
+查询年龄小于22岁的用户：
+
+```SQL
+db.Users.find({ age : {$lte:22} })
+```
+
+等价sql：
+
+```SQL
+SELECT * FROM USERS WHERE age <= 22;
+```
+
+
+
+**$ne**
+
+```SQL
+{field: {$ne: value} }
+```
+
+选择：
+
+field不等于某个值
+field不存在
+
+示例：
+
+查询用户状态不等于1的用户
+
+```
+db.Users.find({ status : {$ne: 1} })
+```
+
+等价sql：
+
+```SQL
+SELECT * FROM USERS WHERE status != 1;
+```
+
+
+
+
+
+**$in**
+
+```
+{ field: { $in: [<value1>, <value2>, ... <valueN> ] } }
+```
+
+选择：
+
+（1）filed是一个值，并且等于value1 or value2 。
+（2）field是个数组，并且filed中至少存在某个值等于value1 or value2 。
+
+示例：
+
+查询指定邮箱的用户：
+
+```SQL
+db.Users.find({ email : {$in: ['small-rose@qq.com','xiaocai@qq.com']} })
+```
+
+等价SQL：
+
+```SQL
+SELECT * FROM USERS WHERE email in ('small-rose@qq.com','xiaocai@qq.com');
+```
+
+
+
+**$nin**
+
+```
+{ field: { $nin: [ <value1>, <value2> ... <valueN> ]} }
+```
+
+选择：
+（1）field值不存在于数组中
+（2）field不存在
+
+ 
+
+示例：
+
+查询不含有某几个邮箱的用户：
+
+```SQL
+db.Users.find({ email : {$nin: ['small-rose@qq.com','xiaocai@qq.com']} })
+```
+
+等价SQL：
+
+```SQL
+SELECT * FROM USERS WHERE email NOT IN ('small-rose@qq.com','xiaocai@qq.com');
+```
+
+
+
+#### （2）逻辑
+
+**$and**
+
+```SQL
+{ $and: [ { <expression1> }, { <expression2> } , ... , { <expressionN> } ] }
+```
+
+含义：选择同时匹配所有expression的数据,如果expression1为false，则mongodb不会继续后续的判断
+
+示例：
+
+查询年龄是20，状态为1的用户：
+
+```SQL
+db.Users.find({ $and : [ { age : 20}, { status : 1} ]});
+```
+
+如果找不到年龄为20的，status为1不作判断。
+
+等价SQL：
+
+```SQL
+SELECT * FROM USERS WHERE age =20 and status =1;
+```
+
+
+
+**$not**
+
+```SQL
+{ field: { $not: { <operator-expression> } } }
+```
+
+含义：选择所有不符合operator-expression的数据。
+
+示例：
+
+查询所有状态不为1 或者status字段不存在的用户：
+
+```SQL
+db.Users.find({ $not : [{ status : 1} ]});
+```
+
+等价SQL：
+
+```SQL
+SELECT * FROM USERS WHERE status !=1;
+```
+
+
+
+**$or**
+
+```SQL
+{ $or: [ { <expression1> }, { <expression2> }, ... , { <expressionN> } ] }
+```
+
+含义：选择至少满足一个expression的数据。
+
+示例：
+
+查询所有状态为1或者状态为3的用户：
+
+```SQL
+db.Users.find({ $or : [{ status : 1},{ status : 3} ]});
+```
+
+等价SQL：
+
+```SQL
+SELECT * FROM USERS WHERE status =1 or status =3 ;
+```
+
+
+
+**$nor**
+
+```SQL
+{ $nor: [ { <expression1> }, { <expression2> }, ... { <expressionN> } ] }
+```
+
+含义：选择同时不满足所有expression的数据。
+
+示例：
+
+查询所有状态为1或者状态为3的用户：
+
+```SQL
+db.Users.find({ $or : [{ status : 1},{ status : 3},{ age : 22} ]});
+```
+
+等价SQL：
+
+```SQL
+SELECT * FROM USERS WHERE status =1 or status =3 or age = 22;
+```
+
+
+
+#### （3）元素
+
+**$exists**
+
+```SQL
+{ field: { $exists: <boolean> } }
+```
+
+含义：选选择filed是否存在的数据，$exists: true代表存在，false代表不存在。
+
+示例：
+
+查询所有邮箱没有值的用户：
+
+```SQL
+db.Users.find({ email: { $exists : false} });
+```
+
+等价SQL：
+
+```SQL
+SELECT * FROM USERS WHERE email is null ;
+```
+
+
+
+**$type**
+
+```SQL
+{ field: { $type: <BSON type> } }
+```
+
+含义：选择filed是某个具体类型的实例的数据，可以写具体type或者对应数字。
+
+具体BSON type可以看文档：[Bson Type]()  
+
+　　选择字段值为指定的BSON数据类型的文档.<BSON type>使用下面类型对应的编号：
+
+| 类型                    | 类型                   | 编号 |
+| ----------------------- | ---------------------- | ---- |
+| Double                  | 双精度                 | 1    |
+| String                  | 字符串                 | 2    |
+| Object                  | 对象                   | 3    |
+| Array                   | 数组                   | 4    |
+| Binary data             | 二进制对象             | 5    |
+| Object id               | 对象id                 | 7    |
+| Boolean                 | 布尔值                 | 8    |
+| Date                    | 日期                   | 9    |
+| Null                    | 未定义                 | 10   |
+| Regular Expression      | 正则表达式             | 11   |
+| JavaScript              | JavaScript代码         | 13   |
+| Symbol                  | 符号                   | 14   |
+| JavaScript (with scope) | JavaScript代码(带范围) | 15   |
+| 32-bit integer          | 32 位整数              | 16   |
+| Timestamp               | 时间戳                 | 17   |
+| 64-bit integer          | 64 位整数              | 18   |
+| Min key                 | 最小键                 | 255  |
+| Max key                 | 最大键                 | 127  |
+
+　　如果文档的键值是一个数组。那么$type将对数组里面的元素进行类型匹配而不是键值数组本身。
+
+
+
+示例：
+
+```json
+{ "_id" : 1, "name" : "Jack", "age": 18, "tags": ['student','child'] }
+{ "_id" : 2, "name" : "Lucy", "age": 22, "tags": ['teacher','foods'] }
+{ "_id" : 2, "name" : "Lucy", "age": 22, "tags": 'teacher' }
+{ "_id" : 2, "name" : "Lucy", "age": 22 }
+```
+
+查询所有标签的数据类型是数组的的用户：
+
+```SQL
+db.user.find( { tags: { $type : 4 } } )
+
+//如果想检查键值的类型是否为数组类型，使用$where操作符
+db.user.find( { $where : "Array.isArray(this.tags)" } )
+```
+
+ 
+
+
+
+#### （4）评估
+
+**$expr**
+
+```SQL
+{ $expr: { <expression> } }
+```
+
+含义：选择filed符合聚合表达式的数据。
+
+聚合表达式官方参考：[聚合表达式管道参考](https://docs.mongodb.com/v4.0/meta/aggregation-quick-reference/#aggregation-expressions) 
+
+示例：
+
+查询所有spent值大于budget值的所有数据：
+
+数据：
+
+```
+{ "_id" : 1, "category" : "food", "budget": 400, "spent": 450 }
+{ "_id" : 2, "category" : "drinks", "budget": 100, "spent": 150 }
+{ "_id" : 3, "category" : "clothes", "budget": 100, "spent": 50 }
+{ "_id" : 4, "category" : "misc", "budget": 500, "spent": 300 }
+{ "_id" : 5, "category" : "travel", "budget": 200, "spent": 650 }
+```
+
+查询语句
+
+```SQL
+db.monthlyBudget.find( { $expr: { $gt: [ "$spent" , "$budget" ] } } )
+```
+
+结果：
+
+```
+{ "_id" : 1, "category" : "food", "budget" : 400, "spent" : 450 }
+{ "_id" : 2, "category" : "drinks", "budget" : 100, "spent" : 150 }
+{ "_id" : 5, "category" : "travel", "budget" : 200, "spent" : 650 }
+```
+
+等价伪SQL：
+
+```SQL
+SELECT * FROM monthlyBudget WHERE spent > budget ;
+```
+
+
+
+| Name                                                         | Description                                    |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| [`$expr`](https://docs.mongodb.com/v4.0/reference/operator/query/expr/#op._S_expr) | 允许在查询语言中使用聚合表达式。               |
+| [`$jsonSchema`](https://docs.mongodb.com/v4.0/reference/operator/query/jsonSchema/#op._S_jsonSchema) | 根据给定的JSON Schema验证文档。                |
+| [`$mod`](https://docs.mongodb.com/v4.0/reference/operator/query/mod/#op._S_mod) | 对字段的值执行模运算并选择具有指定结果的文档。 |
+| [`$regex`](https://docs.mongodb.com/v4.0/reference/operator/query/regex/#op._S_regex) | 选择值与指定的正则表达式匹配的文档。           |
+| [`$text`](https://docs.mongodb.com/v4.0/reference/operator/query/text/#op._S_text) | 执行文本搜索。                                 |
+| [`$where`](https://docs.mongodb.com/v4.0/reference/operator/query/where/#op._S_where) | 匹配满足JavaScript表达式的文档。               |
+
+
+
+#### （5）数组
+
+> **注意**
+>
+> 有关特定运算符的详细信息，包括语法和示例，请单击特定运算符以转到其参考页。
+
+| 名称             | 描述                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| [`$all`]()       | 匹配包含查询中指定的所有元素的数组。                         |
+| [`$elemMatch`]() | 如果array字段中的元素符合所有指定`$elemMatch`条件，则选择文档。 |
+| [`$size`]()      | 如果数组字段为指定大小，则选择文档。                         |
+
+示例：
+
+```json
+{ "_id" : 1, "name" : "Jack", "age": 18, "tags": ['student','child'] }
+{ "_id" : 2, "name" : "Lucy", "age": 22, "tags": ['teacher','foods'] }
+{ "_id" : 2, "name" : "Lucy", "age": 22, "tags": ['python','mysql','java'] }
+{ "_id" : 2, "name" : "Lucy", "age": 21, "tags": ['java','python']  }
+```
+
+查询所有标签的数据类型是数组的的用户：
+
+```SQL
+//tags 中必须同时包含java 和 python 
+db.users.find({'tags' : {'$all' : ['java','python']}})
+
+//tags数组长度为3的数据，注意 $size不能与$lt等组合使用
+db.users.find({'tags' : {'$size' : 3}}) 
+```
+
+ 
+
+
+
+
+
+
+
+#### （6）地理
+
+6.1 查询选择器
+
+| Name                                                         | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [`$geoIntersects`](https://docs.mongodb.com/v4.0/reference/operator/query/geoIntersects/#op._S_geoIntersects) | 选择与GeoJSON几何形状相交的几何形状。2dsphere索引支持 `$geoIntersects`。 |
+| [`$geoWithin`](https://docs.mongodb.com/v4.0/reference/operator/query/geoWithin/#op._S_geoWithin) | 选择边界GeoJSON几何内的几何。2dsphere和2D指标支持 `$geoWithin`。 |
+| [`$near`](https://docs.mongodb.com/v4.0/reference/operator/query/near/#op._S_near) | 返回点附近的地理空间对象。需要地理空间索引。2dsphere和2D指标支持 `$near`。 |
+| [`$nearSphere`](https://docs.mongodb.com/v4.0/reference/operator/query/nearSphere/#op._S_nearSphere) | 返回球体上某个点附近的地理空间对象。需要地理空间索引。2dsphere和2D指标支持 `$nearSphere`。 |
+
+
+
+6.2 几何说明符
+
+| 名称                                                         | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [`$box`](https://docs.mongoing.com/can-kao/yun-suan-fu/query-and-projection-operators/geospatial-query-operators) | 使用传统坐标对来指定一个矩形框进行 `$geoWithin`查询。所述2D指数支持 `$box`。 |
+| [`$center`](https://docs.mongoing.com/can-kao/yun-suan-fu/query-and-projection-operators/geospatial-query-operators) | 使用平面几何时，使用旧坐标对指定圆以进行`$geoWithin`查询。所述2D指数支持`$center`。 |
+| [`$centerSphere`](https://docs.mongoing.com/can-kao/yun-suan-fu/query-and-projection-operators/geospatial-query-operators) | 使用球形几何图形时，使用传统坐标对或GeoJSON格式指定一个圆 用于`$geoWithin`查询。2dsphere和 2D指标支持`$centerSphere`。 |
+| [`$geometry`](https://docs.mongoing.com/can-kao/yun-suan-fu/query-and-projection-operators/geospatial-query-operators) | 为地理空间查询运算符指定GeoJSON格式的几何。                  |
+| [`$maxDistance`](https://docs.mongoing.com/can-kao/yun-suan-fu/query-and-projection-operators/geospatial-query-operators) | 指定最大距离以限制`$near` 和`$nearSphere`查询的结果。2dsphere和2D指标支持 `$maxDistance`。 |
+| [`$minDistance`](https://docs.mongoing.com/can-kao/yun-suan-fu/query-and-projection-operators/geospatial-query-operators) | 指定最小距离以限制`$near` 和`$nearSphere`查询的结果。`2dsphere`仅用于索引。 |
+| [`$polygon`](https://docs.mongoing.com/can-kao/yun-suan-fu/query-and-projection-operators/geospatial-query-operators) | 指定用于`$geoWithin`查询的旧坐标对的多边形。2d索引支持`$center`。 |
+| [`$uniqueDocs`](https://docs.mongoing.com/can-kao/yun-suan-fu/query-and-projection-operators/geospatial-query-operators) | 不推荐使用。修改`$geoWithin`和`$near`查询以确保即使文档多次匹配查询，查询也只返回一次文档。 |
+
+
+
+#### （7）按位运算
+
+> **注意**
+>
+> 有关特定运算符的详细信息，包括语法和示例，请单击特定运算符以转到其参考页。
+
+| 名称                | 描述                                                         |
+| ------------------- | ------------------------------------------------------------ |
+| [`$bitsAllClear`]() | 匹配数字或二进制值，其中一组位的*所有*值均为`0`。            |
+| [`$bitsAllSet`]()   | 匹配数字或二进制值，其中一组位的*所有*值均为`1`。            |
+| [`$bitsAnyClear`]() | 匹配数值或二进制值，在这些数值或二进制值中，一组位的位置中*任何*位的值为`0`。 |
+| [`$bitsAnySet`]()   | 匹配数值或二进制值，在这些数值或二进制值中，一组位的位置中*任何*位的值为`1`。 |
+
+
+
+#### （8）评论选
+
+| Name                                                         | Description                          |
+| ------------------------------------------------------------ | ------------------------------------ |
+| [`$comment`](https://docs.mongodb.com/v4.0/reference/operator/query/comment/#op._S_comment) | Adds a comment to a query predicate. |
+
+
+
+### 3、映射运算符
+
+| Name                                                         | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [`$`](https://docs.mongodb.com/v4.0/reference/operator/projection/positional/#proj._S_) | 匹配数组中与查询条件匹配的第一个元素。                       |
+| [`$elemMatch`](https://docs.mongodb.com/v4.0/reference/operator/projection/elemMatch/#proj._S_elemMatch) | Projects the first element in an array that matches the specified [`$elemMatch`](https://docs.mongodb.com/v4.0/reference/operator/projection/elemMatch/#proj._S_elemMatch) condition. |
+| [`$meta`](https://docs.mongodb.com/v4.0/reference/operator/projection/meta/#proj._S_meta) | Projects the document’s score assigned during [`$text`](https://docs.mongodb.com/v4.0/reference/operator/query/text/#op._S_text) operation. |
+| [`$slice`](https://docs.mongodb.com/v4.0/reference/operator/projection/slice/#proj._S_slice) | Limits the number of elements projected from an array. Supports skip and limit slices. |
+
+
+
+
+
+
+
+参考资料：
+
+https://mongoing.com/docs/core/query-plans.html
+
+https://mongoing.com/archives/docs/mongodb
+
+https://docs.mongodb.com/v4.0/reference/operator/query/
+
+## 

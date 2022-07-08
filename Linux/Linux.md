@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Linux
-parent: 开发笔记
+nav_order: 2
 ---
 
 # Linux
