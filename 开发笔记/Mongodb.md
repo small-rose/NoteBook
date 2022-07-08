@@ -1,3 +1,20 @@
+---
+layout: default
+title: Mongodb-Fast-In-Door
+parent: 开发笔记
+---
+
+# Mongodb-Fast-In-Door
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
 
 ## Mongodb 快速入门
 

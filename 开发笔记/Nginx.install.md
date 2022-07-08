@@ -1,3 +1,20 @@
+---
+layout: default
+title: Nginx-Linux-Install
+parent: 开发笔记
+---
+
+# Nginx-Linux-Install
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
 
 ## yum 方式在线安装
 

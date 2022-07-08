@@ -1,3 +1,20 @@
+---
+layout: default
+title: Redis-Linux-Install
+parent: 开发笔记
+---
+
+# Redis-Linux-Install
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
 
 ## Redis-Linux 安装
 

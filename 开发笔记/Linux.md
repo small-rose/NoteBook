@@ -1,3 +1,20 @@
+---
+layout: default
+title: Linux
+parent: 开发笔记
+---
+
+# Linux
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
 Linux 环境相关
 
 ### grep
