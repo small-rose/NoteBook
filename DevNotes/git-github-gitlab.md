@@ -72,4 +72,10 @@ Github
 
 生成之后务必先复制保存一份，后面会用到。在离开token展示页面之后你将再也看不见这个token的明文了。
 
+## github 镜像站
 
+- https://cdn.githubjs.cf
+- https://hub.おうか.tw
+- https://hub.連接.台灣
+- https://gitclone.com/ （仅支持git）
+- https://hub.fastgit.xyz （支持git）

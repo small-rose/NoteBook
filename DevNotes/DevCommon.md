@@ -16,10 +16,22 @@ nav_order: 1
 {:toc}
 
 
-### MD在线编辑
+### centos 源
 
-http://editor.md.ipandao.com/examples/full.html
+CentOS 官方下载地址：https://www.centos.org/download/
 
+Centos国内下载源
+
+- http://man.linuxde.net/download/CentOS
+- http://mirrors.btte.net/centos/7/isos/x86_64/
+- http://mirrors.cn99.com/centos/7/isos/x86_64/
+- http://mirrors.sohu.com/centos/7/isos/x86_64/
+- http://mirrors.aliyun.com/centos/7/isos/x86_64/
+- http://centos.ustc.edu.cn/centos/7/isos/x86_64/
+- http://mirrors.neusoft.edu.cn/centos/7/isos/x86_64/
+- http://mirror.lzu.edu.cn/centos/7/isos/x86_64/
+- http://mirrors.163.com/centos/7/isos/x86_64/
+- http://ftp.sjtu.edu.cn/centos/7/isos/x86_64/ 
 
 ### 电脑护眼色
 

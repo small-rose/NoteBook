@@ -96,6 +96,8 @@ generateO2O : 2个对象快速赋值生成插件
 
 background Image plus ：设置背景图插件
 
+generateAllSetter：set赋值
+
 
 
 
