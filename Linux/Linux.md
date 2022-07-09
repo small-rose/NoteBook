@@ -96,12 +96,6 @@ rpm ivh wget-1.12-1.4.el6.x86_64.rpm 安装即可。
 yum -y install wget
 ```
 
-centos7默认没netstat命令，需要安装
-
-```bash
-yum install net-tools 
-```
-
 
 ### tree 安装
 
@@ -185,6 +179,9 @@ yum install net-tools
 ### fuser命令
 
 ------------------------------
+
+用指定的文件或者文件系统显示进程进程号，默认情况下每一个文件名后会跟着一个字母来表示类型
+
 fuser命令需要安装
 ```bash
 yum install psmisc 
@@ -195,6 +192,7 @@ yum install psmisc
 ### rzsz
 
 ---------------------------
+
 lrzsz是一个unix通信套件提供的X，Y，和ZModem文件传输协议,可以用在windows与linux 系统之间的文件传输，体积小速度快。官网入口：https://ohse.de/uwe/software/lrzsz.html
 
 1、在线安装
@@ -233,10 +231,20 @@ ln -s /usr/local/lrzsz/bin/lsz /usr/bin/sz
 
 ### 系統监控 
 
+项目地址：https://github.com/sysstat/sysstat
+
+安装
+
 ```bash
 yum install sysstat
 ```
+启用
 
+
+```shell
+systemctl enable sysstat  
+systemctl start sysstat  
+```
 
 
 ### Firawalld
@@ -336,14 +344,16 @@ wget https://dlcdn.apache.org/maven/maven-3/3.8.2/binaries/apache-maven-3.8.2-bi
 jdk解压到 /usr/local/java/
 maven 解压到  /usr/local/maven/
 
-```
+修改全局配置:
+```bash
+cp /etc/profile /etc/profile.bak
 vi /etc/profile
 vi  .bash
 ```
 
 在配置文件末尾添加
 
-```
+```text
 export M2_HOME=/usr/local/maven/apache-maven-3.8.2
 export JAVA_HOME=/usr/local/java/jdk1.8.0_212
 export JRE_HOME=${JAVA_HOME}/jre
@@ -351,41 +361,22 @@ export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:${M2_HOME}/bin:$PATH
 ```
 
-### nginx
-
-在线安装
-
-```bash
-yum install gcc-c++       
-yum install -y pcre pcre-devel
-yum install -y zlib zlib-devel
-yum install -y openssl openssl-devel
-
-cd /usr/local
-wget http://nginx.org/download/nginx-1.20.1.tar.gz
-tar -zxvf  nginx-1.20.1.tar.gz
-./configure && make && make install
-
-# 这是 nginx 软连接
-ln -s /usr/local/nginx/sbin/nginx  /usr/local/bin/nginx
-nginx
-ps -ef|grep nginx
-```
-
-离线安装
-
-```bash
-
-
-```
+ 
 
 ### tomcat 线程数
 
 上线前可以压测一下，调整参数配置，查看tomcat线程数命令如下：
 
-获取tomcat进程pid ：ps -ef|grep tomcat
+获取tomcat进程pid ：
+```bash
+ps -ef|grep tomcat
+```
+统计该tomcat进程内的线程个数 ：
 
-统计该tomcat进程内的线程个数 ：ps -Lf 29295 |wc -l
+```bash
+ps -Lf 29295 |wc -l
+```
+
 
 
 ### 应用重启脚本
@@ -408,17 +399,15 @@ nohup java ${JMX_OPTS} -jar $APP_NAME --server.port=8086 > log_paystation_yace.l
 
 ### v2Ray
 
-参考： https://hissin.cn/zheteng/795.html
-
-https://github.com/Loyalsoldier/v2ray-rules-dat
-
-https://yearliny.com/v2ray-complete-tutorial/
-https://www.linodovultr.com/post/resolve-v2ray-after-install-can-not-connect.html?replytocom=69
-https://github.com/search?q=v2ray
-https://fx.tmioe.com/654.html
-https://www.ddayh.com/1136.html
-
-https://ivu4e.com/toolbox/newwork/2019-10-16/259.html
+参考： 
+- https://hissin.cn/zheteng/795.html
+- https://github.com/Loyalsoldier/v2ray-rules-dat
+- https://yearliny.com/v2ray-complete-tutorial/
+- https://www.linodovultr.com/post/resolve-v2ray-after-install-can-not-connect.html?replytocom=69
+- https://github.com/search?q=v2ray
+- https://fx.tmioe.com/654.html
+- https://www.ddayh.com/1136.html
+- https://ivu4e.com/toolbox/newwork/2019-10-16/259.html
 
 ```bash
 yum -y install curl

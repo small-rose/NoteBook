@@ -106,10 +106,10 @@ nav_order: 5
 <a href="https://ddrk.me/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
 <a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
 <a href="https://www.rrmeiju.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">RR Meiju</a>
-<a href="https://wanyouw.com/" target="_blank" class="btn btn-green fs-5 mb-4 mb-md-0 mr-2">Wan You W</a>
+<a href="https://wanyouw.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Wan You W</a>
 <a href="https://www.zxzjtv.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ZXZJ TV</a>
 <a href="https://www.juo.cc" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">JUO.CC</a>
-<a href="http://gaoqing.la/" target="_blank" class="btn btn-green fs-5 mb-4 mb-md-0 mr-2">Gao Qing</a>
+<a href="http://gaoqing.la/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gao Qing</a>
 
 </p>
 

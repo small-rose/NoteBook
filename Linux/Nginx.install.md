@@ -320,3 +320,24 @@ nginx -t
 nginx -s reload
 ```
 
+### nginx 安装总结
+
+在线安装
+
+```bash
+yum install gcc-c++       
+yum install -y pcre pcre-devel
+yum install -y zlib zlib-devel
+yum install -y openssl openssl-devel
+
+cd /usr/local
+wget http://nginx.org/download/nginx-1.20.1.tar.gz
+tar -zxvf  nginx-1.20.1.tar.gz
+./configure && make && make install
+
+# 这是 nginx 软连接
+ln -s /usr/local/nginx/sbin/nginx  /usr/local/bin/nginx
+nginx
+ps -ef|grep nginx
+```
+
