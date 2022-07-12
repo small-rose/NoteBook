@@ -47,7 +47,7 @@ jdbc:mysql://localhost:3306/test?user=root&amp;password=&amp;useUnicode=true&amp
 
 使用连接池
 
-```
+```text
 autoReconnect=true&failOverReadOnly=false 
 ```
 
@@ -58,12 +58,13 @@ MySQL无密码登录
 ----------------------------
 Windows
 
-1.打开命令窗口cmd，输入命令：net stop mysql，停止MySQL服务，
+1.打开命令窗口cmd，输入命令：`net stop mysql`，停止MySQL服务，
 
 2.开启跳过密码验证登录的MySQL服务
 
-        输入命令  
-```bash
+输入命令  
+
+```text
 mysqld --console --skip-grant-tables --shared-memory 
 ```
         
@@ -108,8 +109,10 @@ AND table_name = 'mm_batchinfo_ti' ;
 ```
 
 MySQL注释补偿
+---------------------
 
 ```sql
+
 ALTER TABLE table_name COMMENT '新的表注释';
 
 # 只修改注释
@@ -120,37 +123,40 @@ ALTER TABLE table_name MODIFY COLUMN field_name varchar(30) COMMENT '修改后�
 ```
 
 
-
 MySQL字段补偿
 ----------------------------
 
->table_name 就是实际的表名； field_name 就是实际的字段名。
+table_name 就是实际的表名； field_name 就是实际的字段名。
 
-添加字段
+**添加字段**
 
-```sql 
+```sql
+# 追加新的字段信息
 ALTER TABLE  table_name ADD  field_name  varchar(20) COMMENT '字段注释';
 ```
 
-修改字段
+**修改字段**
 
 (1) 不修改名称 使用modify
 
 ```sql
+# 只改类型和注释
 ALTER TABLE  table_name  MODIFY field_name varchar(20) NOT NULL COMMENT '用户名';
 ```
 
 (2) 修改名称 使用change  格式 是 change 要修改的名称 新名称 ...
 
 ```sql
+# 将已有名字改成新名字
 ALTER TABLE table_name CHANGE old_field_name new_field_name varchar(20) NOT NULL COMMENT '用户名';
 ```
 
-删除字段
+**删除字段**
 
 ```sql
+# 删除某个字段
 ALTER  TABLE  table_name  DROP COLUMN field_name;
-## 删除多个字段
+# 删除多个字段
 ALTER  TABLE  table_name  DROP COLUMN field_name1, DROP COLUMN field_name2;
 ```
 
