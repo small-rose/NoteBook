@@ -18,27 +18,32 @@ parent: Database
 
 MYSQL URL参数
 --------------
- 参数名称                                     参数说明                             
 
-    user                                       数据库用户名（用于连接数据库）
-    passWord                               用户密码（用于连接数据库）
-    useUnicode                            是否使用Unicode字符集，如果参数characterEncoding设置为gb2312或gbk，本参数值必须设置为true 
-    autoReconnect                       当数据库连接异常中断时，是否自动重新连接？
-    autoReconnectForPools           是否使用针对数据库连接池的重连策略
-    maxReconnects                      autoReconnect设置为true时，重试连接的次数 
-    failOverReadOnly                   自动重连成功后，连接是否设置为只读？
+  | 参数名称        |  参数说明      |       
+ | ----------- | ----------- |                  
+ | user          |              数据库用户名（用于连接数据库）
+ | passWord      |              用户密码（用于连接数据库）
+ | useUnicode    |              是否使用Unicode字符集，如果参数characterEncoding设置为gb2312或gbk，本参数值必须设置为true 
+ | autoReconnect          |     当数据库连接异常中断时，是否自动重新连接？
+ | autoReconnectForPools  |     是否使用针对数据库连接池的重连策略
+ | maxReconnects          |     autoReconnect设置为true时，重试连接的次数 
+ | failOverReadOnly       |     自动重连成功后，连接是否设置为只读？
 
 对应中文环境，通常mysql连接URL可以设置为：
-
-    jdbc:mysql://localhost:3306/test?user=root&password=&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
+```text
+jdbc:mysql://localhost:3306/test?user=root&password=&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
+```
 
 在使用数据库连接池的情况下，最好设置如下两个参数：
+```text
+autoReconnect=true&failOverReadOnly=false
+```
 
-    autoReconnect=true&failOverReadOnly=false
 
 需要注意的是，在xml配置文件中，url中的&符号需要转义成&amp;。比如在tomcat的server.xml中配置数据库连接池时，mysql jdbc url样例如下：
-
-    jdbc:mysql://localhost:3306/test?user=root&amp;password=&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true
+```text
+jdbc:mysql://localhost:3306/test?user=root&amp;password=&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true
+```
 
 使用连接池
 
@@ -58,12 +63,15 @@ Windows
 2.开启跳过密码验证登录的MySQL服务
 
         输入命令  
+```bash
+mysqld --console --skip-grant-tables --shared-memory 
+```
+        
 
-        mysqld --console --skip-grant-tables --shared-memory 
-
-3.新开cmd 窗口 mysql -uroot -p
-
-
+3.新开cmd 窗口 
+```text
+mysql -uroot -p
+```
 
 Linux
 
@@ -101,7 +109,7 @@ AND table_name = 'mm_batchinfo_ti' ;
 
 MySQL注释补偿
 
-```SQL
+```sql
 ALTER TABLE table_name COMMENT '新的表注释';
 
 # 只修改注释
@@ -116,11 +124,11 @@ ALTER TABLE table_name MODIFY COLUMN field_name varchar(30) COMMENT '修改后�
 MySQL字段补偿
 ----------------------------
 
-> table_name 就是实际的表名； field_name 就是实际的字段名。
+>table_name 就是实际的表名； field_name 就是实际的字段名。
 
 添加字段
 
-```SQL 
+```sql 
 ALTER TABLE  table_name ADD  field_name  varchar(20) COMMENT '字段注释';
 ```
 
@@ -128,19 +136,19 @@ ALTER TABLE  table_name ADD  field_name  varchar(20) COMMENT '字段注释';
 
 (1) 不修改名称 使用modify
 
-```SQL
+```sql
 ALTER TABLE  table_name  MODIFY field_name varchar(20) NOT NULL COMMENT '用户名';
 ```
 
 (2) 修改名称 使用change  格式 是 change 要修改的名称 新名称 ...
 
-```SQL
+```sql
 ALTER TABLE table_name CHANGE old_field_name new_field_name varchar(20) NOT NULL COMMENT '用户名';
 ```
 
 删除字段
 
-```SQL
+```sql
 ALTER  TABLE  table_name  DROP COLUMN field_name;
 ## 删除多个字段
 ALTER  TABLE  table_name  DROP COLUMN field_name1, DROP COLUMN field_name2;
@@ -205,7 +213,7 @@ C:\Users\{username}\Documents\Navicat\MySQL\servers\
 
 在mysql中使用show collation指令可以查看到mysql所支持的所有COLLATE
 
-```
+```sql
 show collation;
 
 SHOW VARIABLES LIKE '%character_set%';
@@ -218,7 +226,7 @@ SHOW CHARACTER SET;
 MySQL索引重复率查询
 ----------------------------
 
-```SQL
+```sql
 SELECT
 t.TABLE_SCHEMA,t.TABLE_NAME,INDEX_NAME, CARDINALITY,
 TABLE_ROWS, CARDINALITY/TABLE_ROWS AS SELECTIVITY
@@ -254,7 +262,7 @@ ORDER BY SELECTIVITY;
 MySQL查锁
 ----------------------------
 
-```SQL
+```sql
 SELECT  * FROM  INNODB_LOCKS;
 
 SELECT * FROM INNODB_LOCK_WAITS;
@@ -271,7 +279,7 @@ show processlist;
 MySQL查变量
 ----------------------------
 
-```SQL
+```sql
 show status like '%connect%';
 
 # 查最大连接数
@@ -290,7 +298,7 @@ show variables like "wait_timeout";
 MySQL查表使用空间情况
 ----------------------------
 
-```SQL
+```sql
 select table_name, truncate(sum(data_length)/1024/1024,2) as data_size_MB,
 truncate(sum(index_length)/1024/1024,2) as index_size_MB
 from information_schema.tables where table_schema = 'bp_test'
@@ -367,7 +375,7 @@ mysqldump –all-databases -u user_name -p user_pass > all_db.sql
 MySQL常见函数
 ---------------------
 
-```SQL
+```sql
 -- MySQL 取日期所在月的第一天
 select DATE_ADD(curdate(),interval -day(curdate())+1 day);
 -- MySQL 取日期所在月的最后一天

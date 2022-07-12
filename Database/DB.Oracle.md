@@ -77,7 +77,7 @@ alter table t_users modify (BILLCODE number(4));
 高级玩法：
 
 
-```SQL
+```sql
 -- 搜索用户下的某个字段，都存在于哪张表（t.OWNER指定用户，大写；t.COLUMN_NAME要搜索的字段）
 select distinct t1.TABLE_NAME,t.COLUMN_NAME
 from DBA_TAB_COLS t,
@@ -138,7 +138,7 @@ alter table t_users rename column  nlcke_name  to  nick_name;
  
 --查看当前用户的所有序列 PAYMT 为数据库名称
 
-```SQL
+```sql
 select SEQUENCE_OWNER,SEQUENCE_NAME from dba_sequences where sequence_owner='PAYMT';
 ```
 
@@ -163,7 +163,7 @@ select * from v$version;
 
 查表DDL最后更新时间
 
-```SQL
+```sql
 select uat.table_name as tableName,
     (select last_ddl_time from user_objects where  OBJECT_TYPE='TABLE' AND object_name = uat.table_name ) as lasDdlTime
 from user_all_tables uat ;
@@ -171,12 +171,12 @@ from user_all_tables uat ;
 
 查用户所有的表:
 
-```SQL
+```sql
 -- 查指定用户的所有表
 SELECT TABLE_NAME FROM DBA_TABLES WHERE OWNER='用户名' ;
 ```
 
-```SQL
+```sql
 -- 查用户所有的表
 SELECT TABLE_NAME FROM DBA_TABLES WHERE OWNER='BPJYDATA';
 
@@ -201,7 +201,7 @@ SELECT TABLE_NAME FROM DBA_TABLES;
 
 查表对应的注释:
 
-```SQL
+```sql
 -- 查表对应的注释
 SELECT distinct
         t1.TABLE_NAME,t.COMMENTS
@@ -215,7 +215,7 @@ WHERE t.TABLE_NAME = t1.TABLE_NAME
 
 查表对应的主键:
 
-```SQL
+```sql
 -- 查表对应的主键
 SELECT
        a.TABLE_NAME AS 表名,
@@ -232,7 +232,7 @@ AND a.OWNER ='BPJYDATA' AND a.TABLE_NAME IN (
 
 查表对应的列:
 
-```SQL
+```sql
 -- 查（当前用户）表对应的列
 select * from user_tab_columns where Table_Name='T_APPLICATIONS' ORDER BY COLUMN_ID ASC;
 -- 查（全部用户）表名全部的列
@@ -241,7 +241,7 @@ select * from all_tab_columns where Table_Name='T_APPLICATIONS';
 select * from dba_tab_columns where Table_Name='T_APPLICATIONS';
 ```
 
-```SQL
+```sql
 -- 查表对应的列
 SELECT UTC.COLUMN_NAME as columnName, --列名
        CASE UTC.DATA_TYPE WHEN 'DATE' THEN  UTC.DATA_TYPE
@@ -265,7 +265,7 @@ WHERE UTC.TABLE_NAME = T.TABLE_NAME AND T.TABLE_NAME=UCC.TABLE_NAME
 
 查表对应的注释:
 
-```SQL
+```sql
 select* from all_indexes where table_name='T_APPLICATIONS';
 
 -- 查表对应的注释
@@ -293,7 +293,7 @@ ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 
 　　　　　　3）重命名表主键：`alter table tablename rename constraint pk_id to new_pk_id;`
 
-```SQL
+```sql
 --查外键约束
 select * from user_cons_columns cl where cl.constraint_name = 外键名称
 
@@ -316,7 +316,7 @@ WHERE table_name = 'table_name' and owner = 'owner_name';
 
 生成启动、禁用约束的SQL
 
-```SQL
+```sql
 --查询出所有表的唯一键约束的,生成禁用sql
 select 'alter table ' || table_name || ' disable constraint '||constraint_name||';'
 from user_constraints where constraint_type='U';
@@ -324,7 +324,7 @@ from user_constraints where constraint_type='U';
 
 如下：
 
-```SQL
+```sql
 alter table MM_PERMISSIONS_TD disable constraint MM_PERMISSIONS_TD_UNIQUE ;
 alter table MM_PLAN_TD disable constraint U_PLAN_TD;
 alter table MM_PREPAYINFO_TD disable constraint U_PREPAYINFO_TD_01;
@@ -332,20 +332,20 @@ alter table MM_PREPAYMENTIN_TD disable constraint U_PREPAYMENTID_TD_01;
 ```
 
 
-```SQL
+```sql
 --查询出所有表的唯一键约束的,生成启用sql
 select 'alter table ' || table_name || ' enable constraint '||constraint_name||';'
 from user_constraints where constraint_type='U';
 ```
 
 如下：
-```SQL
+```sql
 alter table SYENTINFO2 enable constraint UQ_SY20180806;
 alter table WEB_INFO enable constraint UQWEBINFO201807211136;
 alter table ENT_INFO_WUHAN enable constraint SYS_C0024733;
 ```
 
-```SQL
+```sql
 --查询所有表的所有外键 
 select 'alter table ' || table_name || ' enable constraint '||constraint_name||';'
 from user_constraints where constraint_type='R';
@@ -354,7 +354,7 @@ from user_constraints where constraint_type='R';
 #### 查询表索引
 
 
-```SQL
+```sql
 
 -- 查用户所有的所有
 select * from USER_INDEXES where table_name = '大写的表名'
@@ -381,7 +381,7 @@ ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 
 #### 查视图
 
-```SQL
+```sql
 select * from all_views WHERE OWNER='PAYMT'
 ORDER BY VIEW_NAME
 ```
@@ -401,7 +401,7 @@ select CURRENT_TIMESTAMP ;
 
 to_char(date,'格式');
 
-```SQL
+```sql
 SELECT TO_DATE('2021-09-13', 'YYYY-MM-DD') FROM DUAL ;
 SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD') FROM DUAL ;
 
@@ -413,7 +413,7 @@ SELECT to_char(now(),'FMDay, HH12:MI:SS')  FROM DUAL ;   -- 'Tuesday, 05:39:18'
 
 to_char(number,'格式');
 
-```SQL
+```sql
 SELECT to_char(-0.1,'99.99')  FROM DUAL ;   --  ' -.10'
 SELECT to_char(-0.1,'FM9.99')  FROM DUAL ;   --  '-.1'
 SELECT to_char(0.1,'0.9')  FROM DUAL ;   --  ' 0.1'
@@ -452,7 +452,7 @@ SELECT TO_CHAR(4567, '$99,99') FROM DUAL ;  --   $45,67
 （4）用于进制转换：将10进制转换为16进制；
 
 例子：
-```SQL
+```sql
 SELECT TO_CHAR(123,'XXX') FROM DUAL ;
 
 SELECT TO_CHAR(4567, 'XXXX') FROM DUAL ;
@@ -546,7 +546,7 @@ select * from V$NLS_PARAMETERS
 
 #### 存储过程
 
-```SQL
+```sql
 -- 尚未测试
 create or replace PROCEDURE ZZY(demo in ats_back_ti % rowtype) is
    v_back_ti  ats_back_ti % rowtype ;
@@ -604,25 +604,25 @@ end  ;
 1.查看用户使用的概要文件名，一般为DEFAULT
 	
 
-```SQL
+```sql
  select username,profile from dba_users;
 ```
 
 2.查看概要文件中设置的密码错误后限制的登录次数
 	
-```SQL
+```sql
 select * from dba_profiles where profile='DEFAULT' and resource_name='FAILED_LOGIN_ATTEMPTS';
 ```
 
 3.如图，将10次（默认）改为不受限制，改动后立即生效
 
-```SQL
+```sql
 alter profile default limit failed_login_attempts unlimited;　
 ```
 
 4.检查已经被锁定的用户
 	
-```SQL
+```sql
 select username,account_status from dba_users;
 ```
 
@@ -634,7 +634,7 @@ select username,account_status from dba_users;
 - EXPIRED & LOCKED(TIMED)（密码过期并超过了限制次数被锁定）等。
 
 解锁被锁定的账户
-```SQL
+```sql
 alter user user_name account unlock;
 ```
 
@@ -645,7 +645,7 @@ alter user user_name account unlock;
 
  
 以下几个为相关表
-```SQL
+```sql
 SELECT * FROM v$lock;
 SELECT * FROM v$sqlarea;
 SELECT * FROM v$session;
@@ -657,25 +657,25 @@ SELECT * FROM v$session_wait;
 
 查看被锁的表
 
-```SQL
+```sql
 select b.owner,b.object_name,a.session_id,a.locked_mode from v$locked_object a,dba_objects b where b.object_id = a.object_id;
 ```
 
 查看那个用户那个进程照成死锁
 
-```SQL
+```sql
 select b.username,b.sid,b.serial#,logon_time from v$locked_object a,v$session b where a.session_id = b.sid order by b.logon_time;
 ```
 
 查看连接的进程
 
-```SQL
+```sql
 SELECT sid, serial#, username, osuser FROM v$session;
 ```
 
 3.查出锁定表的sid, serial#,os_user_name, machine_name, terminal，锁的type,mode
 
-```SQL
+```sql
 SELECT s.sid, s.serial#, s.username, s.schemaname, s.osuser, s.process, s.machine,
 s.terminal, s.logon_time, l.type
 FROM v$session s, v$lock l
@@ -688,7 +688,7 @@ ORDER BY sid;
 任何DML语句其实产生了两个锁，一个是表锁，一个是行锁。
 
 杀掉进程 sid,serial#
-```SQL
+```sql
 alter system kill session'210,11562';
 ```
 
