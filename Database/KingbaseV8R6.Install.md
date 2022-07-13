@@ -1409,14 +1409,14 @@ ksql -USYSTEM -W12345678ab  TEST
 全文检索
 
 创建扩展
-```SQL
+```sql
 create extension zhparser;
 CREATE TEXT SEARCH CONFIGURATION parser_zw (PARSER = zhparser); // 添加配置 
 ALTER TEXT SEARCH CONFIGURATION parser_zw ADD MAPPING FOR n,v,a,i,e,l,j WITH simple; // 设置分词规则 
 ```
 建表并插入数据：
 
-```SQL
+```sql
 create table test_js(id serial ,col2 clob);
 ```
 
@@ -1424,14 +1424,17 @@ create table test_js(id serial ,col2 clob);
 
 创建索引
 
-```SQL
+```sql
 create index idx_col2 on table using gin(to_tsvector('parser_zw', col2)); 
 ```
 进行查询：
 
-```SQL
+```sql
+#
 SELECT * from test_js where to_tsvector('parser_zw',col2) @@ to_tsquery('测试 &航天 ');
+# 
 SELECT * from test_js where to_tsvector('parser_zw',col2) @@ to_tsquery('测试 | 航天');
+#
 SELECT * from test_js where to_tsvector('parser_zw',col2) @@ to_tsquery('测试 &!航天');
 ```
 
@@ -1453,14 +1456,14 @@ truncate table xxx;
 
 替换license步骤：
 
-    第一步，登录服务器，执行：find / -name license.dat，看license.dat在哪些路径。 
+- 第一步，登录服务器，执行：find / -name license.dat，看license.dat在哪些路径。 
     
-    第二步：把上一步找到的路径记录下来。
+- 第二步：把上一步找到的路径记录下来。
     
-    第三步，根据上一步的路径把原有license.dat重命名为license.dat_old或者https://bbs.kingbase.com.cn名字也行 
+- 第三步，根据上一步的路径把原有license.dat重命名为license.dat_old或者https://bbs.kingbase.com.cn名字也行 
     
-    第四步：把下载的license.dat传到服务器，重命名为license.dat，并且执行chown -R kingabse:kingbase license.dat
+- 第四步：把下载的license.dat传到服务器，重命名为license.dat，并且执行chown -R kingabse:kingbase license.dat
     
-    第五步，执行su kingbase切换到kingbase用户，把最新的license拷贝到第二步记录下来的路径。
+- 第五步，执行su kingbase切换到kingbase用户，把最新的license拷贝到第二步记录下来的路径。
     
-    第六步：重启数据库：sys_ctl restart –D /home/kingbase/KingbaseES/V8/data (备注：每个地方data路径可能不一样，通过ps -ef查找出带-D的进程，确定准确的data路径)
+- 第六步：重启数据库：sys_ctl restart –D /home/kingbase/KingbaseES/V8/data (备注：每个地方data路径可能不一样，通过ps -ef查找出带-D的进程，确定准确的data路径)
