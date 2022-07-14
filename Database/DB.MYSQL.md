@@ -77,9 +77,6 @@ mysql -uroot -p
 Linux
 
 
-
-
-
 MySQL查表和注释
 ----------------------------
 
@@ -282,8 +279,12 @@ show processlist;
 
 
 
-MySQL查变量
+MySQL 查变量与状态
 ----------------------------
+show status  查看所有状态参数
+- Threads_connected 当前的连接数，
+- Connections 试图连接到（不管是否成功）MYSQL服务器的连接总数， 
+- Max_used_connections 服务器启动后已经同时使用过的连接最大数量（并发）。
 
 ```sql
 show status like '%connect%';
@@ -297,6 +298,11 @@ show global status like 'Max_used_connections';
 show variables like "interactive_timeout";
 
 show variables like "wait_timeout";
+
+#显示当前正在执行的mysql连接
+show processlist ;
+#显示mysql的其他状态
+mysqladmin -uroot -p -hlocalhost extended-status
 ```
 
 
