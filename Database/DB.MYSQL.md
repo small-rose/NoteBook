@@ -274,37 +274,84 @@ SELECT  * FROM  INNODB_TRX;
 
 SELECT * FROM `PROCESSLIST` WHERE ID IN (SELECT TRX_MYSQL_THREAD_ID FROM INNODB_TRX )
 
+#显示当前正在执行的mysql连接
 show processlist;
 ```
 
 
 
-MySQL 查变量与状态
+MySQL的show status和show variables
 ----------------------------
+status && variables
+- 凡是参数的开头字母是大写的参数，都需要使用show status命令来查看该参数的具体值是多少，用另外一个命令查看该参数输出内为空。
+- 凡是参数的开头字母是小写的参数，都需要使用show variables命令来查该参数的具体值是多，用另外一个命令查看该参数输出内为空。
+区别
+
+**show status**
+
+status查看的参数值是由MySQL自己统计计算得到的。它是MySQL服务运行状态具体的量化体现。都是不可以修改的，也就是不能通过set xxx=yyy;的方式来改变它的值的。这种参数大多数以**大写英文字母**开头。
+
+**show variables**
+
+variables查看的参数是MySQL服务的配置参数，在启动MySQL服务的时候，是可以修改具体的参数值来达到对MySQL进行动态配置的目的，通常配置在MySQL的my.cnf配置文件中。这些参数中，有些动态的参数可以通过set xxx=yyy;的方式来动态修改。这种参数大多数以小写的英文字母开头。
+
+
+> 命令带有关键词global，上面的两个命令不带有global，这个我们应该都知道，带有global关键字的命令是查看全局参数的值，而不带global关键字的命令是只查看当前session级别的参数的值。
+> 如: show global status like '%xxx%';
+>     show global variables like '%xxx%';
+
 show status  查看所有状态参数
 - Threads_connected 当前的连接数，
 - Connections 试图连接到（不管是否成功）MYSQL服务器的连接总数， 
 - Max_used_connections 服务器启动后已经同时使用过的连接最大数量（并发）。
 
 ```sql
-show status like '%connect%';
+# 查连接相关状态
+show  status like '%connect%';
+# 查连接相关参数
+show variables like '%connect%';
 
-# 查最大连接数
-show variables like "max_connections";
 
-# 最大使用连接数
+# 最大已使用连接数
 show global status like 'Max_used_connections';
+# 查最大连接数参数
+show variables like 'max_connections';
+show global variables like 'max_connections';
+# 修改值
+set global max_connections = 200 ;
 
-show variables like "interactive_timeout";
 
-show variables like "wait_timeout";
 
-#显示当前正在执行的mysql连接
-show processlist ;
+# 查线程相关状态
+show status like 'Threads%';
+# 查线程相关配置
+show  variables like '%thread%';
+
+
+#交互式连接超时时间(mysql工具、mysqldump等)
+show variables like 'interactive_timeout';
+
+# 非交互式连接超时时间，默认的连接mysqlapi程序,jdbc连接数据库等
+show variables like 'wait_timeout';
+
+
 #显示mysql的其他状态
 mysqladmin -uroot -p -hlocalhost extended-status
 ```
 
+线程相关状态参数含义：
+- Threads_cached:一共缓存过多少连接，如果在mysql服务器的配置文件中设置了thread_cache_size参数，当前客户端断开之后，服务器处理此客户的线程将会缓存起来，以备下一个连接进来的客户而不是立即销毁（前提是缓存数量未达到上限），可以通过命令：set global thread_cache_size=50 设置或者在 my.cnf中配置
+- Threads_connected: 代表当前已经有多少个连接(sleep+query)
+- Threads_created:历史总共创建过多少个连接
+- Threads_running:代表有几个连接正处于"工作"状态，也是目前的并发数 
+
+关于连接数
+
+对于mysql服务器最大连接数值的设置范围比较理想的是：服务器响应的最大连接数值占服务器上限连接数值的比例值在10%以上，如果在10%以下，说明mysql服务器最大连接上限值设置过高.
+```text
+Max_used_connections / max_connections * 100% （理想值≈ 85%）
+```
+如果max_used_connections跟max_connections相同 那么就是max_connections设置过低或者超过服务器负载上限了，低于10%则设置过大
 
 
 MySQL查表使用空间情况
