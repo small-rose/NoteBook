@@ -96,6 +96,7 @@ nav_order: 5
 <a href="https://www.mjjloc.com/#" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MJJLOC</a>
 <a href="https://adzhp.cn" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ADZHP</a>
 <a href="https://www.toplinks.cc/s/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">TopLinks</a>
+<a href="https://nav.sbkko.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Sou</a>
 
 </p>
 
