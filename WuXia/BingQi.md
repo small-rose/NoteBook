@@ -2,7 +2,7 @@
 layout: default
 title: 兵器
 parent: WuXia
-nav_order: 1000
+nav_order: 101
 ---
 
 # 兵器
