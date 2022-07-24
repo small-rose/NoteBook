@@ -8,7 +8,7 @@ nav_order: 104
 # 手型
 {: .no_toc }
 
-素材来源：https://www.bilibili.com/read/readlist/rl230499 .
+传统武术手型相关素材。来源：[https://www.bilibili.com/read/readlist/rl230499](https://www.bilibili.com/read/readlist/rl230499) .
 {: .fs-6 .fw-300 }
 
 ## Table of contents

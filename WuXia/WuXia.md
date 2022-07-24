@@ -8,7 +8,7 @@ nav_order: 100
 # WuXia
 {: .no_toc }
 
-Learn oneortwo common words in ancient Chinese every day.
+武侠素材.
 {: .fs-6 .fw-300 }
 
 ## Table of contents

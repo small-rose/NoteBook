@@ -8,7 +8,7 @@ nav_order: 101
 # 兵器
 {: .no_toc }
 
-Learn oneortwo common words in ancient Chinese every day.
+兵器自古有就有中国古代兵器不但是为了防御，有时更是人身份地位的象征，“国之大事，在祀与戎”，足见兵器在古代国家中的显赫地位。兵器的先进程度，往往决定了一个国家强盛与否。
 {: .fs-6 .fw-300 }
 
 ## Table of contents
