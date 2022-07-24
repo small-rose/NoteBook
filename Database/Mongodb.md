@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Mongodb Install
+title: Mongodb INSTALL
 nav_order: 4
 parent: Database
 ---
