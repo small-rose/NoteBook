@@ -20,4 +20,4 @@ Learn oneortwo common words in ancient Chinese every day.
 ---
 
 
-中华武术： https://www.zhbaike.com/wushu/
+中华武术： [https://www.zhbaike.com/wushu/](https://www.zhbaike.com/wushu/)
