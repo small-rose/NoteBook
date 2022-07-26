@@ -15,7 +15,7 @@ nav_order: 5
 {:toc}
 
 
-<button class="btn btn-purple mr-2" onclick="checkAll()" value="一键检测" />
+<button class="btn btn-purple mr-2" onclick="checkAll()" value="一键检测" >一键检测</botton>
 
 ---
 ### Markdown Online
@@ -137,7 +137,7 @@ nav_order: 5
         return false;
 }
 function checkAll(){
-    var elements = document.getElementsByTagName("p>a");
+    var elements = document.getElementsByTagName("p > a");
     for(var index=0 ; index< elements.size(); index ++){
         var ele = elements.get(index);
         var link = ele.attr("href");
