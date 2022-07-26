@@ -15,7 +15,7 @@ nav_order: 5
 {:toc}
 
 
-<button class="btn btn-purple mr-2" onclick="checkAll()" value="一键检测" >一键检测</botton>
+<button class="btn btn-purple mr-2" onclick="checkAll()" value="一键检测" >一键检测</button>
 
 ---
 ### Markdown Online
@@ -32,7 +32,7 @@ nav_order: 5
 
 ### Tools Online
 
-<p>
+<p mark="linkMe">
 <a href="https://c.runoob.com/front-end/710/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">XML在线格式化</a>
 
 <a href="https://www.diffchecker.com/diff" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">文本/文件在线比较</a>
@@ -42,7 +42,7 @@ nav_order: 5
 <a href="https://ipaddress.com" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">IP ADDRESS</a>
 </p>
 
-<p>
+<p mark="linkMe">
 
 <a href="http://linux.51yip.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Linux 命令手册</a>
 
@@ -54,7 +54,7 @@ nav_order: 5
 </p>
 
 
-<p>
+<p mark="linkMe">
 <a href="https://blog.luckly-mjw.cn/tool-show/m3u8-downloader/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">m3u8-Downloader</a>
 
 <a href="http://www.ico51.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">生成透明ICO</a>
@@ -69,7 +69,7 @@ nav_order: 5
 
 ### Tools of Software 
 
-<p>
+<p mark="linkMe">
 <a href="https://obsidian.md" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">知识库管理工具</a>
 
 <a href="https://www.snipaste.com/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">snipaste</a>
@@ -83,7 +83,7 @@ nav_order: 5
 
 ### Learn Online
 
-<p>
+<p mark="linkMe">
 <a href="https://www.w3cschool.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">w3cSchool</a>
 <a href="https://www.xuetangx.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">xuetangx</a>
 <a href="http://www.javathinker.net" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Java Thinker</a>
@@ -93,7 +93,7 @@ nav_order: 5
 
 ### Search Online
 
-<p>
+<p mark="linkMe">
 <a href="https://zh.spycolor.com/0396ff" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">spy color</a>
 <a href="http://www.yunpz.net/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">云铺子</a>
 <a href="https://www.mjjloc.com/#" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MJJLOC</a>
@@ -106,7 +106,7 @@ nav_order: 5
 
 ### Watch movies Online
 
-<p>
+<p mark="linkMe">
 
 <a href="https://ddrk.me/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
 <a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
@@ -137,13 +137,26 @@ nav_order: 5
         return false;
 }
 function checkAll(){
-    var elements = document.getElementsByTagName("p > a");
+    var elements = document.getElementsByTagName("p");
     for(var index=0 ; index< elements.length; index ++){
         var ele = elements[index];
-        var link = ele.attr("href");
-        if(  (str.startsWith("https", 0) || str.startsWith("http", 0) )&& getURL(link)){
-            console.log(  "yes "  + link);
+        var mark = ele.getAttribute("mark");
+        if (mark!='linkMe'){
+            continue ;
         }
+        var childNodes = ele.childNodes;
+        for(var a=0 ; a< childNodes.length; a ++){
+                var eleLink = elements[index];
+                var link = eleLink.getAttribute("href");
+                if(  (link.startsWith("https", 0) || link.startsWith("http", 0) )&& getURL(link)){
+                    console.log(  "yes "  + link);
+                    eleLink.style.backgroundColor = 'green';
+                }else{
+                    eleLink.style.backgroundColor = 'red';
+                }
+                
+        }
+        
     }
     
 }
