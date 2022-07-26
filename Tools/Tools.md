@@ -15,7 +15,7 @@ nav_order: 5
 {:toc}
 
 
-<button class="btn btn-purple mr-2" onclick="checkAll()">一键检测</botton>
+<button class="btn btn-purple mr-2" onclick="checkAll()" value="一键检测" />
 
 ---
 ### Markdown Online
@@ -125,7 +125,7 @@ nav_order: 5
 
 
 
-<javascript>
+<script type="text/javascript">
  function getURL(url) {
         var xmlhttp = new ActiveXObject( "Microsoft.XMLHTTP");
         xmlhttp.open("GET", url, false);
@@ -138,7 +138,7 @@ nav_order: 5
 }
 function checkAll(){
     var elements = document.getElementsByTagName("p>a");
-    for(var index=0 ; index< elements.size(); index ++;){
+    for(var index=0 ; index< elements.size(); index ++){
         var ele = elements.get(index);
         var link = ele.attr("href");
         if(  (str.startsWith("https", 0) || str.startsWith("http", 0) )&& getURL(link)){
@@ -147,4 +147,4 @@ function checkAll(){
     }
     
 }
-</javascript>
+</script>
