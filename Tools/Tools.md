@@ -14,6 +14,9 @@ nav_order: 5
 1. TOC
 {:toc}
 
+
+<button class="btn btn-purple mr-2" onclick="checkAll()">一键检测</botton>
+
 ---
 ### Markdown Online
 [MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
@@ -97,6 +100,7 @@ nav_order: 5
 <a href="https://adzhp.cn" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ADZHP</a>
 <a href="https://www.toplinks.cc/s/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">TopLinks</a>
 <a href="https://nav.sbkko.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Sou</a>
+<a href="https://skrbtgo.xyz/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Skr BT</a>
 
 </p>
 
@@ -104,14 +108,43 @@ nav_order: 5
 
 <p>
 
-<a href="https://ddrk.me/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
+<a href="https://ddrk.me/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
 <a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
 <a href="https://www.rrmeiju.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">RR Meiju</a>
 <a href="https://wanyouw.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Wan You W</a>
-<a href="https://www.zxzjtv.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ZXZJ TV</a>
 <a href="https://www.juo.cc" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">JUO.CC</a>
 <a href="http://gaoqing.la/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gao Qing</a>
+<a href="https://www.hebeilaibang.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Mi Gu</a>
+<a href="https://klyingshi.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ke Le</a>
+<a href="https://www.jpys.me/"  titel="热门影视与动漫" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">jpys VIP</a>
+<a href="https://www.libvio.me/" titel="热门电影和海外剧" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Lib Online</a>
+<a href="https://yanetflix.com/" titel="奈飞" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">4K YA</a>
+<a href="https://loli.magedn.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MaGeDN YA</a>
 
 </p>
 
 
+
+<javascript>
+ function getURL(url) {
+        var xmlhttp = new ActiveXObject( "Microsoft.XMLHTTP");
+        xmlhttp.open("GET", url, false);
+        xmlhttp.send();
+        if(xmlhttp.readyState==4) {
+            if(xmlhttp.Status != 200) alert("不存在");
+            return xmlhttp.Status==200;
+        }
+        return false;
+}
+function checkAll(){
+    var elements = document.getElementsByTagName("p>a");
+    for(var index=0 ; index< elements.size(); index ++;){
+        var ele = elements.get(index);
+        var link = ele.attr("href");
+        if(  (str.startsWith("https", 0) || str.startsWith("http", 0) )&& getURL(link)){
+            console.log(  "yes "  + link);
+        }
+    }
+    
+}
+</javascript>
