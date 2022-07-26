@@ -148,7 +148,8 @@ function checkAll(){
         for(var a=0 ; a< childNodes.length; a ++){
                 var eleLink = elements[index];
                 var link = eleLink.getAttribute("href");
-                if(  (link.startsWith("https", 0) || link.startsWith("http", 0) )&& getURL(link)){
+                /* && (link.startsWith("https", 0) || link.startsWith("http", 0) ) */
+                if(  (link.indexOf("https")>=0 || link.indexOf("http")>=0 ) && getURL(link)){
                     console.log(  "yes "  + link);
                     eleLink.style.backgroundColor = 'green';
                 }else{
