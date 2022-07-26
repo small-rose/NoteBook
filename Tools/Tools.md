@@ -138,8 +138,8 @@ nav_order: 5
 }
 function checkAll(){
     var elements = document.getElementsByTagName("p > a");
-    for(var index=0 ; index< elements.size(); index ++){
-        var ele = elements.get(index);
+    for(var index=0 ; index< elements.length; index ++){
+        var ele = elements[index];
         var link = ele.attr("href");
         if(  (str.startsWith("https", 0) || str.startsWith("http", 0) )&& getURL(link)){
             console.log(  "yes "  + link);
