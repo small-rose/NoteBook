@@ -15,115 +15,6 @@ nav_order: 5
 {:toc}
 
 
-<button class="btn btn-purple mr-2" onclick="checkAll()" value="一键检测" >一键检测</button>
-
----
-### Markdown Online
-[MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[MarkDown在线2](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[MarkDown在线3](https://www.zybuluo.com/mdeditor){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[MarkDown在线4](http://mahua.jser.me/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-
-[😂 Emoji在线1](http://getemoji.com/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[😄 Emoji在线2](https://www.emojidaquan.com/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[😁 Emoji在线3](https://www.emojiall.com/zh-hans){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[😆 Emoji在线4](https://emojipedia.org/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-  
-
-### Tools Online
-
-<p mark="linkMe">
-<a href="https://c.runoob.com/front-end/710/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">XML在线格式化</a>
-
-<a href="https://www.diffchecker.com/diff" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">文本/文件在线比较</a>
-
-<a href="http://www.jsons.cn/unicode" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">UNICODE转换</a>
-
-<a href="https://ipaddress.com" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">IP ADDRESS</a>
-</p>
-
-<p mark="linkMe">
-
-<a href="http://linux.51yip.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Linux 命令手册</a>
-
-<a href="http://cron.ciding.cc/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Cron在线表达式</a>
-
-<a href="https://www.toolnb.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Tool-NB</a>
-
-<a href="https://fastthread.io/ft-index.jsp" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Thread Dump Analyzer</a>
-</p>
-
-
-<p mark="linkMe">
-<a href="https://blog.luckly-mjw.cn/tool-show/m3u8-downloader/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">m3u8-Downloader</a>
-
-<a href="http://www.ico51.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">生成透明ICO</a>
-
-<a href="https://nav.rdonly.com/laboratory/bgimage/backimage.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">BgImage</a>
-
-<a href="https://www.aigei.com/bgremover/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">BgRemover</a>
-
-</p>
-
-
-
-### Tools of Software 
-
-<p mark="linkMe">
-<a href="https://obsidian.md" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">知识库管理工具</a>
-
-<a href="https://www.snipaste.com/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">snipaste</a>
-
-<a href="http://java-decompiler.github.io/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Java Decompiler</a>
-
-<a href="https://msdn.itellyou.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Windows</a>
-
-
-</p>
-
-### Learn Online
-
-<p mark="linkMe">
-<a href="https://www.w3cschool.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">w3cSchool</a>
-<a href="https://www.xuetangx.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">xuetangx</a>
-<a href="http://www.javathinker.net" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Java Thinker</a>
-
-</p>
-
-
-### Search Online
-
-<p mark="linkMe">
-<a href="https://zh.spycolor.com/0396ff" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">spy color</a>
-<a href="http://www.yunpz.net/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">云铺子</a>
-<a href="https://www.mjjloc.com/#" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MJJLOC</a>
-<a href="https://adzhp.cn" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ADZHP</a>
-<a href="https://www.toplinks.cc/s/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">TopLinks</a>
-<a href="https://nav.sbkko.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Sou</a>
-<a href="https://skrbtgo.xyz/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Skr BT</a>
-
-</p>
-
-### Watch movies Online
-
-<p mark="linkMe">
-
-<a href="https://ddrk.me/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
-<a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
-<a href="https://www.rrmeiju.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">RR Meiju</a>
-<a href="https://wanyouw.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Wan You W</a>
-<a href="https://www.juo.cc" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">JUO.CC</a>
-<a href="http://gaoqing.la/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gao Qing</a>
-<a href="https://www.hebeilaibang.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Mi Gu</a>
-<a href="https://klyingshi.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ke Le</a>
-<a href="https://www.jpys.me/"  titel="热门影视与动漫" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">jpys VIP</a>
-<a href="https://www.libvio.me/" titel="热门电影和海外剧" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Lib Online</a>
-<a href="https://yanetflix.com/" titel="奈飞" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">4K YA</a>
-<a href="https://loli.magedn.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MaGeDN YA</a>
-
-</p>
-
-
 
 <script type="text/javascript">
 
@@ -206,3 +97,188 @@ String.prototype.endsWith = function(str) {
 
 
 </script>
+<button class="btn btn-purple mr-2" onclick="checkAll()" value="一键检测" >一键检测</button>
+
+
+---
+### github
+
+GitHub访问
+镜像站直接访问（别登录）
+
+- [https://hub.おうか.tw](https://hub.おうか.tw)
+- [https://hub.連接.台灣](https://hub.連接.台灣)
+- [https://hub.fastgit.xyz](https://hub.fastgit.xyz)
+- [https://cdn.githubjs.cf](https://cdn.githubjs.cf)
+- [https://gitclone.com](https://gitclone.com)
+- [https://hub.gitfast.tk](https://hub.gitfast.tk)
+- [https://hub.gitslow.tk](https://hub.gitslow.tk)
+- [https://hub.verge.tk](https://hub.verge.tk)
+- [https://raw.gitfast.tk](https://raw.gitfast.tk)
+- [https://raw.gitslow.tk](https://raw.gitslow.tk)
+- [https://raw.verge.tk](https://raw.verge.tk)
+
+GitHub加速下载
+浏览器插件和油猴脚本
+
+[Github 增强 (脚本)](https://greasyfork.org/zh-CN/scripts/412245)
+[Fast-GitHub (插件)](https://fhefh2015.github.io/Fast-GitHub/)
+[FastGithub(脚本)](https://greasyfork.org/zh-CN/scripts/397419)
+
+直接通过输入下载地址加速下载
+
+- [Gitclone](https://gitclone.com/)	
+- [下载 (serctl.com)](https://d.serctl.com/)
+- [GitHub Proxy 代理加速](https://ghproxy.com/)
+- [GitHub 文件加速](https://gh.api.99988866.xyz/)
+- [GitHub加速链接生成工具](https://github.zhlh6.cn/)
+- [socialify](https://socialify.git.ci/)
+
+其他
+
+[Trending repositories on GitHub today（GitHub热门项目）](https://github.com/trending)
+
+[https://hellogithub.com/](https://hellogithub.com/)（分享 GitHub 上有趣、入门级的开源项目）
+
+---
+### Markdown Online
+[MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+[MarkDown在线2](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+[MarkDown在线3](https://www.zybuluo.com/mdeditor){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+[MarkDown在线4](http://mahua.jser.me/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+
+[😂 Emoji在线1](http://getemoji.com/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+[😄 Emoji在线2](https://www.emojidaquan.com/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+[😁 Emoji在线3](https://www.emojiall.com/zh-hans){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+[😆 Emoji在线4](https://emojipedia.org/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+  
+
+### Tools Online
+
+<p mark="linkMe">
+
+<a href="https://c.runoob.com/front-end/710/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">XML在线格式化</a>
+
+<a href="https://www.diffchecker.com/diff" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">文本/文件在线比较</a>
+
+<a href="http://www.jsons.cn/unicode" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">UNICODE转换</a>
+
+<a href="https://ipaddress.com" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">IP ADDRESS</a>
+</p>
+
+<p mark="linkMe">
+
+<a href="http://linux.51yip.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Linux 命令手册</a>
+
+<a href="http://cron.ciding.cc/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Cron在线表达式</a>
+
+<a href="https://jex.im/regulex/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">regulex</a>
+
+
+<a href="https://www.67tool.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Tool-Online</a>
+<a href="https://www.toolnb.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Tool-NB</a>
+
+<a href="https://fastthread.io/ft-index.jsp" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Thread Dump Analyzer</a>
+</p>
+
+
+<p mark="linkMe">
+<a href="https://blog.luckly-mjw.cn/tool-show/m3u8-downloader/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">m3u8-Downloader</a>
+
+<a href="http://www.ico51.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">生成透明ICO</a>
+
+<a href="https://nav.rdonly.com/laboratory/bgimage/backimage.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">BgImage</a>
+
+<a href="https://www.aigei.com/bgremover/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">BgRemover</a>
+
+</p>
+
+
+
+### Tools of Software 
+
+<p mark="linkMe">
+<a href="https://obsidian.md" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">知识库管理工具</a>
+
+<a href="https://www.snipaste.com/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">snipaste</a>
+
+<a href="http://java-decompiler.github.io/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Java Decompiler</a>
+
+<a href="https://msdn.itellyou.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Windows</a>
+
+
+</p>
+
+### Learn Online
+
+<p mark="linkMe">
+<a href="https://www.w3cschool.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">w3cSchool</a>
+<a href="https://www.xuetangx.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">xuetangx</a>
+<a href="http://www.javathinker.net" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Java Thinker</a>
+
+</p>
+
+
+### Search Online
+
+<p mark="linkMe">
+<a href="https://zh.spycolor.com/0396ff" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">spy color</a>
+<a href="http://www.yunpz.net/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">云铺子</a>
+<a href="https://www.mjjloc.com/#" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MJJLOC</a>
+<a href="https://adzhp.cn" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ADZHP</a>
+<a href="https://www.toplinks.cc/s/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">TopLinks</a>
+<a href="https://nav.sbkko.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Sou</a>
+<a href="https://skrbtgo.xyz/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Skr BT</a>
+
+</p>
+
+### Watch movies Online
+
+<p mark="linkMe">
+
+<a href="https://ddrk.me/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
+<a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
+<a href="https://www.rrmeiju.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">RR Meiju</a>
+<a href="https://wanyouw.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Wan You W</a>
+<a href="https://www.juo.cc" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">JUO.CC</a>
+<a href="http://gaoqing.la/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gao Qing</a>
+<a href="https://www.hebeilaibang.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Mi Gu</a>
+<a href="https://klyingshi.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ke Le</a>
+<a href="https://www.jpys.me/"  titel="热门影视与动漫" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">jpys VIP</a>
+<a href="https://www.libvio.me/" titel="热门电影和海外剧" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Lib Online</a>
+<a href="https://yanetflix.com/" titel="奈飞" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">4K YA</a>
+<a href="https://loli.magedn.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MaGeDN YA</a>
+
+</p>
+
+### Other
+
+<p mark="linkMe">
+
+<a href="https://rebozj.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ReBo</a>
+<a href="https://adzhp.cn/yin-yue-ruan-jian.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Music</a>
+<a href="https://www.onehourlife.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ji Lu</a>
+<a href="https://adzhp.cn/vipdianyingyuduanshipinjiexiziyuansuoyin.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">No VIP</a>
+
+
+</p>
+
+
+<p mark="linkMe">
+
+<a href="https://wallhere.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallhere</a>
+<a href="https://zhutix.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">zhutix</a>
+<a href="https://www.wallpaperup.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallpaperup</a>
+<a href="https://wallpaperstock.net/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallpaperstock</a>
+<a href="https://wallpaperscraft.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallpaperscraft</a>
+
+
+</p>
+
+<p mark="linkMe">
+<a href="https://www.jinyongbook.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Jin Yong</a>
+<a href="https://www.xuges.com/wuxia/gulong/index.htm" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gu Long</a>
+
+<a href="http://t.icesmall.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ming Zhu</a>
+
+</p>
