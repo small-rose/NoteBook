@@ -165,8 +165,7 @@ function checkAll(){
     
 }
 
-
-
+/*
 if (typeof String.prototype.startsWith !== 'function') {
     String.prototype.startsWith = function(prefix) {
         return this.slice(0, prefix.length) === prefix;
@@ -192,7 +191,7 @@ String.prototype.startsWith = function(str) {
     }
     return true;
 }
- 
+ */
 /*  使用正则表达式 */ 
 String.prototype.startsWith = function(str) {
     var reg = new RegExp("^" + str);
