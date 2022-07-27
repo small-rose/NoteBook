@@ -126,6 +126,8 @@ nav_order: 5
 
 
 <script type="text/javascript">
+
+
  function getURL(url) {
         var xmlhttp = new ActiveXObject( "Microsoft.XMLHTTP");
         xmlhttp.open("GET", url, false);
@@ -148,9 +150,10 @@ function checkAll(){
         for(var a=0 ; a< childNodes.length; a ++){
                 var eleLink = elements[index];
                 var link = eleLink.getAttribute("href");
+                console.log(  "yes "  + link);
                 /* && (link.startsWith("https", 0) || link.startsWith("http", 0) ) */
-                if(  (link.indexOf("https")>=0 || link.indexOf("http")>=0 ) && getURL(link)){
-                    console.log(  "yes "  + link);
+                if(  (link.startsWith("https") || link.startsWith("http") ) && getURL(link)){
+                    
                     eleLink.style.backgroundColor = 'green';
                 }else{
                     eleLink.style.backgroundColor = 'red';
@@ -161,4 +164,46 @@ function checkAll(){
     }
     
 }
+
+
+
+if (typeof String.prototype.startsWith !== 'function') {
+    String.prototype.startsWith = function(prefix) {
+        return this.slice(0, prefix.length) === prefix;
+    };
+}
+
+if (typeof String.prototype.endsWith !== 'function') {
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
+
+ 
+
+String.prototype.startsWith = function(str) {
+    if (!str || str.length > this.length){
+        return false;
+    }
+    if (this.substr(0, str.length) == str){
+        return true;
+    }else{
+        return false;
+    }
+    return true;
+}
+ 
+/*  使用正则表达式 */ 
+String.prototype.startsWith = function(str) {
+    var reg = new RegExp("^" + str);
+    return reg.test(this);
+}
+
+/* 测试ok，直接使用str.endsWith("abc")方式调用即可  */ 
+String.prototype.endsWith = function(str) {
+    var reg = new RegExp(str + "$");
+    return reg.test(this);
+}
+
+
 </script>
