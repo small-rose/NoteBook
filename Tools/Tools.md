@@ -121,9 +121,9 @@ GitHub访问
 GitHub加速下载
 浏览器插件和油猴脚本
 
-[Github 增强 (脚本)](https://greasyfork.org/zh-CN/scripts/412245)
-[Fast-GitHub (插件)](https://fhefh2015.github.io/Fast-GitHub/)
-[FastGithub(脚本)](https://greasyfork.org/zh-CN/scripts/397419)
+- [Github 增强 (脚本)](https://greasyfork.org/zh-CN/scripts/412245)
+- [Fast-GitHub (插件)](https://fhefh2015.github.io/Fast-GitHub/)
+- [FastGithub(脚本)](https://greasyfork.org/zh-CN/scripts/397419)
 
 直接通过输入下载地址加速下载
 
@@ -174,15 +174,13 @@ GitHub加速下载
 
 <a href="https://jex.im/regulex/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">regulex</a>
 
-
 <a href="https://www.67tool.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Tool-Online</a>
+
 <a href="https://www.toolnb.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Tool-NB</a>
 
 <a href="https://fastthread.io/ft-index.jsp" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Thread Dump Analyzer</a>
-</p>
 
 
-<p mark="linkMe">
 <a href="https://blog.luckly-mjw.cn/tool-show/m3u8-downloader/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">m3u8-Downloader</a>
 
 <a href="http://www.ico51.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">生成透明ICO</a>
@@ -203,6 +201,8 @@ GitHub加速下载
 <a href="https://www.snipaste.com/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">snipaste</a>
 
 <a href="http://java-decompiler.github.io/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Java Decompiler</a>
+
+<a href="https://www.ventoy.net/cn/download.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ventoy</a>
 
 <a href="https://msdn.itellyou.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Windows</a>
 
@@ -255,9 +255,9 @@ GitHub加速下载
 
 <p mark="linkMe">
 
-<a href="https://rebozj.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ReBo</a>
+<a href="https://rebozj.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Re Bo</a>
 <a href="https://adzhp.cn/yin-yue-ruan-jian.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Music</a>
-<a href="https://www.onehourlife.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ji Lu</a>
+<a href="https://www.onehourlife.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">One Hour Life</a>
 <a href="https://adzhp.cn/vipdianyingyuduanshipinjiexiziyuansuoyin.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">No VIP</a>
 
 
