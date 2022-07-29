@@ -96,13 +96,18 @@ MySQL查表字段注释
 
 ```sql
 SELECT
-    COLUMN_NAME 字段名,
-    column_comment 字段说明,
-    column_type 字段类型,
-    column_key 约束 
-FROM information_schema.columns
-WHERE table_schema = 'sfdev01'
-AND table_name = 'mm_batchinfo_ti' ;
+    c.table_schema 库名,
+    c.table_name 表名,
+    c.COLUMN_NAME 字段名,
+    c.column_comment 字段说明,
+    c.column_type 字段类型,
+    c.column_key 约束,
+       c.COLUMN_DEFAULT 默认值,
+       c.*
+FROM information_schema.columns c
+WHERE c.table_schema = 'bp_dev'
+AND c.table_name = 'mm_match_dest_td'
+-- AND c.COLUMN_DEFAULT is not null ;
 ```
 
 MySQL注释补偿
