@@ -19,5 +19,7 @@ nav_order: 100
 
 ---
 
+[中华武术 https://www.zhbaike.com/wushu/](https://www.zhbaike.com/wushu/)
 
-中华武术： [https://www.zhbaike.com/wushu/](https://www.zhbaike.com/wushu/)
+[人体穴位图 - 医学百科 ](https://www.yixue.com/人体穴位图)
+

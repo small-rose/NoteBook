@@ -222,6 +222,7 @@ GitHub加速下载
 ### Search Online
 
 <p mark="linkMe">
+<a href="http://thepiratebay.ee/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">thepiratebay/</a>
 <a href="https://zh.spycolor.com/0396ff" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">spy color</a>
 <a href="http://www.yunpz.net/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">云铺子</a>
 <a href="https://www.mjjloc.com/#" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MJJLOC</a>
@@ -236,6 +237,7 @@ GitHub加速下载
 
 <p mark="linkMe">
 
+<a href="https://www.mvcat.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MV CAT</a>
 <a href="https://ddrk.me/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
 <a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
 <a href="https://www.rrmeiju.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">RR Meiju</a>
@@ -248,6 +250,10 @@ GitHub加速下载
 <a href="https://www.libvio.me/" titel="热门电影和海外剧" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Lib Online</a>
 <a href="https://yanetflix.com/" titel="奈飞" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">4K YA</a>
 <a href="https://loli.magedn.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MaGeDN YA</a>
+<a href="https://555dy1.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">555DY YA</a>
+<a href="https://nav.sbkko.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">SB KKO</a>
+<a href="https://www.huohuo99.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">huohuo99</a>
+<a href="https://cokemv.me/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">cokemv</a>
 
 </p>
 
