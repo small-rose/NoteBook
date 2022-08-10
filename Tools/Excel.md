@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Excel
-has_children: false
 nav_order: 1
 parent: Tools
 ---
