@@ -52,7 +52,27 @@ autoReconnect=true&failOverReadOnly=false
 ```
 
 
-        
+MySQL 改密码策略，改秘密
+----------------------------
+
+修改：密码最小长度策略
+```mysql
+set global validate_password_length=0;
+```
+修改：密码强度检查等级策略，0/LOW、1/MEDIUM、2/STRONG
+```mysql
+set global validate_password_policy=0;
+```
+
+修改密码
+
+```mysql
+set password for 'root'@'localhost' = password('123456');
+## -------------------------------------------------------
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+## --------------------------------------------------------
+flush privileges;
+```
 
 MySQL无密码登录
 ----------------------------
