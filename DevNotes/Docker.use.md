@@ -250,17 +250,18 @@ password: helowin
 
 防火墙要允许 1521 端口，外部的数据库管理工具才能连的上
 
+
 ```shell script
-# 打开防火墙
+#打开防火墙
 systemctl start firewalld
 service firewalld status
-# 查询端口状态
+#查询端口状态
 firewall-cmd --query-port=1521/tcp
 
-# 永久性开放端口
+#永久性开放端口
 firewall-cmd --permanent --zone=public --add-port=1521/tcp
 
-# 重启防火墙
+#重启防火墙
 firewall-cmd --reload
 
 firewall-cmd --query-port=1521/tcp
