@@ -96,7 +96,8 @@ admin
 
 ```shell script
 docker pull mysql：5.7.39
-```　　
+```
+　　
 **启动**
 
 ```shell script
@@ -105,8 +106,7 @@ docker run --name mysql01 -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d 
 
 解析：
 
-```shell script
-
+```text
 --name mysql-sr                                #  对容器的命名
 -d                                             # 后台运行
 -p 3310:3306                                   #对外暴露端口号3310
@@ -117,9 +117,9 @@ docker run --name mysql01 -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d 
 
 也可以界面部署
 
-EVN:
+ENV:
 
-```
+```text
 MYSQL_ROOT_PASSWORD   12345678
 ```
 
@@ -188,6 +188,7 @@ export PATH=$ORACLE_HOME/bin:$PATH
 
 
 wq 保存并退出。然后使用 
+
 ```shell script
 source /home/oracle/.bashrc 
 ```
@@ -196,12 +197,14 @@ source /home/oracle/.bashrc
 进入 oracle 命令行
 
 使用 
+
 ```shell script
 sqlplus /nolog 
 ```
 进入oracle命令行
 
 登录oracle
+
 ```shell script
 conn / as sysdba
 ```
@@ -210,7 +213,8 @@ conn / as sysdba
 
 ORA-12514, TNS:listener does not currently know of service requested in connect descriptor
 
-在这里插入图片描述这个错误是由于数据库名用错了
+这个错误是由于数据库名用错了
+
 ```shell script
 su - oracle
 
@@ -242,7 +246,7 @@ password: helowin
 实际使用过程中，可以创建用户，不同的用户表是相互隔离的。
 
 
-配置防火墙
+**配置防火墙**
 
 防火墙要允许 1521 端口，外部的数据库管理工具才能连的上
 
