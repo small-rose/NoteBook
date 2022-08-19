@@ -62,6 +62,9 @@ alter table t_users add (userName varchar2(30) default '空' not null);
 
 （2）**修改字段的语法：**
 
+- modify 改列类型或长度、非空。
+- rename 改名字。
+
 ```sql
 alter table table_name modify (column datatype [default value][null/not null],….); 
 ```
@@ -71,8 +74,32 @@ alter table table_name modify (column datatype [default value][null/not null],�
 示例：
 
 ```sql
-alter table t_users modify (BILLCODE number(4));
+ALTER TABLE t_users MODIFY (BILLCODE number(4));
 ```
+
+
+```sql
+alter table table_name modify (column datatype [default value][null/not null],….); 
+```
+
+说明：ALTER TABLE 表名 MODIFY (字段名 字段类型 默认值 是否为空);
+
+
+rename 语法格式
+```
+ALTER TABLE t_users RENAME COLUMN old_column TO new_column ;
+```
+
+说明：ALTER TABLE 表名 RENAME COLUMN 旧字段 TO 新字段 ;
+
+
+示例：
+
+```sql
+ALTER TABLE table_name RENAME column product_id  TO product_num; 
+```
+
+
 
 高级玩法：
 
@@ -101,15 +128,15 @@ order by t1.TABLE_NAME,t.COLUMN_NAME;
 （3）**删除字段的语法：**
 
 ```sql
-alter table table_name drop (column column_name);
+ALTER TABLE table_name DROP (COLUMN column_name);
 ```
 
-说明：alter table 表名 drop column 字段名;
+说明：ALTER TABLE 表名 DROP COLUMN 字段名;
 
 示例：
 
-```
-alter table t_users drop column user_image;
+```sql
+ALTER TABLE t_users DROP COLUMN user_image;
 ```
 
  
@@ -477,6 +504,13 @@ ELSE
 END IF
 ```
 
+#### concat 函数
+
+concat(字符串1, 字符串2)
+
+该函数的含义如下：
+
+将字符串1和字符串2拼接到一起。
 
 
 ### PL/SQL 相关
