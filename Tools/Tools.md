@@ -140,6 +140,8 @@ GitHub加速下载
 
 [https://hellogithub.com/](https://hellogithub.com/)（分享 GitHub 上有趣、入门级的开源项目）
 
+[https://www.pdai.tech/ Java 全栈知识体系](https://www.pdai.tech/ )
+
 ---
 ### Markdown Online
 [MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
@@ -152,6 +154,16 @@ GitHub加速下载
 [😁 Emoji在线3](https://www.emojiall.com/zh-hans){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [😆 Emoji在线4](https://emojipedia.org/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
   
+### Tool
+
+<p mark="linkMe">
+
+
+<a href="https://www.bilibili.com/video/BV1wy4y1D7JT" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">React</a>
+<a href="https://babeljs.io/docs/en/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">babeljs</a>
+<a href="https://www.tslang.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">TypeScript</a>
+
+</p>
 
 ### Mock Tool
 
