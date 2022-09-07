@@ -17,7 +17,7 @@ nav_order: 5
 
 ## 固定IP配置
 
-```shell script
+```bash
 vi /etc/sysconfig/network-scripts/ifcfg-ens33 
 ```
 
@@ -64,13 +64,13 @@ docker search portainer
 
 **下载**
 
-```shell script
+```bash
 docker pull portainer/portainer　
 ```
 　　 
 **启动**
 
-```shell script
+```bash
 docker run -d -p 9000:9000 --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data --name prtainer-zzy portainer/portainer
 ```
 
@@ -98,13 +98,13 @@ admin
 
 **下载**
 
-```shell script
+```bash
 docker pull mysql：5.7.39
 ```
 　　
 **启动**
 
-```shell script
+```bash
 docker run --name mysql01 -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.39
 ```
 
@@ -133,7 +133,7 @@ MYSQL_ROOT_PASSWORD   12345678
 
 使用阿里镜像
 
-```shell script
+```bash
 docker pull  docker pull registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
 ```
 使用 `docker images` 查看镜像
@@ -142,19 +142,19 @@ docker pull  docker pull registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
 启动容器
 
 默认启动容器的方式
-```shell script
+```bash
 docker run -d -it -p 1521:1521 --name oracle11g --restart=always registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
 ```
 
 持久化启动的方式
 
-```shell script
+```bash
 docker run -d -it -p 1521:1521 --name oracle11g --restart=always --mount source=oracle_vol,target=/home/oracle/app/oracle/oradata registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
 ```
 
 查看启动的线程 
 
-```shell script
+```bash
 netstat -tulnp
 ```
 可以看到1521端口的映射。
@@ -162,12 +162,12 @@ netstat -tulnp
 容器内环境配置
 
 进入容器 
-```shell script
+```bash
 docker exec -it oracle11g bash
 ```
 
 切换到 root 用户 su root，密码为 helowin
-```shell script
+```bash
 su root
 ```
 
@@ -176,7 +176,7 @@ docker容器配置环境变量不是在 /etc/profile 中，容器启动不会走
 可以将环境变量的配置设置在 /home/oracle/.bashrc 文件下，这样可以省略掉软连接的创建 `ln -s $ORACLE_HOME/bin/sqlplus /usr/bin`
 
 编辑环境变量 
-```shell script
+```bash
 vi /home/oracle/.bashrc
 ```
 
@@ -193,7 +193,7 @@ export PATH=$ORACLE_HOME/bin:$PATH
 
 wq 保存并退出。然后使用 
 
-```shell script
+```bash
 source /home/oracle/.bashrc 
 ```
 刷新环境变量，并使之生效
@@ -202,14 +202,14 @@ source /home/oracle/.bashrc
 
 使用 
 
-```shell script
+```bash
 sqlplus /nolog 
 ```
 进入oracle命令行
 
 登录oracle
 
-```shell script
+```bash
 conn / as sysdba
 ```
  
@@ -219,7 +219,7 @@ ORA-12514, TNS:listener does not currently know of service requested in connect 
 
 这个错误是由于数据库名用错了
 
-```shell script
+```bash
 su - oracle
 
 sqlplus /nolog
@@ -275,17 +275,17 @@ firewall-cmd --query-port=1521/tcp
 
 **下载**
 
-```shell script
+```bash
 docker pull rabbitmq:3.10.7-management
 ```
 
 **启动**
 
-```shell script
+```bash
 docker run -di --name rabbitmq -p 5672:5672 -p 15672:15672  rabbitmq:3.10.7-management
 ```
 
-```shell script
+```bash
 docker run -d --name rabbitmq3.9.3 -p 5672:5672 -p 15672:15672 -v `pwd`/data:/var/lib/rabbitmq --hostname  -e RABBITMQ_DEFAULT_VHOST=/  -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin rabbitmq:3.10.7-management
 ```
 
