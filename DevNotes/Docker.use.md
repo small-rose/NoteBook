@@ -93,13 +93,58 @@ http://192.168.80.81:9000/#!/home
 admin
 1qaz2wsx
 ```
+## Redis 
+
+
+**下载**
+
+```bash
+docker pull redis
+```
+
+测试启动，无密码
+
+```bash
+docker run -itd --name redis-test -p 6379:6379 redis
+```
+
+正式启动，持久化容器卷
+ (1) 持久化配置文件
+ (2) 持久化数据目录
+ (3) 密码等其他参数
+ 
+```bash
+docker run --restart=always --log-opt max-size=100m --log-opt max-file=2 -p 6379:6379 --name myredis -v /home/redis/myredis/myredis.conf:/etc/redis/redis.conf -v /home/redis/myredis/data:/data -d redis redis-server /etc/redis/redis.conf  --appendonly yes  --requirepass 123456
+```
+ - –restart=always 总是开机启动
+ - –log是日志方面的
+ - -p 6379:6379 将6379端口挂载出去
+ - –name 给这个容器取一个名字
+ - -v 数据卷挂载
+
+    /opt/redis/myredis/myredis.conf:/etc/redis/redis.conf 这里是将 liunx 路径下的myredis.conf 和redis下的redis.conf 挂载在一起。
+    /opt/redis/myredis/data:/data 这个同上
+
+  - -d redis 表示后台启动redis。redis-server /etc/redis/redis.conf 以配置文件启动redis，加载容器内的conf文件，最终找到的是挂载的目录 /etc/redis/redis.conf 也就是liunx下的/home/redis/myredis/myredis.conf
+  - –appendonly yes 开启redis 持久化
+  - –requirepass 000415 设置密码 
+
+如果忘记密码了，可以进入容器查看
+
+```bash
+docker exec -it myredis redis-cli
+# 密码登录，如果忘记密码，可以跳过
+auth 密码
+# 查看是否设置密码
+config get requirepass
+```
 
 ## Mysql 安装
 
 **下载**
 
 ```bash
-docker pull mysql：5.7.39
+docker pull mysql:5.7.39
 ```
 　　
 **启动**
@@ -297,6 +342,11 @@ docker run -d --hostname my-rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672
 ```
 
 然后可以进入容器后执行以下命令启动界面程序：
+
+（1）通过界面进入容器内部bash控制台
+
+（2）通过 `docker ps -a` 查看部署的mq容器id，在通过 `docker exec -it 容器id /bin/bash `进入容器内部
+
 ```bash
 rabbitmq-plugins enable rabbitmq_management
 ```
@@ -316,3 +366,56 @@ https://www.modb.pro/db/392483
 
 https://blog.csdn.net/weixin_39609953/article/details/110235188
 
+
+## ElasticSearch
+
+**下载**
+
+```bash
+docker pull elasticsearch:7.8.0
+```
+
+创建映射目录
+
+```bash
+mkdir -p /opt/elk/elasticsearch/config
+mkdir -p /opt/elk/elasticsearch/data
+mkdir -p /opt/elk/elasticsearch/plugins
+chmod -R 777 /opt/elk/elasticsearch
+```
+
+**启动**
+
+```bash
+echo "http.host: 0.0.0.0" >> /docker/elk/elasticsearch/config/elasticsearch.yml
+
+docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300  -e "discovery.type=single-node" \
+-e ES_JAVA_OPTS="-Xms128m -Xmx128m" \
+-v /docker/elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
+-v /docker/elk/elasticsearch/data:/usr/share/elasticsearch/data \
+-v /docker/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins \
+elasticsearch:7.8.0
+```
+其中 `elasticsearch.yml` 是挂载的配置文件，data是挂载的数据，plugins是es的插件，如ik，而数据挂载需要权限，需要设置data文件的权限为可读可写,需要下边的指令。
+`chmod -R 777 /opt/elk/elasticsearch/data`
+
+-e “discovery.type=single-node” 设置为单节点
+
+-v 是挂载磁盘映射宿主机
+
+注意：
+
+-e ES_JAVA_OPTS="-Xms256m -Xmx256m" 测试环境下，设置ES的初始内存和最大内存，否则导致过大启动不了ES
+
+重复执行需要先删除容器 `docker rm -f elasticsearch`
+
+验证启动
+
+```text
+# 查看启动日志
+docker logs -f elasticsearch
+# 查看结果
+curl http://192.168.10.184:9200
+```
+
+其他如果涉及防火墙，开启9200、9300端口
