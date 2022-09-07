@@ -58,22 +58,25 @@ docker UI
 
 **搜索**
 
-```shell script
+```bash
 docker search portainer
 ```
+
 **下载**
+
 ```shell script
 docker pull portainer/portainer　
-```　　
+```
 　　 
 **启动**
+
 ```shell script
 docker run -d -p 9000:9000 --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data --name prtainer-zzy portainer/portainer
 ```
 
 参数说明：
 
-```shell script
+```bash
 docker run -d 　　　　　　　　# 后台运行容器
 　　-p 9000:9000 　　　　　　 # 默认9000端口，映射到宿主机，通过本地地址访问
 　　--name prtainer-test 　　　# 指定容器名
@@ -84,7 +87,8 @@ docker run -d 　　　　　　　　# 后台运行容器
 ```
 
 **访问**
-```shell script
+
+```
 http://192.168.80.81:9000/#!/home
 admin
 1qaz2wsx
@@ -251,7 +255,7 @@ password: helowin
 防火墙要允许 1521 端口，外部的数据库管理工具才能连的上
 
 
-```shell script
+```bash
 #打开防火墙
 systemctl start firewalld
 service firewalld status
@@ -285,12 +289,30 @@ docker run -di --name rabbitmq -p 5672:5672 -p 15672:15672  rabbitmq:3.10.7-mana
 docker run -d --name rabbitmq3.9.3 -p 5672:5672 -p 15672:15672 -v `pwd`/data:/var/lib/rabbitmq --hostname  -e RABBITMQ_DEFAULT_VHOST=/  -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin rabbitmq:3.10.7-management
 ```
 
+如果不想特别说明带上版本信息 management 也可以直接拉取最新的，然后启动容器：
+
+```bash
+docekr pull rabbitmq
+docker run -d --hostname my-rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq
+```
+
+然后可以进入容器后执行以下命令启动界面程序：
+```bash
+rabbitmq-plugins enable rabbitmq_management
+```
+访问界面程序
 
 ```text
 http://192.168.80.81:15672/#/
 guest/guest
 ```
+验证启动服务
+
+```bash
+curl -v  127.0.0.1:5672
+```
 
 https://www.modb.pro/db/392483
 
 https://blog.csdn.net/weixin_39609953/article/details/110235188
+
