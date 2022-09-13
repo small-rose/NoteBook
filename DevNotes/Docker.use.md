@@ -367,7 +367,7 @@ https://www.modb.pro/db/392483
 https://blog.csdn.net/weixin_39609953/article/details/110235188
 
 
-## ElasticSearch
+## ElasticSearch 7.8.0
 
 **下载**
 
@@ -419,3 +419,192 @@ curl http://192.168.10.184:9200
 ```
 
 其他如果涉及防火墙，开启9200、9300端口
+
+
+## docker 安装 ELK
+
+### 安装 ES 7.17.0
+
+拉取镜像
+
+```
+docker pull docker.io/elasticsearch:7.17.0
+docker pull elasticsearch:7.17.0
+```
+
+映射目录卷
+
+```bash
+# Elasticsearch配置文件
+mkdir -p /opt/docker/elk/elasticsearch/config
+# 数据目录
+mkdir -p /opt/docker/elk/elasticsearch/data
+# 插件目录
+mkdir -p /opt/docker/elk/elasticsearch/plugins
+```
+
+启动容器
+
+```shell script
+docker run -d --name elasticsearch717 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms512m -Xmx512m" \
+-v /opt/docker/elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
+-v /opt/docker/elk/elasticsearch/data:/usr/share/elasticsearch/data \
+-v /opt/docker/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins \
+--privileged --network es-network  elasticsearch:7.17.0
+```
+
+
+安装 ik 分词器
+
+```shell script
+docker exec -it es bash ./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.17.0/elasticsearch-analysis-ik-7.17.0.zip
+```
+
+设置密码
+
+开启 X-Pack
+```yaml
+cluster.name: "docker-cluster-01"
+network.host: 0.0.0.0
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+# 此处开启xpack
+xpack.security.enabled: true 
+```
+
+重新启动elasticsearch。
+```shell script
+docker restart elasticsearch717
+```
+
+### ES密码相关
+
+
+进入docker中的elasticsearch中，设置密码，执行
+
+```shell script
+docker exec -it es bash ./usr/share/elasticsearch/bin/x-pack/setup-passwords interactive
+```
+
+验证
+
+```shell script
+curl localhost:9200 -u elastic
+```
+
+ES 修改密码
+```shell script
+
+POST _xpack/security/user/_password
+POST _xpack/security/user/<username>/_password
+# 将用户elastic  密码改为elastic
+curl -u elastic -H "Content-Type: application/json" -X POST "localhost:9200/_xpack/security/user/elastic/_password" --data '{"password":"elastic"}'
+# 测试是否修改成功
+curl localhost:9200 -u elastic
+```
+
+
+### 安装 logstash 7.17.0
+
+> 看dockerhub 里有 7.17.5 可以试试 
+
+```shell script
+# 拉取镜像
+docker pull logstash:7.17.0
+
+#logstash 配置文件
+mkdir -p /opt/docker/elk/logstash/config
+mkdir -p /opt/docker/elk/logstash/conf.d
+
+docker run -it -d -p 5044:5044 --name logstash  --net host \
+-v /opt/docker/elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml \
+-v /opt/docker/elk/logstash/conf.d/:/usr/share/logstash/conf.d/ logstash:7.17.0
+
+```
+生产环境建议使用 --restart="always"
+
+### 安装 kibana 7.17.0
+
+
+```shell script
+# 拉取镜像
+docker pull kibana:7.17.0
+
+# kibana 配置文件
+mkdir -p /opt/docker/elk/kibana/config
+```
+
+查询 elasticsearch717 的容器IP地址，关键词 `IPADRESS`
+
+```shell script
+ docker inspect elasticsearch717
+```
+```shell script
+# 此处的IP换成ES的IP
+docker run -d --name kibana717 -e ELASTICSEARCH_HOSTS=http://106.52.148.109:9200 -p 5601:5601 \
+-v /opt/docker/elk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml \
+kibana:7.17.0
+```
+
+访问验证 http://192.168.80.81:5601
+
+**修改配置**
+```shell script
+# 进入容器内部
+docker exec -it kibana /bin/bash		
+# 挂载目录
+vi /opt/docker/elk/kibana/config/kibana.yml		
+```
+
+在 `kibana.yml` 文件添加 es 地址、用户名密码
+```yaml
+#
+# ** THIS IS AN AUTO-GENERATED FILE **
+#
+
+# Default Kibana configuration for docker target
+server.host: "0"
+server.shutdownTimeout: "5s"
+elasticsearch.hosts: [ "http://172.17.0.3:9200" ]
+monitoring.ui.container.elasticsearch.enabled: true
+i18n.locale: "zh-CN"
+# 此处设置elastic的用户名和密码
+elasticsearch.username: elastic
+elasticsearch.password: elastic
+
+```
+
+重启Kibana
+```shell script
+docker restart kibana
+```
+
+## ELK常见问题
+
+第一点：KB、ES版本不一致（网上大部分都是这么说的）
+
+    解决方法：把KB和ES版本调整为统一版本
+
+第二点：kibana.yml中配置有问题（通过查看日志，发现了Error: No Living connections的问题）
+
+    解决方法：将配置文件kibana.yml中的elasticsearch.url改为正确的链接，默认为: http://elasticsearch:9200
+
+    改为http://自己的IP地址:9200,如果存在密码的话需要加上下面两句话
+
+    elasticsearch.username: "elastic"
+
+    elasticsearch.password: "123456"
+
+第三点：浏览器没有缓过来
+
+    解决方法：刷新几次浏览器。
+
+第四点： es磁盘空间满会导致只读 问题（ES 写索引报错 FORBIDDEN/12/index read-only / allow delete (api）
+
+    解决方案： https://blog.csdn.net/zheng45/article/details/92383323 
+
+第5点：es密码不能包含@符号的因为连接的时候其实是拼接的url,会导致冲突   http://user:pass@localhost:9200  
+
+    第6点；es加了密码验证之后命令基本带上-u elastic   ，只有7.3版本以上的免费使用密码认证
+
+
