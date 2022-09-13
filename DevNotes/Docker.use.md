@@ -445,7 +445,7 @@ mkdir -p /opt/docker/elk/elasticsearch/plugins
 
 启动容器
 
-```shell
+```bash
 docker run -d --name elasticsearch717 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms512m -Xmx512m" \
 -v /opt/docker/elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
 -v /opt/docker/elk/elasticsearch/data:/usr/share/elasticsearch/data \
@@ -457,7 +457,7 @@ docker run -d --name elasticsearch717 -p 9200:9200 -p 9300:9300 -e "discovery.ty
 
 安装 ik 分词器
 
-```shell script
+```bash
 docker exec -it es bash ./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.17.0/elasticsearch-analysis-ik-7.17.0.zip
 ```
 
@@ -474,7 +474,7 @@ xpack.security.enabled: true
 ```
 
 重新启动elasticsearch。
-```shell script
+```bash
 docker restart elasticsearch717
 ```
 
@@ -483,19 +483,19 @@ docker restart elasticsearch717
 
 进入docker中的elasticsearch中，设置密码，执行
 
-```shell script
+```bash
 docker exec -it es bash ./usr/share/elasticsearch/bin/x-pack/setup-passwords interactive
 ```
 
 验证
 
-```shell script
+```bash
 curl localhost:9200 -u elastic
 ```
 
 ES 修改密码
 
-```shell script
+```bash
 POST _xpack/security/user/_password
 POST _xpack/security/user/<username>/_password
 # 将用户elastic  密码改为elastic
@@ -509,7 +509,7 @@ curl localhost:9200 -u elastic
 
 > 看dockerhub 里有 7.17.5 可以试试 
 
-```shell script
+```bash
 # 拉取镜像
 docker pull logstash:7.17.0
 
@@ -527,7 +527,7 @@ docker run -it -d -p 5044:5044 --name logstash  --net host \
 ### 安装 kibana 7.17.0
 
 
-```shell script
+```bash
 # 拉取镜像
 docker pull kibana:7.17.0
 
@@ -537,11 +537,11 @@ mkdir -p /opt/docker/elk/kibana/config
 
 查询 elasticsearch717 的容器IP地址，关键词 `IPADRESS`
 
-```shell script
+```bash
  docker inspect elasticsearch717
 ```
 
-```shell script
+```bash
 # 此处的IP换成ES的IP
 docker run -d --name kibana717 -e ELASTICSEARCH_HOSTS=http://106.52.148.109:9200 -p 5601:5601 \
 -v /opt/docker/elk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml \
@@ -551,7 +551,7 @@ kibana:7.17.0
 访问验证 http://192.168.80.81:5601
 
 **修改配置**
-```shell script
+```bash
 # 进入容器内部
 docker exec -it kibana /bin/bash		
 # 挂载目录
@@ -577,7 +577,7 @@ elasticsearch.password: elastic
 
 重启Kibana
 
-```shell script
+```bash
 docker restart kibana
 ```
 
