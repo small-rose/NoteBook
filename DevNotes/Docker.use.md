@@ -445,12 +445,13 @@ mkdir -p /opt/docker/elk/elasticsearch/plugins
 
 启动容器
 
-```shell script
+```shell
 docker run -d --name elasticsearch717 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms512m -Xmx512m" \
 -v /opt/docker/elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
 -v /opt/docker/elk/elasticsearch/data:/usr/share/elasticsearch/data \
 -v /opt/docker/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins \
 --privileged --network es-network  elasticsearch:7.17.0
+
 ```
 
 
@@ -493,8 +494,8 @@ curl localhost:9200 -u elastic
 ```
 
 ES 修改密码
-```shell script
 
+```shell script
 POST _xpack/security/user/_password
 POST _xpack/security/user/<username>/_password
 # 将用户elastic  密码改为elastic
@@ -539,6 +540,7 @@ mkdir -p /opt/docker/elk/kibana/config
 ```shell script
  docker inspect elasticsearch717
 ```
+
 ```shell script
 # 此处的IP换成ES的IP
 docker run -d --name kibana717 -e ELASTICSEARCH_HOSTS=http://106.52.148.109:9200 -p 5601:5601 \
@@ -571,10 +573,10 @@ i18n.locale: "zh-CN"
 # 此处设置elastic的用户名和密码
 elasticsearch.username: elastic
 elasticsearch.password: elastic
-
 ```
 
 重启Kibana
+
 ```shell script
 docker restart kibana
 ```
@@ -603,7 +605,7 @@ docker restart kibana
 
     解决方案： https://blog.csdn.net/zheng45/article/details/92383323 
 
-第5点：es密码不能包含@符号的因为连接的时候其实是拼接的url,会导致冲突   http://user:pass@localhost:9200  
+第5点：es密码不能包含`@`符号的因为连接的时候其实是拼接的url,会导致冲突   http://user:pass@localhost:9200  
 
     第6点；es加了密码验证之后命令基本带上-u elastic   ，只有7.3版本以上的免费使用密码认证
 
