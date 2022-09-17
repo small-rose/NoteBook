@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 支付宝&微信授权
+title: alipay&weiXin
 parent: DevNotes
 nav_order: 4
 ---

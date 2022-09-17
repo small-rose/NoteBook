@@ -95,6 +95,23 @@ rpm ivh wget-1.12-1.4.el6.x86_64.rpm 安装即可。
 ```bash
 yum -y install wget
 ```
+3、离线安装
+
+gcc安装
+
+m4 安装
+
+- 下载: [http://mirrors.kernel.org/gnu/m4/m4-1.4.13.tar.gz](http://mirrors.kernel.org/gnu/m4/m4-1.4.13.tar.gz)
+- 其他版本: [http://mirrors.kernel.org/gnu/m4/](http://mirrors.kernel.org/gnu/m4/)
+
+```bash
+cd m4-1.4.13
+# 配置编译环境
+./configure –prefix=/usr/local
+# 编译并安装
+make && make install
+```
+[未完待续]
 
 
 ### tree 安装
