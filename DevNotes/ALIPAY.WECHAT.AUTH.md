@@ -1,6 +1,6 @@
 ---
 layout: default
-title: alipay&weiXin
+title: Alipay & Wx
 parent: DevNotes
 nav_order: 4
 ---

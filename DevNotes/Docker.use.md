@@ -15,41 +15,85 @@ nav_order: 5
 {:toc}
 
 
-## 固定IP配置
+
+Docker容器四种网络模式，自定义网络
+--------------------------------------------
+
+在没安装docker之前ifconfig命令是查看不到docker0的网卡的每运行一个容器就会生成一个veth对
+
+- docker0：虚拟网关——>容器的网关，绑定物理网卡，负责做NAT 地址转换、端口映射
+- loopback：回环网卡TCP/IP网卡是否生效
+- veth对：一组互相连接的虚拟接口，用于连接两个网络/名称空间，网络协议栈1
+
+### Docker四种网络模式
+
+**host模式**
+
+host 容器将不会虚拟出自己的网卡，配置自己的IP等，而是使用宿主机的IP和端口如果启动容器的使用host模式，那么这个容器将不会获得一个独立的Network Namespace，而是和宿主机共用一个Network Namespace。容器将不会虚拟出自己的网卡，配置自己的IP等，而是使用宿主机的IP和端口，但是，容器的其他方面，如文件系统、进程列表等还是和宿主机隔离的
+
+使用host模式的容器也直接使用宿主机的IP地址与外界通信，容器内部的服务端口也可以使用宿主机的端口，不需要进行NAT，host最大的优势就是网络性能比较好，但是docker host 上已经使用的端口就不能再用了，网络隔离性不好
+
+简单讲就是：和宿主机公用一个网段ip不重复，服务端口不要重复会冲突
+
+**container模式**
+
+container创建的容器不会创建自己的网卡、设置IP等个，而是和一个指定地容器共享IP、端口范围
+
+这个模式指定新创建的容器和已经存在的一个容器共享一个 Network Namespace ，而是一个和宿主机共享，新创建的容器不会创建自己的网卡、配置自己的IP、而是和一个指定地容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统，进程列表还是隔离的。两个容器的进程可以通过lo网卡设备通信
+
+简单讲就是：docker0为网关对接物理网卡然后对接docker0共用一个网段、端口范围，其他都隔离通过回环网卡通信，即多个容器共享网络名称空间
+
+**None模式**
+
+该模式关闭了容器的网络功能这种模式下容器只有回环网口，没有其他网卡none模式可以在容器创建时通过-network=none参数指定
+这种类型的网络无法联网，但是封闭的网络能很好的保证容器的安全性
+
+简单讲就是：单机，自己闹着玩吧隔离性绝对的强
+
+**Bridge模式**
+
+这个模式是默认的，它会为每一个容器分配、设置IP等，并将容器连接到一个Docker虚拟网桥，通过Docker0网桥及iptables的nat表配置与宿主机通信
+当Docker进程启动时，会在主机上创建一个名为docker0的虚拟网桥，此主机上启动的Docker容器会连接到这个虚拟网桥上，虚拟网桥的工作方式和物理交换机类似，这样主机上的所有容器就通过交换机连在了一个二层网络中。
+
+从docker0子网中分配一个IP给容器使用，并设置docker0的IP地址为容器的默认网关，在主机上创建一对虚拟网卡veth pair设备，docker将veth pair设备的一端放在新创建的容器并将这个网络设备加入到docker0网桥中，可以通过brctl show 命令查看
+
+bridge模式时docker的默认网络模式，不写-net参数，就是bridge模式。使用docker run -p时，docker实际是在iptables做了DNAT规则，实现端口转发功能，可以使用iptables -t nat -vnL查看
+
+默认模式 通过veth对连接容器与docker0网桥，网桥分配给容器IP，同时docker0作为docker内容器的网关，最后和宿主机网卡进行通讯
+
+- host模式	-net=host	容器和宿主机共享Network namespace
+- container模式	-net=container:NAME_or_ID	多个容器共享一个Network namespace
+- none模式	-net=none	容器有独立的Network namespace，但并没有对其进行任何网络设置，如分配veth pair 和网桥连接，配置IP等
+- bridge模式	-net=bridge	默认模式
+
+以上不需要手动配置，真正需要配置的是自定义网络。
+
+
+### Docker自定义网络
+
+查看网络列表:
 
 ```bash
-vi /etc/sysconfig/network-scripts/ifcfg-ens33 
+docker network ls
+```
+自定义网络固定IP
+```bash
+docker network create --subnet 172.18.0.0/16 mynetwork
+
+docker run -itd --name test2 --net mynetwork --ip 172.18.0.100 centos:latest /bin/bash
 ```
 
-```text
-TYPE=Ethernet
-PROXY_METHOD=none
-BROWSER_ONLY=no
-BOOTPROTO=none
-DEFROUTE=yes
-IPV5_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_FAILURE_FATAL=no
-IPV6_ADDR_GEN_MODE=stable-privacy
-NAME=ens33
-UUID=9cf4f495-18f1-4c56-80b5-d433c5273d37
-DEVICE=ens33
-ONBOOT=yes
-IPADDR=192.168.80.81
-GATEWAY=192.168.80.1
-IPV6_PRIVACY=no
-PREFIX=24
-IPV4_FAILURE_FATAL=no
+在宿主机环境执行容器内命令 ` docker exec -it 容器ID /bin/bash -c 'nginx' `
 
-REERDNS=no
-DNS1=192.168.80.1
-DNS2=8.8.8.8
-DNS3=223.6.6.6
-DNS4=114.114.114.114
+-c后面跟的就是需要执行的命令
+
+进入容器没有systemctl 命令解决：添加 `–privileged=true`（指定此容器是否为特权容器），使用此参数，则不能用attach
+示例：
+```bash
+docker run -itd --name test3 --privileged=true centos /sbin/init
 ```
 
+`/sbin/init` 内核启动时主动呼叫的第一个进程
 
 docker UI
 -----------------------
@@ -534,18 +578,55 @@ docker pull kibana:7.17.0
 # kibana 配置文件
 mkdir -p /opt/docker/elk/kibana/config
 ```
-
 查询 elasticsearch717 的容器IP地址，关键词 `IPADRESS`
 
 ```bash
  docker inspect elasticsearch717
 ```
+如果找不到对应的IP，也可以直接加入 es-network 使用容器名称访问。
+
+
+在 `kibana.yml` 文件添加 es 地址、用户名密码
+```bash
+vi   /opt/docker/elk/kibana/config/kibana.yml
+```
+
+添加配置：
+```yaml
+#
+# ** THIS IS AN AUTO-GENERATED FILE **
+#
+
+# Default Kibana configuration for docker target
+server.host: "0"
+server.shutdownTimeout: "5s"
+# IP访问
+#elasticsearch.hosts: [ "http://172.17.0.3:9200" ]
+# 容器名称访问
+elasticsearch.hosts: [ "http://elasticsearch717:9200" ]
+monitoring.ui.container.elasticsearch.enabled: true
+i18n.locale: "zh-CN"
+# 此处设置elastic的用户名和密码，有密码设置密码，没有就先忽略
+#elasticsearch.username: elastic
+#elasticsearch.password: elastic
+```
+
+**启动容器**
 
 ```bash
 # 此处的IP换成ES的IP
 docker run -d --name kibana717 -e ELASTICSEARCH_HOSTS=http://106.52.148.109:9200 -p 5601:5601 \
 -v /opt/docker/elk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml \
-kibana:7.17.0
+--network es-network kibana:7.17.0
+```
+
+使用容器名称访问
+
+```bash
+# 此处的IP换成ES的IP
+docker run -d --name kibana717 -e ELASTICSEARCH_HOSTS=http://elasticsearch717:9200 -p 5601:5601 \
+-v /opt/docker/elk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml \
+--network es-network kibana:7.17.0
 ```
 
 访问验证 http://192.168.80.81:5601

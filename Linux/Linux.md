@@ -72,6 +72,43 @@ cat /home/test/app/logs/paystationlog/paystation.log | grep -B 10 -A 10  17ACIC0
 cat /home/test/app/logs/paystationlog/paystation.log | grep -C 10  17ACIC01220000000002871371146E
 ```
 
+
+
+## 固定IP配置
+
+```bash
+vi /etc/sysconfig/network-scripts/ifcfg-ens33 
+```
+
+```text
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=none
+DEFROUTE=yes
+IPV5_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=ens33
+UUID=9cf4f495-18f1-4c56-80b5-d433c5273d37
+DEVICE=ens33
+ONBOOT=yes
+IPADDR=192.168.80.81
+GATEWAY=192.168.80.1
+IPV6_PRIVACY=no
+PREFIX=24
+IPV4_FAILURE_FATAL=no
+
+REERDNS=no
+DNS1=192.168.80.1
+DNS2=8.8.8.8
+DNS3=223.6.6.6
+DNS4=114.114.114.114
+```
+
 ### wget
 ---------------------------
 
