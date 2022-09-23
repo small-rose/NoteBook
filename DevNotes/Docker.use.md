@@ -14,6 +14,132 @@ nav_order: 5
 1. TOC
 {:toc}
 
+docker 环境变量
+--------------------------------------------
+### 查看环境变量
+
+```bash
+docker inspect <CONTAINER-NAME> OR <CONTAINER-ID>
+```
+
+### 设置环境变量
+
+
+(1) 在 Dockerfile 中使用 ENV 指令设置环境变量
+
+格式有两种：
+
+```yaml
+    ENV key value
+    ENV key1=value1 key2=value2
+```
+示例：
+
+```text
+1、key value
+	ENV JAVA_VERSION 1.8_181
+2、key=value
+	ENV JAVA_VERSION=1.8_181  file.encoding=utf-8
+3、换行
+	ENV VERSION=1.0 DEBUG=on \
+	    NAME="Happy Feet"
+4、在 Dockerfile 中使用
+	$JAVA_VERSION
+    $file.encoding
+
+```
+(2)在 docker run 命令中设置环境变量
+
+基本格式有：
+- docker run --env -e
+- docker run --env-file
+
+示例1，直接在执行参数后添加：
+
+```bash
+docker run -e LANG=zh_cn.utf8 --env VAR2=value2  centos
+docker run --env VAR1=value1 --env VAR2=value2 centos
+```
+
+示例2，先在本地配置好变量，执行时使用参数：
+
+```bash
+export LANG=zh_cn.utf8
+export VAR2=value2
+```
+
+使用：
+
+```yaml
+$ docker run --env LANG --env VAR2 centos env | grep VAR
+LANG=zh_cn.utf8
+VAR2=value2
+```
+示例3 使用文件作为环境变量，`.env` 文件如下:
+
+```
+# This is a comment
+LANG=zh_cn.utf8
+VAR2=value2
+USER  # which takes the value from the local environment
+```
+执行命令：
+
+```bash
+docker run --env-file .env centos
+```
+
+### Docker容器中文乱码问题
+
+进容器
+
+```bash
+docker exec -it 44fc0f0582d9 /bin/bash
+docker exec -it 44fc0f0582d9 /bin/sh
+```
+
+查看docker容器编码格式:
+
+```bash
+locale
+```
+
+查看容器所有语言环境
+
+```bash
+locale -a
+```
+
+中文支持的有：`C.UTF-8`、`zh_CN.utf8`、`zh_CN.UTF-8`,可能不同系统显示略有不同。
+
+a.临时修改：
+
+```text
+export LANG=C.UTF-8
+export LANG=zh_CN.utf8
+```
+
+b.在Dockerfile中添加一行环境变量参数后重新制作镜像
+
+```yaml
+  ENV LANG C.UTF-8
+```
+
+使用新的镜像启动容器后进入再次验证：`locale`.
+
+c.增加 docker 启动参数
+
+```bash
+docker run -e LANG=zh_CN.utf8  <CONTAINER-ID>
+docker run --env LANG=zh_CN.utf8  <CONTAINER-ID>
+```
+d.容器界面增加docker参数
+
+在环境变量处增加键、值后重启容器：
+
+```text
+env  LANG=zh_CN.utf8
+```
 
 
 Docker容器四种网络模式，自定义网络
@@ -485,6 +611,14 @@ mkdir -p /opt/docker/elk/elasticsearch/config
 mkdir -p /opt/docker/elk/elasticsearch/data
 # 插件目录
 mkdir -p /opt/docker/elk/elasticsearch/plugins
+
+# 给相关目录权限
+chmod -R 777 /opt/docker/elk/elasticsearch
+
+# es网络
+docker network create es-network
+# 内容
+echo "http.host: 0.0.0.0" >> /opt/docker/elk/elasticsearch/config/elasticsearch.yml
 ```
 
 启动容器
@@ -502,7 +636,8 @@ docker run -d --name elasticsearch717 -p 9200:9200 -p 9300:9300 -e "discovery.ty
 安装 ik 分词器
 
 ```bash
-docker exec -it es bash ./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.17.0/elasticsearch-analysis-ik-7.17.0.zip
+docker exec -it elasticsearch717 bash 
+./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.17.0/elasticsearch-analysis-ik-7.17.0.zip
 ```
 
 设置密码
