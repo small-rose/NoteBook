@@ -141,6 +141,28 @@ d.容器界面增加docker参数
 env  LANG=zh_CN.utf8
 ```
 
+### Docker 启动报错问题
+
+```text
+docker: Error response from daemon: endpoint with name xxx-redis already exists in network bridge.
+```
+
+删除容器
+```bash
+docker rm xxx-redis
+```
+
+清理此容器的网络占用
+
+格式：docker network disconnect --force 网络模式 容器名称
+
+示例：
+```bash
+docker network disconnect --force bridge xxx-redis
+```
+
+ 
+
 
 Docker容器四种网络模式，自定义网络
 --------------------------------------------
