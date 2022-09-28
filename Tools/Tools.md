@@ -261,6 +261,7 @@ GitHub加速下载
 
 <p mark="linkMe">
 
+<a href="https://searx.space/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">search X</a>
 <a href="https://adzhp.cn" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">adzhp</a>
 <a href="https://fxsh.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">fxsh</a>
 <a href="http://thepiratebay.ee/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">thepiratebay</a>
