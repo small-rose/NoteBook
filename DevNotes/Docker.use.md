@@ -14,6 +14,93 @@ nav_order: 5
 1. TOC
 {:toc}
 
+docker 常用命令
+--------------------------------------------
+
+镜像
+
+|命令	|功能|	语法|	实例|
+|-|-|-|-|
+|search	|在docker hub中搜索镜像|	|docker search 镜像名称|	|docker search nginx |
+|pull	|在docker hub中下载镜像到本地| docker pull 镜像名：tag | docker pull nginx |
+|push	|上传镜像	|docker push 镜像名	|docker push nginx:v0.2 |
+|images	|查看本地所有docker镜像	|docker images	|docker imaegs |
+|history	|查看镜像形成过程	|docker history 本地镜像名：tag	|docker history nginx:V1 |
+|build	|通过dockerfile制作镜像	|docker build 参数 镜像名：tag dockerfile目录	|docker build -t nginx:V1 /opt/ |
+|tag	|镜像打标签	|docker tag 镜像名：tag 新镜像名：tag	|docker tag nginx:V3 mynginx:V4|
+|commit	|保存当前容器为镜像/快照	|docker commit 容器ID或容器名 新镜像名：tag	|docker commit nginx nginx:V2 |
+|login	|登入docker镜像源服务器	|docker login 服务器地址	|docker login |
+|logout	|退出登录镜像源服务器	|docker logout	|docker logout |
+|rmi	|删除本地镜像	|docker rmi 镜像名：tag	|docker rmi nginx:V1 |
+|save	|保存镜像为tar包	|docker save -o tar文件名 镜像名:tag	|docker save -o nginx.tar nginx:V1 |
+|import	|从tar文件导入|docker为镜像	|docker import 参数 tar文件 镜像名：tag	|docker import nginx.tar nginx:V2 |
+|export	|从docker导出镜像为tar文件	|docker export 参数 镜像名：tag tar文件	|docker export nginx:V2 nginx2.tar |
+|load	|从tar文件中加载为docker镜像	|docker load -i tar文件 镜像名：tag	|docker load -i nginx2.tar nginx:V3 |
+
+
+ 
+容器
+|命令	|功能|	语法|	实例|
+|-|-|-|-|
+|create	|创建容器但不启动容器	|docker create 参数 镜像名称	|docker create nginx:V1 |
+|start	|启动容器	|docker start ID或名称	|docker start nginx |
+|run	|创建并启动容器	|docker run -i -t -d ID或名称	|docker run -i -t -d nginx /bin/bash |
+|restart	|重启容器	|docker restart ID或名称	|docker restart nginx |
+|stop	|关闭容器	|docker stop ID或名称	|docker stop nginx |
+|kill	|杀死正在运行的容器	|docker kill ID或名称	|docker kill nginx |
+|rm	|删除容器	|docker rm ID或名称	|docker rm nginx |
+|ps	|列出容器列表	|docker ps 参数	|docker ps -a |
+|logs	|输出当前容器的日志信息	|docker logs ID或名称	|docker logs nginx |
+|attach	|当前shell连接运行容器	|docker attach IP或容器名	|docker attach nginx |
+|exec	|在容器中执行命令	|docker exec 参数 容器ID或名称 命令	|docker exec -it nginx /bin/bash |
+|cp	|容器与宿主机互相复制文件	|docker cp 容器名：文件目录/名称 本地目录	|docker cp /var/www/html/ nginx:/var/www/html |
+|diff	|查看容器改动	|docker diff 容器ID或容器名称	|docker diff nginx |
+|port	|查看容器的端口映射情况	|docker port 容器ID或名称	|docker port nginx |
+|top	|查看容器中进程信息	|docker top 容器ID或名称	|docker top nginx |
+|pause	|暂停容器	|docker pause 容器ID/名称	|docker pause nginx |
+|unpause	|取消暂停的容器	|docker unpause 容器ID/名称	|docker unpause nginx |
+|wait	|阻塞运行直到容器停止，然后打印出它的退出代码	|docker wait CONTAINER	|docker wait CONTAINER |
+
+
+ 
+docker
+
+|命令	|功能|	语法|	实例|
+|-|-|-|-|
+|info	|查看docker系统信息	|docker info	|docker info |
+|inspect	|查看容器的详细信息	|docker inspect	|docker inspect |
+|version	|查看docker软件版本	|docker version	|docker version |
+|events	|查看docker服务器实时时间	|docker events 参数	|docker events --since=“1577321423” |
+
+
+ 
+常用参数与释义
+
+docker run [options]
+常用参数与释义（主要介绍docker run）
+参数	释义
+-d	后台运行容器，并返回容器ID；
+-i	以交互模式运行容器，通常与 -t 同时使用；
+-t	为容器重新分配一个伪输入终端，通常与 -i 同时使用；
+-p	为端口映射，格式为：宿主机端口：容器端口
+-v	将宿主机的某个目录映射到容器中的某个目录中，格式为： 宿主机目录:容器目录
+–name=”nginx-lb”	为容器指定一个名称；
+-h “mars”	指定容器的hostname；
+-a stdin	指定标准输入输出内容类型，可选 STDIN/STDOUT/STDERR 三项；
+–dns 8.8.8.8	指定容器使用的DNS服务器，默认和宿主一致；
+–dns-search example.com	指定容器DNS搜索域名，默认和宿主一致；
+-e username=”ritchie”:	设置环境变量；
+–env-file=[]	从指定文件读入环境变量；
+–cpuset=”0-2” or –cpuset=”0,1,2”	绑定容器到指定CPU运行；
+-m	设置容器使用内存最大值；
+–net=”bridge”:	指定容器的网络连接类型，支持 bridge/host/none/Container: 四种类型；
+–link=[]	添加链接到另一个容器；
+–expose=[]	开放一个端口或一组端口；
+
+
+
+
+
 docker 环境变量
 --------------------------------------------
 ### 查看环境变量
@@ -141,6 +228,31 @@ d.容器界面增加docker参数
 env  LANG=zh_CN.utf8
 ```
 
+### Docker 启动报错问题
+
+(1) endpoint with name xxx already exists in network bridge.
+```text
+docker: Error response from daemon: endpoint with name xxx-redis already exists in network bridge.
+```
+
+删除容器
+```bash
+docker rm xxx-redis
+```
+
+清理此容器的网络占用
+
+格式：docker network disconnect --force 网络模式 容器名称
+
+示例：
+```bash
+docker network disconnect --force bridge xxx-redis
+```
+(2) redis 无法启动
+
+因为redis.conf文件中的daemonize为yes，意思是redis服务在后台运行，与docker中的-d参数冲突了。
+只要把daemonize的参数值改为no就可以
+
 
 Docker容器四种网络模式，自定义网络
 --------------------------------------------
@@ -237,7 +349,7 @@ docker search portainer
 ```bash
 docker pull portainer/portainer　
 ```
-　　 
+
 **启动**
 
 ```bash
@@ -282,7 +394,7 @@ docker run -itd --name redis-test -p 6379:6379 redis
  (1) 持久化配置文件
  (2) 持久化数据目录
  (3) 密码等其他参数
- 
+
 ```bash
 docker run --restart=always --log-opt max-size=100m --log-opt max-file=2 -p 6379:6379 --name myredis -v /home/redis/myredis/myredis.conf:/etc/redis/redis.conf -v /home/redis/myredis/data:/data -d redis redis-server /etc/redis/redis.conf  --appendonly yes  --requirepass 123456
 ```
@@ -316,7 +428,7 @@ config get requirepass
 ```bash
 docker pull mysql:5.7.39
 ```
-　　
+
 **启动**
 
 ```bash
@@ -427,7 +539,7 @@ sqlplus /nolog
 ```bash
 conn / as sysdba
 ```
- 
+
 如果直接使用默认的 root 用户登录，会报登录失败。这里必须使用 su - oracle 命令，将当前用户切换到 oracle，然后在执行登录命令
 
 ORA-12514, TNS:listener does not currently know of service requested in connect descriptor
@@ -806,11 +918,11 @@ docker restart kibana
 第二点：kibana.yml中配置有问题（通过查看日志，发现了Error: No Living connections的问题）
 
     解决方法：将配置文件kibana.yml中的elasticsearch.url改为正确的链接，默认为: http://elasticsearch:9200
-
+    
     改为http://自己的IP地址:9200,如果存在密码的话需要加上下面两句话
-
+    
     elasticsearch.username: "elastic"
-
+    
     elasticsearch.password: "123456"
 
 第三点：浏览器没有缓过来

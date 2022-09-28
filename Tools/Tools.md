@@ -245,11 +245,26 @@ GitHub加速下载
 
 </p>
 
+### Search PAN
+
+<p mark="linkMe">
+<a href="https://lzpan.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">lzpan.com</a>
+<a href="https://www.iizhi.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">iizhi.cn</a>
+<a href="https://yiso.fun/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">yiso.fun</a>
+<a href="https://pan.qianfan.app/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">pan.qianfan</a>
+<a href="https://www.alipansou.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">alipansou</a>
+<a href="https://soupan007.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">soupan007</a>
+
+</p>
 
 ### Search Online
 
 <p mark="linkMe">
-<a href="http://thepiratebay.ee/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">thepiratebay/</a>
+
+<a href="https://searx.space/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">search X</a>
+<a href="https://adzhp.cn" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">adzhp</a>
+<a href="https://fxsh.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">fxsh</a>
+<a href="http://thepiratebay.ee/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">thepiratebay</a>
 <a href="https://zh.spycolor.com/0396ff" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">spy color</a>
 <a href="http://www.yunpz.net/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">云铺子</a>
 <a href="https://www.mjjloc.com/#" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MJJLOC</a>
