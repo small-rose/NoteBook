@@ -21,7 +21,7 @@ docker 常用命令
 
 |命令	|功能|	语法|	实例|
 |-|-|-|-|
-|search	|在docker hub中搜索镜像|	|docker search 镜像名称|	docker search nginx |
+|search	|在docker hub中搜索镜像 |docker search 镜像名称|	docker search nginx |
 |pull	|在docker hub中下载镜像到本地| docker pull 镜像名：tag | docker pull nginx |
 |push	|上传镜像	|docker push 镜像名	|docker push nginx:v0.2 |
 |images	|查看本地所有docker镜像	|docker images	|docker imaegs |
@@ -33,7 +33,7 @@ docker 常用命令
 |logout	|退出登录镜像源服务器	|docker logout	|docker logout |
 |rmi	|删除本地镜像	|docker rmi 镜像名：tag	|docker rmi nginx:V1 |
 |save	|保存镜像为tar包	|docker save -o tar文件名 镜像名:tag	|docker save -o nginx.tar nginx:V1 |
-|import	|从tar文件导入|docker为镜像	|docker import 参数 tar文件 镜像名：tag	|docker import nginx.tar nginx:V2 |
+|import	|从tar文件导入docker为镜像	|docker import 参数 tar文件 镜像名：tag	|docker import nginx.tar nginx:V2 |
 |export	|从docker导出镜像为tar文件	|docker export 参数 镜像名：tag tar文件	|docker export nginx:V2 nginx2.tar |
 |load	|从tar文件中加载为docker镜像	|docker load -i tar文件 镜像名：tag	|docker load -i nginx2.tar nginx:V3 |
 
