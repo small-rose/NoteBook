@@ -219,6 +219,16 @@ GitHub加速下载
 </p>
 
 
+### system of Software 
+
+<p mark="linkMe">
+<a href="https://developers.redhat.com/products/rhel/download" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">RHEL</a>
+<a href="https://www.centos.org/centos-stream/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">CentOS-Stream</a>
+<a href="https://mirrors.tuna.tsinghua.edu.cn/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.TUNA</a>
+<a href="http://mirrors.163.com//" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.163</a>
+https://www.linux.org/pages/download/
+
+</p>
 
 ### Tools of Software 
 
