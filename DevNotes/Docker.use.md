@@ -914,7 +914,7 @@ elasticsearch.password: elastic
 docker restart kibana
 ```
 
-## ELK常见问题
+### ELK常见问题
 
 第一点：KB、ES版本不一致（网上大部分都是这么说的）
 
