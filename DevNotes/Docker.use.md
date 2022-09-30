@@ -21,7 +21,7 @@ docker 常用命令
 
 |命令	|功能|	语法|	实例|
 |-|-|-|-|
-|search	|在docker hub中搜索镜像|	|docker search 镜像名称|	|docker search nginx |
+|search	|在docker hub中搜索镜像|	|docker search 镜像名称|	docker search nginx |
 |pull	|在docker hub中下载镜像到本地| docker pull 镜像名：tag | docker pull nginx |
 |push	|上传镜像	|docker push 镜像名	|docker push nginx:v0.2 |
 |images	|查看本地所有docker镜像	|docker images	|docker imaegs |
