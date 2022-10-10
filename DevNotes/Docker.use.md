@@ -17,11 +17,11 @@ nav_order: 5
 docker 常用命令
 --------------------------------------------
 
-镜像
+**镜像命令**
 
 |命令	|功能|	语法|	实例|
 |-|-|-|-|
-|search	|在docker hub中搜索镜像|	|docker search 镜像名称|	|docker search nginx |
+|search	|在docker hub中搜索镜像 |docker search 镜像名称|	docker search nginx |
 |pull	|在docker hub中下载镜像到本地| docker pull 镜像名：tag | docker pull nginx |
 |push	|上传镜像	|docker push 镜像名	|docker push nginx:v0.2 |
 |images	|查看本地所有docker镜像	|docker images	|docker imaegs |
@@ -33,13 +33,14 @@ docker 常用命令
 |logout	|退出登录镜像源服务器	|docker logout	|docker logout |
 |rmi	|删除本地镜像	|docker rmi 镜像名：tag	|docker rmi nginx:V1 |
 |save	|保存镜像为tar包	|docker save -o tar文件名 镜像名:tag	|docker save -o nginx.tar nginx:V1 |
-|import	|从tar文件导入|docker为镜像	|docker import 参数 tar文件 镜像名：tag	|docker import nginx.tar nginx:V2 |
+|import	|从tar文件导入docker为镜像	|docker import 参数 tar文件 镜像名：tag	|docker import nginx.tar nginx:V2 |
 |export	|从docker导出镜像为tar文件	|docker export 参数 镜像名：tag tar文件	|docker export nginx:V2 nginx2.tar |
 |load	|从tar文件中加载为docker镜像	|docker load -i tar文件 镜像名：tag	|docker load -i nginx2.tar nginx:V3 |
 
 
  
-容器
+**容器命令**
+
 |命令	|功能|	语法|	实例|
 |-|-|-|-|
 |create	|创建容器但不启动容器	|docker create 参数 镜像名称	|docker create nginx:V1 |
@@ -63,7 +64,7 @@ docker 常用命令
 
 
  
-docker
+**docker**
 
 |命令	|功能|	语法|	实例|
 |-|-|-|-|
@@ -75,27 +76,31 @@ docker
 
  
 常用参数与释义
-
+```text
 docker run [options]
-常用参数与释义（主要介绍docker run）
-参数	释义
--d	后台运行容器，并返回容器ID；
--i	以交互模式运行容器，通常与 -t 同时使用；
--t	为容器重新分配一个伪输入终端，通常与 -i 同时使用；
--p	为端口映射，格式为：宿主机端口：容器端口
--v	将宿主机的某个目录映射到容器中的某个目录中，格式为： 宿主机目录:容器目录
-–name=”nginx-lb”	为容器指定一个名称；
--h “mars”	指定容器的hostname；
--a stdin	指定标准输入输出内容类型，可选 STDIN/STDOUT/STDERR 三项；
-–dns 8.8.8.8	指定容器使用的DNS服务器，默认和宿主一致；
-–dns-search example.com	指定容器DNS搜索域名，默认和宿主一致；
--e username=”ritchie”:	设置环境变量；
-–env-file=[]	从指定文件读入环境变量；
-–cpuset=”0-2” or –cpuset=”0,1,2”	绑定容器到指定CPU运行；
--m	设置容器使用内存最大值；
-–net=”bridge”:	指定容器的网络连接类型，支持 bridge/host/none/Container: 四种类型；
-–link=[]	添加链接到另一个容器；
-–expose=[]	开放一个端口或一组端口；
+```
+
+常用参数与释义（主要是docker run）
+
+|参数	|释义|
+|-|-|
+|-d	|后台运行容器，并返回容器ID； |
+|-i	|以交互模式运行容器，通常与 -t 同时使用； |
+|-t	|为容器重新分配一个伪输入终端，通常与 -i 同时使用； |
+|-p	|为端口映射，格式为：宿主机端口：容器端口 |
+|-v	|将宿主机的某个目录映射到容器中的某个目录中，格式为： 宿主机目录:容器目录 |
+|–name=”nginx-lb”	|为容器指定一个名称； |
+|-h “mars”	|指定容器的hostname； |
+|-a stdin	|指定标准输入输出内容类型，可选 STDIN/STDOUT/STDERR 三项； |
+|–dns 8.8.8.8	|指定容器使用的DNS服务器，默认和宿主一致； |
+|–dns-search example.com	|指定容器DNS搜索域名，默认和宿主一致； |
+|-e username=”ritchie”:	|设置环境变量； |
+|–env-file=[]	|从指定文件读入环境变量； |
+|–cpuset=”0-2” or –cpuset=”0,1,2”	|绑定容器到指定CPU运行； |
+|-m	|设置容器使用内存最大值； |
+|–net=”bridge”:	|指定容器的网络连接类型，支持 bridge/host/none/Container: 四种类型； |
+|–link=[]	|添加链接到另一个容器；|
+|–expose=[]	|开放一个端口或一组端口；|
 
 
 
@@ -909,7 +914,7 @@ elasticsearch.password: elastic
 docker restart kibana
 ```
 
-## ELK常见问题
+### ELK常见问题
 
 第一点：KB、ES版本不一致（网上大部分都是这么说的）
 
