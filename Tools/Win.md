@@ -15,9 +15,21 @@ parent: Tools
 {:toc}
 
 
+## windows 端口占用
 
+```text
+netstat -aon | findstr :80
+```
 
-windows 端口转发
+找到对应的PID,根据PID找到对应的服务名称
+
+```text
+tasklist|findstr “12824”
+
+tasklist /fi “PID eq 12824”
+```
+
+## windows 端口转发
 
 windows 添加端口转发
 ```text
@@ -30,7 +42,7 @@ windows 移除端口转发
 netsh interface portproxy delete v4tov4 listenaddress=127.0.0.1 listenport=9000
 ```
 
-win10 SSH
+## win10 SSH
 
 安装open ssh服务
 

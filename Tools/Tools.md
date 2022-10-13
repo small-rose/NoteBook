@@ -138,11 +138,15 @@ GitHub加速下载
 
 [Trending repositories on GitHub today（GitHub热门项目）](https://github.com/trending)
 
-[https://hellogithub.com/](https://hellogithub.com/)（分享 GitHub 上有趣、入门级的开源项目）
+[https://hellogithub.com/](https://hellogithub.com/)（分享GitHub上有趣、入门级的开源项目）
 
-[https://www.pdai.tech/ Java 全栈知识体系](https://www.pdai.tech/ )
+[https://www.pdai.tech/ Java 全栈知识体系](https://www.pdai.tech/)
+
+[http://doc.yonyoucloud.com/doc/wiki/project/GradleUserGuide-Wiki/index.html](Gradle用户指南官方文档中文版)
 
 [https://www.githubs.cn/top](https://www.githubs.cn/top)
+
+
 ---
 ### Markdown Online
 [MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
@@ -226,8 +230,9 @@ GitHub加速下载
 <a href="https://developers.redhat.com/products/rhel/download" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">RHEL</a>
 <a href="https://www.centos.org/centos-stream/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">CentOS-Stream</a>
 <a href="https://mirrors.tuna.tsinghua.edu.cn/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.TUNA</a>
-<a href="http://mirrors.163.com//" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.163</a>
-https://www.linux.org/pages/download/
+<a href="http://mirrors.163.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.163</a>
+<a href="https://www.linux.org/pages/download/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">linux.download</a>
+
 
 </p>
 
@@ -243,6 +248,9 @@ https://www.linux.org/pages/download/
 <a href="https://www.ventoy.net/cn/download.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ventoy</a>
 
 <a href="https://msdn.itellyou.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Windows</a>
+
+<a href="https://kanboard.org/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">kanboard</a>
+<a href="https://github.com/wekan/wekan" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wekan</a>
 
 
 </p>
@@ -313,10 +321,6 @@ https://www.linux.org/pages/download/
 ### Other
 
 <p mark="linkMe">
-
-<a href="https://tgstat.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">TGSTAT</a>
-<a href="https://www.tg-me.com/telegram-group" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">telegram-group</a>
-<a href="https://tgtw.cc/index.php" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">tgtw</a>
 
 <a href="https://rebozj.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Re Bo</a>
 <a href="https://adzhp.cn/yin-yue-ruan-jian.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Music</a>
