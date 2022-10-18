@@ -383,6 +383,44 @@ ps aux | grep  xxx
 ps -ef | grep $APP_NAME | grep -v grep |awk '{print $2}'
 ```
 
+### 空间清理
+
+1.查看空间占用
+
+```bash
+df
+# 显示G单位
+df -h 
+#显示 M 单位
+df -m
+```
+
+2.定位最大文件目录
+
+```bash
+#进入根目录。
+cd / 
+
+#寻找当前目录，哪个文件夹占用空间最大
+du -h --max-depth=1 
+```
+3.定位最大文件
+
+```bash
+# 将文件以从大到小顺序展现
+ls –lhS 
+```
+
+4.确认文件未被占用
+
+```bash
+#确认删除文件是否被占用
+/usr/sbin/lsof|grep deleted 
+```
+可用根据pid 杀死占用程序，或者正常暂时停止占用程序。
+
+
+
 ### 基础环境
 
 jdk 和 maven
@@ -447,6 +485,92 @@ fi
 JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=7969  -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=192.168.10.184"
 
 nohup java ${JMX_OPTS} -jar $APP_NAME --server.port=8086 > log_paystation_yace.log 2>&1 &
+```
+
+### 安装加固
+
+给web代理服务器补充header头配置，消除X-Frame-Options头缺失、HTTP Content-Security-Policy头缺失、X-Content-Type-Options头缺失三个风险。
+
+1、apache 服务器，在 `http.conf` 文件末尾增加
+
+```text
+Header always append X-Frame-Options SAMEORIGIN
+Header set X-Content-Type-Options  nosniff
+Header set Content-Security-Policy "worker-src 'self';"
+```
+
+2、nginx 服务器，在 `nginx.conf` 文件对应的 http{} 块或 server{}块里末尾增加
+
+```text
+add_header  X-Frame-Options SAMEORIGIN;
+add_header  X-Content-Type-Options  nosniff;
+add_header  Content-Security-Policy "worker-src 'self';"
+#启用XSS保护，并在检查到XSS攻击时，停止渲染页面
+add_header  X-XSS-Protection "1; mode=block";
+```
+X-Frame-Options 有三个值:
+
+- DENY 表示该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许。
+- SAMEORIGIN 表示该页面可以在相同域名页面的 frame 中展示。
+- ALLOW-FROM uri 表示该页面可以在指定来源的 frame 中展示。
+
+`X-Content-Type-Options  nosniff`则 script 和 styleSheet 元素会拒绝包含错误的 MIME 类型的响应。这是一种安全功能，有助于防止基于 MIME 类型混淆的攻击,通过设置"X-Content-Type-Options: nosniff"响应标头，对 script 和 styleSheet 在执行是通过MIME 类型来过滤掉不安全的文件.
+
+spring boot支持EnableWebSecurity 这个anotation来设置不全的安全策略
+
+```java
+import com.alibaba.spring.websecurity.DefaultWebSecurityConfigurer;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+ 
+import java.util.Arrays;
+ 
+@EnableWebSecurity
+@Configuration
+public class WebSecurityConfig extends DefaultWebSecurityConfigurer {
+ 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+       //disable 默认策略。 这一句不能省。 
+        http.headers().frameOptions().disable();
+       //新增新的策略。 
+        http.headers().addHeaderWriter(new XFrameOptionsHeaderWriter(
+                new WhiteListedAllowFromStrategy(
+                        Arrays.asList("http://itaobops.aliexpress.com", "https://cpp.alibaba-inc.com",
+                                "https://pre-cpp.alibaba-inc.com"))));
+    }
+}
+```
+上面是支持ALLOW-FROM uri的设置方式。
+```java
+@EnableWebSecurity
+@Configuration
+public class WebSecurityConfig extends DefaultWebSecurityConfigurer {
+ 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+        http.headers().frameOptions().sameOrigin();
+ 
+    }
+}
+```
+去除x-frame-options header配置：
+```java
+@EnableWebSecurity
+@Configuration
+public class WebSecurityConfig extends DefaultWebSecurityConfigurer {
+ 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+        http.headers().frameOptions().disable();
+    }
+}
 ```
 
 

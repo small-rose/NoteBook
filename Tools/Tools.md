@@ -232,6 +232,7 @@ GitHub加速下载
 <a href="https://mirrors.tuna.tsinghua.edu.cn/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.TUNA</a>
 <a href="http://mirrors.163.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.163</a>
 <a href="https://www.linux.org/pages/download/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">linux.download</a>
+<a href="https://www.diagrams.net/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">drawio-desktop</a>
 
 
 </p>
@@ -349,3 +350,36 @@ GitHub加速下载
 <a href="http://t.icesmall.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ming Zhu</a>
 
 </p>
+
+
+### github 
+
+
+[https://github.com/starxg/mybatis-log-plugin-free](https://github.com/starxg/mybatis-log-plugin-free)
+
+[https://github.com/apache/shardingsphere-elasticjob](https://github.com/apache/shardingsphere-elasticjob)
+
+[https://github.com/baomidou/jobs](https://github.com/baomidou/jobs)
+
+[https://github.com/YunaiV/SpringBoot-Labs](https://github.com/YunaiV/SpringBoot-Labs)
+
+[https://github.com/softwarevax/springcloud](https://github.com/softwarevax/springcloud)
+
+[https://github.com/ityouknow/awesome-spring-cloud](https://github.com/ityouknow/awesome-spring-cloud)
+
+[https://github.com/doocs/technical-books](https://github.com/doocs/technical-books)
+
+[https://github.com/waylau/netty-4-user-guide-demos](https://github.com/waylau/netty-4-user-guide-demos)
+
+[https://github.com/AutomaApp/automa](https://github.com/AutomaApp/automa)
+
+[https://github.com/jgraph/drawio-desktop](https://github.com/jgraph/drawio-desktop)
+
+
+[https://github.com/miiiku/hexo-theme-flexblock](https://github.com/miiiku/hexo-theme-flexblock)
+
+[https://github.com/jerryc127/hexo-theme-butterfly](https://github.com/jerryc127/hexo-theme-butterfly)
+
+[https://github.com/amehime/hexo-theme-shoka](https://github.com/amehime/hexo-theme-shoka)
+
+[https://github.com/ppoffice/hexo-theme-icarus](https://github.com/ppoffice/hexo-theme-icarus)
