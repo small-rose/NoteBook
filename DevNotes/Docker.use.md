@@ -557,9 +557,7 @@ su - oracle
 sqlplus /nolog
 
 conn / as sysdba
-```
-
-```oraclesqlplus
+ 
 select instance_name from v$instance;
 
 show user;
@@ -567,7 +565,7 @@ show user;
 使用上述命令查出来的，就是所有可用的 “数据库名” 和 “用户名”
 
 
-> 阿里的这个镜像，所有的密码都是统一的 **helowin**
+>阿里的这个镜像，所有的密码都是统一的 **helowin**
 
 system用户具有DBA权限，但是没有SYSDBA权限。平常一般用该帐号管理数据库。
 而sys用户是Oracle数据库中权限最高的帐号，具有“SYSDBA”和“SYSOPER”权限，一般不允许从外部登录
@@ -575,7 +573,7 @@ system用户具有DBA权限，但是没有SYSDBA权限。平常一般用该帐�
 使用system连接测试：
 
 ```yml
-url: jdbc:oracle:thin:@localhost:1521:ORCL
+url: jdbc:oracle:thin:@192.168.80.81:1521:helowin
 username: system
 password: helowin
 ```
