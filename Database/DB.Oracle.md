@@ -22,7 +22,68 @@ parent: Database
 
 Oracle 在线学习：https://livesql.oracle.com
 
-### 基础语法
+## 基础语法
+
+### Oracle新建数据库（新用户）
+
+1.创建用户
+
+```sql
+-- username：新用户名的用户名
+-- password: 新用户的密码也可以不创建新用户，而仍然用以前的用户，如：继续利用scott用户2
+create user user_name identified by "user_password"
+default tablespace tbs_name
+temporary tablespace temp profile DEFAULT;
+```
+
+2.创建表空间：    
+```sql
+create tablespace tablespacename datafile 'd:\data.dbf' size xxxm;
+```
+- tablespacename：表空间的名字    
+- d:\data.dbf'：表空间的存储位置    
+- xxx表空间的大小，m单位为兆(M)
+
+3.将空间分配给用户:
+  
+```sql
+alert user username default tablespace tablespacename;
+```
+将名字为tablespacename的表空间分配给username 
+
+4.给用户授权：   
+
+一次授权
+
+```sql
+grant create session,create table,unlimited tablespace to username;
+```
+
+分别授权
+
+```sql
+grant connect to user_name;
+grant create indextype to user_name;
+grant create job to user_name;
+grant create materialized view to user_name;
+grant create procedure to user_name;
+grant create public synonym to user_name;
+grant create sequence to user_name;
+grant create session to user_name;
+grant create table to user_name;
+grant create trigger to user_name;
+grant create type to user_name;
+grant create view to user_name;
+grant unlimited tablespace to user_name;
+alter user user_name quota unlimited on tbs_name;
+```
+
+5.然后再以创建的用户登录，登录之后创建表即可。
+
+```sql
+conn username/password;
+```
+
 
 #### 表的重命名：
 
@@ -156,6 +217,57 @@ alter table table_name  rename  column  old_cloumn_name to  new_cloumn_name
 alter table t_users rename column  nlcke_name  to  nick_name;
 ```
 
+#### 删除数据
+
+（1）删除数据，没有事务，无法回滚。
+
+```sql
+truncate table table_name ;
+```
+
+（2）删除数据，有事务，可以回滚。
+
+```sql
+delete from table_name ;
+```
+
+（3）删除表和数据。
+
+```sql
+drop table table_name ;
+```
+
+#### 检测中文乱码
+
+可用函数
+
+- `ASCIISTR` 函数可以使中文变成 '\xxxx' ;
+- `UNISTR` 函数可以反转回中文。
+
+```sql
+select asciistr('安诚') from  dual ;
+
+select unistr('\5B89\8BDA') from  dual ;
+```
+
+检测指定的字段是否含有中文乱码:
+
+```sql
+select column_name from table_name where asciistr('column_name') like '%??%' or asciistr('column_name') like '%\FFFD%' ;
+```
+
+检测指定表或指定库是否包含中文乱码：
+
+```sql
+create or replace PROCEDURE check_zh_cn() is
+   v_back_ti  ats_back_ti % rowtype ;
+begin
+   v_back_ti := demo;
+   v_back_ti.d
+   dbms_output.put_line(v_back_ti.id);
+   dbms_output.put_line(v_back_ti.TRANSCODE);
+end 
+```
 
 
 ### 常用查询
