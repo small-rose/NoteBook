@@ -18,7 +18,7 @@ nav_order: 4
 
 Linux 环境相关
 
-### grep
+## grep
 
 参数：
 ```
@@ -109,7 +109,7 @@ DNS3=223.6.6.6
 DNS4=114.114.114.114
 ```
 
-### wget
+## wget
 ---------------------------
 
 -bash: wget: command not found的两种解决方法
@@ -151,7 +151,7 @@ make && make install
 [未完待续]
 
 
-### tree 安装
+## tree 安装
 
 官网：http://mama.indstate.edu/users/ice/tree/
 
@@ -219,7 +219,7 @@ tree命令行参数：
 -x 将范围局限在现行的文件系统中，若指定目录下的某些子目录，其存放于另一个文件系统上，则将该子目录予以排除在寻找范围外。
 ```
 
-### netstat 安装
+## netstat 安装
 
 ---------------------------
 centos7默认没netstat命令，需要安装
@@ -230,7 +230,7 @@ yum install net-tools
 
 
 
-### fuser命令
+## fuser命令
 
 ------------------------------
 
@@ -243,7 +243,7 @@ yum install psmisc
 
 
 
-### rzsz
+## rzsz
 
 ---------------------------
 
@@ -283,7 +283,7 @@ ln -s /usr/local/lrzsz/bin/lsz /usr/bin/sz
 ```
 
 
-### 系統监控 
+## 系統监控 
 
 项目地址：https://github.com/sysstat/sysstat
 
@@ -301,7 +301,7 @@ systemctl start sysstat
 ```
 
 
-### Firawalld
+## Firawalld
 
 1、查看firewall服务状态
 
@@ -353,7 +353,7 @@ D:\idea-Work\XianDai-TrunkNew\cm-web\web\pages
 
 
 
-### 查看端口
+## 查看端口
 
 用于查看某一端口的占用情况
 
@@ -374,7 +374,7 @@ netstat -anop|grep pid
 
 
 
-### 查看进程
+## 查看进程
 
 ```bash
 ps -ef | grep  xxx
@@ -383,7 +383,7 @@ ps aux | grep  xxx
 ps -ef | grep $APP_NAME | grep -v grep |awk '{print $2}'
 ```
 
-### 空间清理
+## 空间清理
 
 1.查看空间占用
 
@@ -421,7 +421,7 @@ ls –lhS
 
 
 
-### 基础环境
+## 基础环境
 
 jdk 和 maven
 
@@ -455,7 +455,7 @@ export PATH=${JAVA_HOME}/bin:${M2_HOME}/bin:$PATH
 
  
 
-### tomcat 线程数
+## tomcat 线程数
 
 上线前可以压测一下，调整参数配置，查看tomcat线程数命令如下：
 
@@ -471,7 +471,7 @@ ps -Lf 29295 |wc -l
 
 
 
-### 应用重启脚本
+## 应用重启脚本
 
 ```bash
 #!/bin/sh
@@ -487,7 +487,7 @@ JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=796
 nohup java ${JMX_OPTS} -jar $APP_NAME --server.port=8086 > log_paystation_yace.log 2>&1 &
 ```
 
-### 安装加固
+## 安全加固
 
 给web代理服务器补充header头配置，消除X-Frame-Options头缺失、HTTP Content-Security-Policy头缺失、X-Content-Type-Options头缺失三个风险。
 
@@ -575,7 +575,7 @@ public class WebSecurityConfig extends DefaultWebSecurityConfigurer {
 
 
 
-### v2Ray
+## v2Ray
 
 参考： 
 - https://hissin.cn/zheteng/795.html
@@ -702,7 +702,7 @@ cat /proc/sys/kernel/random/uuid
 }
 ```
 
-### vm centos 扩容
+## vm centos 扩容
 
 
 1.查看磁盘空间占用
@@ -1053,14 +1053,14 @@ overlay                   27G   23G  4.8G   83% /var/lib/docker/overlay2/8b95406
    
  ```
    
-18、接着，继续在终端命令窗口中输入“# cat /etc/fstab | grep centos-root”命令并回车，查看文件系统的格式。
+18、接着，继续在终端命令窗口中输入` cat /etc/fstab | grep centos-root` 命令并回车，查看文件系统的格式。
 
 ```
 [root@localhost ~]# cat /etc/fstab | grep centos-root
 /dev/mapper/centos-root /                       xfs     defaults        0 0
 [root@localhost ~]# 
 ```
-19、接着，在上一步已经看到了文件系统的格式了，就需要使用相应的命令来扩展磁盘空间，在终端命令中输入“# xfs_growfs /dev/mapper/centos-root”命令并回车（命令：# xfs_growfs 文件系统名，不同的文件系统要用不同的命令，不然会导致报错）。   
+19、接着，在上一步已经看到了文件系统的格式了，就需要使用相应的命令来扩展磁盘空间，在终端命令中输入` xfs_growfs /dev/mapper/centos-root` 命令并回车（命令：# xfs_growfs 文件系统名，不同的文件系统要用不同的命令，不然会导致报错）。   
 
  ```
 [root@localhost ~]# xfs_growfs /dev/mapper/centos-root
