@@ -995,9 +995,25 @@ sudo docker exec -it gitlab grep 'Password:' /etc/gitlab/initial_root_password
 直接在映射目录查看：
 
 ```bash
-cat /opt/docker/gitlab/config/gitlab.rb
+cat /opt/docker/gitlab/config/initial_root_password
 ```
 
+```text
+[root@localhost config]# cat initial_root_password 
+# WARNING: This value is valid only in the following conditions
+#          1. If provided manually (either via `GITLAB_ROOT_PASSWORD` environment variable or via `gitlab_rails['initial_root_password']` setting in `gitlab.rb`, it was provided before database was seeded for the first time (usually, the first reconfigure run).
+#          2. Password hasn't been changed manually, either via UI or via command line.
+#
+#          If the password shown here doesn't work, you must reset the admin password following https://docs.gitlab.com/ee/security/reset_user_password.html#reset-your-root-password.
+
+Password: F7EXSo4cDOBbXgNV5qX67HYFO4FEFWJmbXGxtgbG+A4=
+
+# NOTE: This file will be automatically deleted in the first reconfigure run after 24 hours.
+```
+
+我是用这里的密码登录web之后改的密码。
+
+虚拟机gitlab 管理员账户是：root/12345678
 
 附：进容器重置密码方：
 
