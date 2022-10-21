@@ -941,3 +941,151 @@ docker restart kibana
     第6点；es加了密码验证之后命令基本带上-u elastic   ，只有7.3版本以上的免费使用密码认证
 
 
+## docker 安装 gitlab
+
+1、拉取镜像
+
+```bash
+docker pull gitlab/gitlab-ce
+```
+2、准备映射目录
+
+将 GitLab 的配置 (etc) 、 日志 (log) 、数据 (data) 放到容器之外进行持久化， 便于日后升级， 因此先准备这三个目录
+
+```bash
+mkdir -p /opt/docker/gitlab/config
+mkdir -p /opt/docker/gitlab/logs 
+mkdir -p /opt/docker/gitlab/data
+```
+
+3、启动容器
+
+```bash
+docker run --detach \
+  --hostname gitlab.zhangxiaocai.cn \
+  -p 8443:443 -p 8880:80 -p 2222:22 \
+  --name gitlab \
+  --privileged=true \
+  --volume /opt/docker/gitlab/config/:/etc/gitlab/ \
+  --volume /opt/docker/gitlab/logs/:/var/log/gitlab/ \
+  --volume /opt/docker/gitlab/data/:/var/opt/gitlab/ \
+  gitlab/gitlab-ce:latest
+```
+参数说明：
+
+    --hostname gitlab.example.com: 设置主机名或域名
+    --publish 8443:443：将http：443映射到外部端口8443
+    --publish 8880:80：将web：80映射到外部端口8880
+    --name gitlab: 运行容器名
+    --restart always: 自动重启
+    --volume /wwwroot/gitlab/config:/etc/gitlab: 挂载目录
+    --volume /wwwroot/gitlab/logs:/var/log/gitlab: 挂载目录
+    --volume /wwwroot/gitlab/data:/var/opt/gitlab: 挂载目录
+    --privileged=true 使得容器内的root拥有真正的root权限。否则，container内的root只是外部的一个普通用户权限
+    
+gitlab启动成功后，浏览器访问 `http://192.168.80.81:8880` 访问。
+
+4、登录密码
+
+默认的登录用户是root，密码进容器查看。
+
+```bash
+sudo docker exec -it gitlab grep 'Password:' /etc/gitlab/initial_root_password
+```
+直接在映射目录查看：
+
+```bash
+cat /opt/docker/gitlab/config/initial_root_password
+```
+
+```text
+[root@localhost config]# cat initial_root_password 
+# WARNING: This value is valid only in the following conditions
+#          1. If provided manually (either via `GITLAB_ROOT_PASSWORD` environment variable or via `gitlab_rails['initial_root_password']` setting in `gitlab.rb`, it was provided before database was seeded for the first time (usually, the first reconfigure run).
+#          2. Password hasn't been changed manually, either via UI or via command line.
+#
+#          If the password shown here doesn't work, you must reset the admin password following https://docs.gitlab.com/ee/security/reset_user_password.html#reset-your-root-password.
+
+Password: F7EXSo4cDOBbXgNV5qX67HYFO4FEFWJmbXGxtgbG+A4=
+
+# NOTE: This file will be automatically deleted in the first reconfigure run after 24 hours.
+```
+
+我是用这里的密码登录web之后改的密码。
+
+虚拟机gitlab 管理员账户是：root/12345678
+
+附：进容器重置密码方：
+
+```bash
+#进入GitLab容器
+docker exec -it <容器名称>bash
+
+#启动Ruby on Rails控制台
+gitlab-rails console -e production
+
+#搜索电子邮件或用户名
+user = User.where(id: 1).first
+
+更改密码
+user.password = 'secret_pass'
+
+#确认更改密码
+user.password_confirmation = 'secret_pass'
+#保存
+user.save!
+```
+
+示例：
+
+```bash
+# Form Docker container /bin/bash
+# 執行下面的命令啓動一個 Ruby on Rails console,等待 console加載完成
+root@a9476e4d39e8:/# cd /opt/gitlab/bin/
+root@a9476e4d39e8:/opt/gitlab/bin# gitlab-rails console -e production
+--------------------------------------------------------------------------------
+ Ruby:         ruby 2.7.5p203 (2021-11-24 revision f69aeb8314) [x86_64-linux]
+ GitLab:       15.4.3 (bd548d5c605) FOSS
+ GitLab Shell: 14.10.0
+ PostgreSQL:   13.6
+-----------------------------------------------------------[ booted in 511.16s ]
+Loading production environment (Rails 6.1.6.1)
+=> #<User id:1 @root>
+irb(main):002:0> user.password="12345678" #設置密碼
+=> "12345678"
+irb(main):003:0> user.password_confirmation="12345678" #確認密碼
+=> "12345678"
+irb(main):004:0> user.save! # 保存修改
+Enqueued ActionMailer::DeliveryJob (Job ID: 38850b0d-7690-47b7-b5c9-9cf975bae8fd) to Sidekiq(mailers) with arguments: "DeviseMailer", "password_change", "deliver_now", gid://gitlab/User/1
+=> true
+irb(main):005:0> quit #退出 Ruby on Rails console
+```
+
+5、优化
+
+因为自己的配置不高，又仅做实验使用，所以只能降配置了，如果是自己玩，可以把配置调低，节省资源。
+
+```bash
+# 容器里改
+vi /etc/gitlab/gitlab.rb
+# 宿主机改
+vi /opt/docker/gitlab/config/gitlab.rb
+```
+
+修改配置
+
+```text
+# 最大并发数,最小值得是2 
+sidekiq['max_concurrency'] = 2
+# 缓存大小
+postgresql['shared_buffers'] = "64MB"
+# 最大工作线程数
+postgresql['max_worker_processes'] = 1
+```
+
+使修改后的配置生效（在容器中执行）
+
+```text
+gitlab-ctl reconfigure
+gitlab-ctl restart
+```
