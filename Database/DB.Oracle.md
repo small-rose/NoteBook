@@ -76,6 +76,9 @@ grant create type to user_name;
 grant create view to user_name;
 grant unlimited tablespace to user_name;
 alter user user_name quota unlimited on tbs_name;
+
+grant debug any procedure to user_name;
+grant debug connect session to user_name;
 ```
 
 5.然后再以创建的用户登录，登录之后创建表即可。
@@ -256,19 +259,99 @@ select unistr('\5B89\8BDA') from  dual ;
 select column_name from table_name where asciistr('column_name') like '%??%' or asciistr('column_name') like '%\FFFD%' ;
 ```
 
-检测指定表或指定库是否包含中文乱码：
+检测指定表或指定库是否包含中文乱码，并使用DBMS输出到控制台：
 
 ```sql
-create or replace PROCEDURE check_zh_cn() is
-   v_back_ti  ats_back_ti % rowtype ;
+create or replace procedure check_zh_cn is
+    v_table_name  varchar2(50) ;
+    v_table_column  varchar2(50) ;
+    v_sql  varchar2(1000) ;
+    v_count  int(10) := 0;
+    v_index  int(10) := 0;
+    -- 查询所有的表
+    cursor v_table_names is
+        SELECT * FROM USER_TABLES U;
 begin
-   v_back_ti := demo;
-   v_back_ti.d
-   dbms_output.put_line(v_back_ti.id);
-   dbms_output.put_line(v_back_ti.TRANSCODE);
-end 
+    for v_table_data in v_table_names loop
+      begin
+        v_table_name := v_table_data.TABLE_NAME ;
+        -- 否则查询出表的列数据
+        for v_table_column_data in (select * from user_tab_columns where Table_Name=v_table_name ORDER BY COLUMN_ID ASC ) loop
+
+            begin
+            v_table_column := v_table_column_data.COLUMN_NAME ;
+            if  instr(v_table_column_data.DATA_TYPE, 'VARCHAR') > 0 then
+                -- 判断乱码
+                --v_sql := 'select count(1) from  :v_table_name where asciistr(:v_table_column) like ''%??%'' or asciistr(:v_table_column) like ''%\FFFD%'' ';
+                --execute immediate v_sql into v_count  using v_table_name, v_table_column,v_table_column;
+                v_sql := 'select count(1) from '|| v_table_name || ' where asciistr('|| v_table_column ||') like ''%??%'' or asciistr('|| v_table_column ||') like ''%\FFFD%'' ';
+                execute immediate v_sql into v_count;
+                if v_count >0 then
+                   -- L_RESULT[v_index] = v_table_name || '.' || v_table_column ;
+                   v_index := v_index+1;
+                   DBMS_OUTPUT.PUT_LINE(v_index ||' table.column is ' || v_table_name || '.' || v_table_column);
+                end if;
+            end if;
+            end;
+        end loop;
+      end;
+    end loop ;
+end;
 ```
 
+也可以将有乱码的表和字段输出到一张表里：
+
+```sql
+create  or replace procedure check_zh_cn_to_table is
+    v_table_name  varchar2(50) ;
+    v_table_column  varchar2(50) ;
+    v_sql  varchar2(1000) ;
+    v_count  int(10) := 0;
+    v_index  int(10) := 0;
+    r_table_name varchar2(20) := 'CHECK_ZHCN_RESULT';
+    d_sql varchar2(500) := 'drop table '||r_table_name ;
+    c_sql varchar2(500) := 'create table '||r_table_name||' (table_name varchar2(100), column_name  varchar2(100))';
+    i_sql varchar2(500) := 'insert into '||r_table_name||' (table_name, column_name) values (:c1, :c2)';
+    -- 查询所有的表
+    cursor v_table_names is
+        SELECT * FROM USER_TABLES U;
+
+begin
+    -- 结果表
+    SELECT count(1) into v_count FROM USER_TABLES where TABLE_NAME = r_table_name;
+    IF v_count > 0 then
+        execute immediate d_sql ;
+        execute immediate c_sql ;
+    else
+        -- DBMS_OUTPUT.PUT_LINE(c_sql);
+        execute immediate c_sql ;
+    end if;
+    for v_table_data in v_table_names loop
+      begin
+        v_table_name := v_table_data.TABLE_NAME ;
+        -- 否则查询出表的列数据
+        for v_table_column_data in (select * from user_tab_columns where Table_Name=v_table_name ORDER BY COLUMN_ID ASC ) loop
+
+            begin
+            v_table_column := v_table_column_data.COLUMN_NAME ;
+            if  instr(v_table_column_data.DATA_TYPE, 'VARCHAR') > 0 then
+                -- 判断乱码
+                 v_sql := 'select count(1) from '|| v_table_name || ' where asciistr('|| v_table_column ||') like ''%??%'' or asciistr('|| v_table_column ||') like ''%\FFFD%'' ';
+                execute immediate v_sql into v_count;
+                if v_count >0 then
+                    v_index := v_index+1;
+                    DBMS_OUTPUT.PUT_LINE(v_index ||' table.column is ' || v_table_name || '.' || v_table_column);
+                    execute immediate i_sql using v_table_name, v_table_column;
+                    commit ;
+                end if;
+            end if;
+            end;
+        end loop;
+      end;
+    end loop ;
+end;
+
+```
 
 ### 常用查询
 
