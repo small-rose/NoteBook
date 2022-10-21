@@ -465,3 +465,68 @@ select DATE_ADD(curdate(),interval -day(curdate())+1 day);
 -- MySQL 取日期所在月的最后一天
 select last_day(curdate()) from dual;
 ```
+
+
+
+
+MySQL 存储过程
+---------------------
+
+
+原来是根据 [oracle检测中文乱码](https://docs.zhangxiaocai.cn/Database/DB.Oracle.html#%E6%A3%80%E6%B5%8B%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81)
+适配mysql，发现函数不适用，不好判断，就当一个demo了
+
+```sql
+
+drop procedure if exists check_zh_cn ;
+
+create procedure check_zh_cn()
+begin
+
+    DECLARE v_table_name  varchar(50) ;
+    DECLARE v_table_column  varchar(50) ;
+    DECLARE v_sql  varchar(1000) ;
+    DECLARE v_count  int(10) default 0;
+    DECLARE v_index  int(10) default 0;
+    DECLARE isFlag INT DEFAULT TRUE;
+    -- 查询所有的表
+    DECLARE v_table_names cursor for
+        SELECT table_name FROM information_schema.tables WHERE table_schema='bp_demo';
+    -- 查询某张表的所有列
+    DECLARE v_table_columns cursor for
+        select v_table_column FROM information_schema.columns c WHERE c.table_schema = 'bp_demo' AND c.table_name = v_table_name order by ORDINAL_POSITION asc ;
+
+    -- #游标中的内容循环执行完后将 isFlag 设置为flase
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET isFlag = FALSE;
+    -- 打开声明的游标
+    open v_table_names ;
+    loop_label:loop
+        -- 取出游标中的变量,
+        fetch v_table_names into v_table_name ;
+        select v_table_name ;
+        while isFlag  is TRUE DO
+            -- 每次循环开始时重新对num进行赋值
+            -- set @num = 0;
+            -- 开启第二个游标
+            open v_table_columns;
+            inner_loop: LOOP
+                fetch v_table_columns into v_table_column;
+                -- 打印过程
+                -- select num;
+                IF isFlag THEN
+                    LEAVE inner_loop;
+                END IF;
+                select v_table_name,v_table_column ;
+
+            END LOOP;
+            close v_table_columns;
+            -- 第一个循环结束时done=1
+            -- 故需手动设置done=0,否则外层循环仅会执行一次
+            SET isFlag = 0;
+        end while;
+    end loop;
+end;
+
+```
+
+
