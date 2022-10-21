@@ -88,7 +88,7 @@ conn username/password;
 ```
 
 
-#### 表的重命名：
+### 表的重命名：
 
 ```sql
 alter table old_table_name rename to new_table_name
@@ -104,7 +104,7 @@ alter table sf_user rename to t_user;
 
 
 
-#### 字段补偿
+### 字段补偿
 
 （1）**增加字段语法**：
 
@@ -220,7 +220,7 @@ alter table table_name  rename  column  old_cloumn_name to  new_cloumn_name
 alter table t_users rename column  nlcke_name  to  nick_name;
 ```
 
-#### 删除数据
+### 删除数据
 
 （1）删除数据，没有事务，无法回滚。
 
@@ -240,7 +240,7 @@ delete from table_name ;
 drop table table_name ;
 ```
 
-#### 检测中文乱码
+### 检测中文乱码
 
 可用函数
 
@@ -353,9 +353,9 @@ end;
 
 ```
 
-### 常用查询
+## 常用查询
 
-#### 查询数据库全部序列
+### 查询数据库全部序列
 
  
 --查看当前用户的所有序列 PAYMT 为数据库名称
@@ -364,7 +364,7 @@ end;
 select SEQUENCE_OWNER,SEQUENCE_NAME from dba_sequences where sequence_owner='PAYMT';
 ```
 
-#### 查看数据库版本：
+### 查看数据库版本：
 
 ```sql
 select * from v$version;
@@ -381,7 +381,7 @@ select * from v$version;
 |NLSRTL Version 12.2.0.1.0 - Production | 0 |
 
 
-#### 查询表-字段-注释
+### 查询表-字段-注释
 
 查表DDL最后更新时间
 
@@ -501,7 +501,7 @@ WHERE TC.TABLE_NAME = UIC.TABLE_NAME
 ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 ```
 
-#### 查询表约束
+### 查询表约束
 
 查找表约束：`select constraint_name from user_cons_columns a where a.table_name='tablename';`
 
@@ -573,7 +573,7 @@ select 'alter table ' || table_name || ' enable constraint '||constraint_name||'
 from user_constraints where constraint_type='R';
 ```
 
-#### 查询表索引
+### 查询表索引
 
 
 ```sql
@@ -601,7 +601,7 @@ WHERE TC.TABLE_NAME = UIC.TABLE_NAME
 ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 ```
 
-#### 查视图
+### 查视图
 
 ```sql
 select * from all_views WHERE OWNER='PAYMT'
@@ -609,7 +609,7 @@ ORDER BY VIEW_NAME
 ```
 
 
-#### 查看空表-函数：
+### 查看空表-函数：
 
 ```sql
 select sysdate from dual;
@@ -617,7 +617,7 @@ select sysdate from dual;
 select CURRENT_TIMESTAMP ;
 ```
 
-#### TO_CHAR()函数
+### TO_CHAR()函数
 
  （1）用作日期转换：
 
@@ -680,7 +680,7 @@ SELECT TO_CHAR(123,'XXX') FROM DUAL ;
 SELECT TO_CHAR(4567, 'XXXX') FROM DUAL ;
 ```
 
-#### decode 函数
+### decode 函数
 
 decode(条件,值1,返回值1,值2,返回值2,...值n,返回值n,缺省值)
 
@@ -699,7 +699,7 @@ ELSE
 END IF
 ```
 
-#### concat 函数
+### concat 函数
 
 concat(字符串1, 字符串2)
 
@@ -708,9 +708,9 @@ concat(字符串1, 字符串2)
 将字符串1和字符串2拼接到一起。
 
 
-### PL/SQL 相关
+## PL/SQL 相关
 
-#### PLSQL Developer解决中文乱码问题
+### PLSQL Developer解决中文乱码问题
 
 1.查服务端字符集编码
 
@@ -773,7 +773,7 @@ select * from V$NLS_PARAMETERS
 
 
 
-#### 存储过程
+### 存储过程
 
 ```sql
 -- 尚未测试
@@ -796,10 +796,7 @@ begin
       --  test db link 数据库 连接
      execute immediate 'create database link dblink1 
      connect to  用户名 identified by "密码"
-     using ''192.168.1.100:1521/orcl''
-     ';
-
-   
+     using ''192.168.1.100:1521/orcl'' ';
 
    --    open out_cursor for 'select * from A@dblink1';
   
@@ -818,9 +815,9 @@ end  ;
 
 
 
-### 常见错误
+## 常见错误
 
-#### 锁账户
+### 锁账户
 
 账号被锁定的解决办法
 
@@ -868,7 +865,7 @@ alter user user_name account unlock;
 ```
 
 
-#### 锁表
+### 锁表
 
 查看被锁的表和解锁
 
