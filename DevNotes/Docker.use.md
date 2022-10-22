@@ -946,8 +946,10 @@ docker restart kibana
 1、拉取镜像
 
 ```bash
-docker pull gitlab/gitlab-ce
+docker pull gitlab/gitlab-ce:latest
 ```
+我这里的版本是15.4.3
+
 2、准备映射目录
 
 将 GitLab 的配置 (etc) 、 日志 (log) 、数据 (data) 放到容器之外进行持久化， 便于日后升级， 因此先准备这三个目录
@@ -960,10 +962,43 @@ mkdir -p /opt/docker/gitlab/data
 
 3、启动容器
 
+
+容器组件内使用默认端口：
+- smtp_port: 465
+- incoming_email_port: 993
+- ldap_servers: 389
+- smartcard_client_certificate_required_port: 3444
+- forti_authenticator_port： 443
+- gitlab_shell_ssh_port： 22
+- postgresql db_port： 5432
+- redis_port： 6379
+- gitlab puma: 8080
+- gitlab puma exporter_port: 8083
+- gitlab sidekiq: 8082
+- gitlab health_checks_listen_port: 8092
+- nginx: 80
+- udp_log_shipping_port: 514
+- registry_nginx['listen_port'] = 5050
+- node_exporter['listen_address'] = 9100
+- redis_exporter['listen_address'] = 9121
+- postgres_exporter['listen_address'] = 9187
+- pgbouncer_exporter['listen_address'] = 9188
+- gitlab_exporter['listen_port'] = 9168
+- gitlab_exporter['elasticsearch_url'] = 'http://localhost:9200'
+- grafana['http_port'] = 3000
+- praefect['database_port'] = 6432
+- patroni['port'] = '8008'
+- spamcheck['port'] = 8001
+- spamcheck['monitoring_address'] = ':8003'
+
+如要修改端口的时候慎用以上端口。
+
+> 此处http端口如果不是使用80，建议两个端口保持一致。
+
 ```bash
 docker run --detach \
   --hostname gitlab.zhangxiaocai.cn \
-  -p 8443:443 -p 8880:80 -p 2222:22 \
+  -p 8443:443 -p 8888:8888 -p 2222:22 \
   --name gitlab \
   --privileged=true \
   --volume /opt/docker/gitlab/config/:/etc/gitlab/ \
@@ -984,6 +1019,8 @@ docker run --detach \
     --privileged=true 使得容器内的root拥有真正的root权限。否则，container内的root只是外部的一个普通用户权限
     
 gitlab启动成功后，浏览器访问 `http://192.168.80.81:8880` 访问。
+
+
 
 4、登录密码
 
@@ -1075,6 +1112,10 @@ vi /opt/docker/gitlab/config/gitlab.rb
 修改配置
 
 ```text
+puma['min_threads'] = 2
+puma['max_threads'] = 2
+puma['per_worker_max_memory_mb'] = 512
+
 # 最大并发数,最小值得是2 
 sidekiq['max_concurrency'] = 2
 # 缓存大小
@@ -1088,4 +1129,247 @@ postgresql['max_worker_processes'] = 1
 ```text
 gitlab-ctl reconfigure
 gitlab-ctl restart
+gitlab-ctl status
+```
+
+内存占用平均约 2.4g/4g
+
+6.查看版本
+
+(1) 登录之后：
+- 访问 http://192.168.80.81:8880/help
+- 访问 http://192.168.80.81:8880/admin
+
+(2)容器方式查版本文件
+
+```bash
+root@a9476e4d39e8:/# cat /opt/gitlab/embedded/service/gitlab-rails/VERSION
+15.4.3
+```
+
+(3)进容器后执行命令
+
+```bash
+root@a9476e4d39e8:/# gitlab-rake gitlab:env:info
+System information
+System:
+Current User:   git
+Using RVM:      no
+Ruby Version:   2.7.5p203
+Gem Version:    3.1.6
+Bundler Version:2.3.15
+Rake Version:   13.0.6
+Redis Version:  6.2.7
+Sidekiq Version:6.4.2
+Go Version:     unknown
+
+GitLab information
+Version:        15.4.3
+Revision:       bd548d5c605
+Directory:      /opt/gitlab/embedded/service/gitlab-rails
+DB Adapter:     PostgreSQL
+DB Version:     13.6
+URL:            http://a9476e4d39e8
+HTTP Clone URL: http://a9476e4d39e8/some-group/some-project.git
+SSH Clone URL:  git@a9476e4d39e8:some-group/some-project.git
+Using LDAP:     no
+Using Omniauth: yes
+Omniauth Providers: 
+
+GitLab Shell
+Version:        14.10.0
+Repository storage paths:
+- default:      /var/opt/gitlab/git-data/repositories
+GitLab Shell path:              /opt/gitlab/embedded/service/gitlab-shell
+```
+
+7.修改仓库地址
+
+```text
+vi /opt/docker/gitlab/config/gitlab.rb
+```
+修改 `external_url` 的地址,此处端口内置nginx的80端口。
+
+external_url 'http://192.168.80.81:8888'
+
+
+## docker 安装 gitlab-runner
+
+
+1、拉取镜像
+
+```bash
+docker pull gitlab/gitlab-runner:latest
+```
+我这里的版本是15.4.3
+
+2、准备映射目录
+
+将 GitLab 的配置 (etc) 、 日志 (log) 、数据 (data) 放到容器之外进行持久化， 便于日后升级， 因此先准备这三个目录
+
+```bash
+mkdir -p /opt/docker/gitlab-runner/config
+mkdir -p /opt/docker/gitlab-runner/run/
+```
+
+3、启动容器
+ 
+
+如要修改端口的时候慎用以上端口。
+
+> 此处http端口如果不是使用80，建议两个端口保持一致。
+
+```bash
+docker run -d --name gitlab-runner --restart always \
+ -v /opt/docker/gitlab-runner/config:/etc/gitlab-runner \
+ -v /opt/docker/gitlab-runner/run/docker.sock:/var/run/docker.sock \
+ gitlab/gitlab-runner:latest
+```
+或
+
+```bash
+docker run -d --name gitlab-runner \
+ -v /opt/docker/gitlab-runner/config:/etc/gitlab-runner \
+ -v /opt/docker/gitlab-runner/run/docker.sock:/var/run/docker.sock \
+ gitlab/gitlab-runner:latest
+```
+
+4、注册runner
+
+```bash
+docker logs -f gitlab-runner
+```
+内容：
+
+```text
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0
+```
+
+启动之后，查看日志会报错 `config.toml` 文件找不到，这个问题不必担心，当我们将`gitlab-runner`注册到`Gitlab`时，会自动生成该文件；
+
+接下来需要把gitlab-runner注册到Gitlab，打开Project->Settings->CI/CD功能，获取到runner注册需要使用的地址和token；
+
+
+
+进入容器注册runner 
+
+```bash
+docker exec -it gitlab-runner /bin/bash
+```
+
+在容器内使用如下命令注册runner；
+
+```bash
+gitlab-runner register
+```
+
+
+注册时会出现交互界面，提示你输入注册地址、token、执行器类型等信息，ssh执行器能远程执行Linux命令：
+
+输入Gitlab实例的地址，地址是你手动设置Runner区域里面的URL
+
+```text
+> Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )
+http://192.168.80.81:8888/
+```
+
+输入token
+
+token是你手动设置Runner区域里面的令牌在`http://192.168.80.81:8888/admin/runners` 可以找到。
+
+```text
+> Please enter the gitlab-ci token for this runner
+rShotv22ox2Lyfs__EKP
+```
+
+输入Runner的描述
+
+```text
+> Please enter the gitlab-ci description for this runner
+[hostname] test_runner
+```
+
+输入与Runner关联的标签
+标签是为了让后期在CI脚本中指定选择某个或者多个Runner，这里我们设置他的标签为test，你们可以设置其他的
+
+```text
+> Please enter the gitlab-ci tags for this runner (comma separated):
+test
+```
+
+输入Runner的执行器
+由于我们都是基于Docker，所以这里选择执行器为Docker
+
+```text
+> Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:
+docker
+```
+
+设置执行器的版本
+
+```text
+> Please enter the Docker image (eg. ruby:2.1):
+docker:latest
+```
+
+退出容器
+
+```text
+exit
+```
+通过以上命令后，就创建成功runner
+
+> 如果你的地址没有问题，但是一直注册失败，请使用防火墙开放 8888 端口。我就是没有开放端口，导致注册一直失败。
+
+我的执行结果：
+
+```bash
+root@2f2b0215d692:/# gitlab-runner register
+Runtime platform                                    arch=amd64 os=linux pid=69 revision=0d4137b8 version=15.5.0
+Running in system-mode.                            
+                                                   
+Enter the GitLab instance URL (for example, https://gitlab.com/):
+http://192.168.80.81:8888
+Enter the registration token:
+rShotv22ox2Lyfs__EKP
+Enter a description for the runner:
+[2f2b0215d692]: test_runner
+Enter tags for the runner (comma-separated):
+test
+Enter optional maintenance note for the runner:
+docker
+Registering runner... succeeded                     runner=rShotv22
+Enter an executor: custom, docker-ssh, parallels, shell, ssh, instance, docker, virtualbox, docker+machine, docker-ssh+machine, kubernetes:
+docker
+Enter the default Docker image (for example, ruby:2.7):
+docker:stable
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
+ 
+Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml" 
+root@2f2b0215d692:/# 
+```
+
+5、取消注册runner
+
+通过gitlab-runner unregister命令取消注册
+
+(1) 通过 url 和 token 取消注册
+
+```bash
+gitlab-runner unregister --url http://192.168.80.81:8888 --token rShotv22ox2Lyfs__EKP
+```
+        
+
+(2) 通过name取消注册
+
+```bash
+gitlab-runner unregister --name test-runner
+```
+
+(3) 删除所有注册runner
+
+```bash
+gitlab-runner unregister --all-runners
 ```
