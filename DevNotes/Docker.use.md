@@ -1321,7 +1321,8 @@ exit
 ```
 通过以上命令后，就创建成功runner
 
-> 如果你的地址没有问题，但是一直注册失败，请使用防火墙开放 8888 端口。我就是没有开放端口，导致注册一直失败。
+{: .important }
+>如果你的地址没有问题，但是一直注册失败，请使用防火墙开放 8888 端口。我就是没有开放端口，导致注册一直失败。
 
 我的执行结果：
 
@@ -1345,7 +1346,7 @@ Enter an executor: custom, docker-ssh, parallels, shell, ssh, instance, docker, 
 docker
 Enter the default Docker image (for example, ruby:2.7):
 docker:stable
-Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
+Runner registered successfully. Feel free to start it, but if it is running already the config should be automatically reloaded!
  
 Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml" 
 root@2f2b0215d692:/# 
