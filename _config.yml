@@ -21,3 +21,17 @@ aux_links:
   "NoteBook on GitHub":
     - "//github.com/small-rose/NoteBook"
     -
+
+callouts:
+  warning:
+    title: warning
+    color: yellow
+  note:
+    title: note
+    color: blue
+  important:
+    title: important
+    color: red
+  tips:
+    title: important
+    color: green
