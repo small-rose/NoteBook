@@ -22,6 +22,11 @@ aux_links:
     - "//github.com/small-rose/NoteBook"
     -
 
+plugins:
+  - jekyll-seo-tag
+  - jemoji
+
+
 callouts:
   warning:
     title: warning
