@@ -167,6 +167,7 @@ GitHub加速下载
 <a href="https://www.bilibili.com/video/BV1wy4y1D7JT" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">React</a>
 <a href="https://babeljs.io/docs/en/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">babeljs</a>
 <a href="https://www.tslang.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">TypeScript</a>
+<a href="https://www.jhipster.tech/cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">JHipster</a>
 
 </p>
 
@@ -189,6 +190,7 @@ GitHub加速下载
 
 <p mark="linkMe">
 
+<a href="https://my-mind.github.io/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">My-Mind</a>
 <a href="https://c.runoob.com/front-end/710/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">XML在线格式化</a>
 
 <a href="https://www.diffchecker.com/diff" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">文本/文件在线比较</a>
@@ -233,7 +235,8 @@ GitHub加速下载
 <a href="http://mirrors.163.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.163</a>
 <a href="https://www.linux.org/pages/download/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">linux.download</a>
 <a href="https://www.diagrams.net/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">drawio-desktop</a>
-
+<a href="http://dootask.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">dootask</a>
+<a href="https://etherpad.org/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">etherpad</a>
 
 </p>
 
@@ -252,6 +255,7 @@ GitHub加速下载
 
 <a href="https://kanboard.org/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">kanboard</a>
 <a href="https://github.com/wekan/wekan" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wekan</a>
+<a href="https://github.com/RocketChat/Rocket.Chat" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Rocket.Chat</a>
 
 
 </p>

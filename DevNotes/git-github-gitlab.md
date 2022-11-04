@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Git & GitHub
-parent: DevNotes
+parent: Git
 nav_order: 3
 ---
 
@@ -18,8 +18,6 @@ nav_order: 3
 
 Git
 -----------------------------
-
-## git 常用命令
 
 
 ### 生成公私钥

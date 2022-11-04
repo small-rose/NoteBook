@@ -103,6 +103,19 @@ docker run [options]
 |–expose=[]	|开放一个端口或一组端口；|
 
 
+**docker容器占用端口查询**
+
+单独查看一个容器的端口号的命令：
+
+```
+docker port 容器号
+```
+
+查看启动的容器占用的列表命令
+
+```
+netstat -nlp |grep docker-proxy|awk '{print $4}'|sort
+```
 
 
 
@@ -319,8 +332,15 @@ bridge模式时docker的默认网络模式，不写-net参数，就是bridge模�
 ```bash
 docker network ls
 ```
+
+```
+docker network rm  名字
+```
+
 自定义网络固定IP
+
 ```bash
+# bridge 模式
 docker network create --subnet 172.18.0.0/16 mynetwork
 
 docker run -itd --name test2 --net mynetwork --ip 172.18.0.100 centos:latest /bin/bash
@@ -337,6 +357,57 @@ docker run -itd --name test3 --privileged=true centos /sbin/init
 ```
 
 `/sbin/init` 内核启动时主动呼叫的第一个进程
+
+docker Registry 私有仓库
+-----------------------
+
+1、拉取镜像
+
+```bash
+docker pull registry
+```
+
+2.准备持久卷
+
+```
+mkdir -p /opt/storage/registry
+```
+
+3. 运行Registry镜像
+
+```
+docker run -d --name registry -p 5000:5000 -v /opt/storage/registry:/tmp/registry registry
+```
+
+4. 查看镜像仓库中的所有镜像
+
+```
+curl http://127.0.0.1:5000/v2/_catalog
+```
+
+5. 配置仓库可直接通过http方式访问
+
+docker默认是传输方式使用https协议，内网如果暂时没有sttps证书，所以此处不配置https证书，直接设置可信源，使我们内网可以通过http方式访问
+
+修改vim /etc/docker/daemon.json,添加以下内容:
+
+没有daemon.json文件则新建.
+
+```json
+{ 
+    "insecure-registries" : [ "your-server-ip:5000" ] 
+}
+```
+
+重启docker
+
+```bash
+systemctl daemon-reload
+systemctl restart docker
+docker start registry
+```
+
+
 
 docker UI
 -----------------------
@@ -355,10 +426,15 @@ docker search portainer
 docker pull portainer/portainer　
 ```
 
+```
+mkdir -p /opt/docker/portainer_data
+```
+
+
 **启动**
 
 ```bash
-docker run -d -p 9000:9000 --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data --name prtainer-zzy portainer/portainer
+docker run -d -p 9000:9000 --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /opt/docker/portainer_data:/data --name prtainer-zzy portainer/portainer
 ```
 
 参数说明：
@@ -368,7 +444,8 @@ docker run -d 　　　　　　　　# 后台运行容器
 　　-p 9000:9000 　　　　　　 # 默认9000端口，映射到宿主机，通过本地地址访问
 　　--name prtainer-test 　　　# 指定容器名
 　　--restart=always 　　　　  # 设置自动启动
-    -v /opt/portainer:/data     # 保存portainer数据到宿主机
+    --ip 172.18.0.4         # 固定IP
+    -v /opt/docker/portainer_data:/data     # 保存portainer数据到宿主机
     -v /var/run/docker.sock:/var/run/docker.sock 　　# 单机方式必须指定
 　　portainer/portainer　
 ```
@@ -1374,3 +1451,75 @@ gitlab-runner unregister --name test-runner
 ```bash
 gitlab-runner unregister --all-runners
 ```
+
+## docker 安装 MongoDB 6
+
+1、拉取镜像
+
+```bash
+docker pull mongo:6.0
+```
+2、准备持久化卷
+
+```
+mkdir -p /opt/docker/mongo/conf/
+mkdir -p /opt/docker/mongo/data/
+```
+
+3、启动
+
+```bash
+docker run -d --name mongo --privileged=true -p 27017:27017 -v /opt/docker/mongo/data:/data/db -v /opt/docker/mongo/conf/:/data/configdb mongo:latest --auth6.0
+```
+
+
+进入容器设置密码
+```bash
+docker exec -it 5cf5e340a50ff mongosh admin
+```
+
+登录mongo命令 ``mongosh admin``
+
+```
+root@5cf5e340a50f:~# mongosh admin
+Current Mongosh Log ID:	6363b1798f98328d8524363b
+Connecting to:		mongodb://127.0.0.1:27017/admin?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.0
+Using MongoDB:		6.0.2
+Using Mongosh:		1.6.0
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+admin> use admin
+```
+
+创建管理员用户
+
+```
+admin> db.createUser({user: 'admin', pwd: 'small.cai', roles: [{role: "userAdminAnyDatabase", db: "admin" }]});
+{ ok: 1 }
+admin> 
+```
+
+登录验证密码
+
+```
+admin> db.auth('admin', 'small.cai')
+{ ok: 1 }
+admin> 
+```
+
+创建自己的库
+
+```
+admin> use smchat
+switched to db smchat
+smchat> db.createUser({user:'smchat',pwd:'small.cai',roles:[{role:'dbOwner',db:'smchat'}]})
+{ ok: 1 }
+smchat>
+```
+
+连接串：
+
+```text
+mongodb://smchat:small.cai@your_ip:27017/smchat
+````
