@@ -2,7 +2,7 @@
 layout: default
 title: Git & GitHub
 parent: Git
-nav_order: 3
+nav_order: 1
 ---
 
 # Git & GitHub

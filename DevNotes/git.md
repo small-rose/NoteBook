@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Git Emoji
+title: Git
 has_children: true
 permalink: docs/git
 ---
