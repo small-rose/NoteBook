@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Git Emoji
-parent: Git
-nav_order: 1
+has_children: true
+permalink: docs/git
 ---
 
-# Git emoji
+# Git About
 {: .no_toc }
 
 ## Table of contents
