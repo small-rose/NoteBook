@@ -114,7 +114,7 @@ systemctl stop firewalld && systemctl disable firewalld && iptables -F
 ```
 
 {: .tips }
-> 注意，生产环境请依次开发所需端口，如6443等。 可以参考 [k8s 生产级部署]()。
+> 注意，生产环境请依次开放所需默认端口，如（master）6443、2379-2380、2379-2380、10250、10257、10259,(worker)10250、30000-32767，也可以全部都自定义。
 
 关闭selinux
 
