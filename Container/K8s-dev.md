@@ -113,6 +113,7 @@ ping   k8s-node02
 systemctl stop firewalld && systemctl disable firewalld && iptables -F
 ```
 
+{: .tips }
 > 注意，生产环境请依次开发所需端口，如6443等。 可以参考 [k8s 生产级部署]()。
 
 关闭selinux
@@ -259,6 +260,7 @@ sh /etc/sysconfig/modules/ipvs.modules
 lsmod | grep -e ip_vs -e nf_conntrack_ipv4
 ```
 
+{: .important }
 > 特别注意，linux kernel 4.19版本已经将 nf_conntrack_ipv4 更新为 nf_conntrack， 而 kube-proxy 1.13 以下版本，强依赖 nf_conntrack_ipv4。 我的环境内核版本3.10 所以写是 nf_conntrack_ipv4，内核版本 >= 4.19 要写 nf_conntrack，可以升级 kube-proxy 1.13+，或者降级内核版本。
 
 
@@ -677,7 +679,7 @@ echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
 exec bash
 ```
 
-### 9、kubectl 集群故障排查
+## 9、kubectl 集群故障排查
 
 - [集群故障排查](https://kubernetes.io/zh-cn/docs/tasks/debug/debug-cluster/)
 
