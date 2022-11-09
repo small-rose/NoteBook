@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Docker Use
-parent: DevNotes
+parent: Container
 nav_order: 5
 ---
 
@@ -117,7 +117,37 @@ docker port 容器号
 netstat -nlp |grep docker-proxy|awk '{print $4}'|sort
 ```
 
+**修改docker存储路径**
 
+在docker 19.xx 版本以后使用data-root来代替graph
+
+docker version < 19 版本之前:
+
+```json
+{
+"graph": "/u01/docker-data", 
+"storage-driver": "devicemapper", 
+"registry-mirrors": ["https://registry.docker-cn.com", "http://hub-mirror.c.163.com","https://docker.mirrors.ustc.edu.cn"] 
+}
+````
+
+
+docker version >= 19 版本之前:
+
+```json
+{
+"data-root": "/u01/docker-data", 
+"storage-driver": "devicemapper", 
+"registry-mirrors": ["https://registry.docker-cn.com", "http://hub-mirror.c.163.com","https://docker.mirrors.ustc.edu.cn"] 
+}
+```
+
+修改成功验证
+
+```
+systemctl restart docker
+docker info
+```
 
 docker 环境变量
 --------------------------------------------

@@ -463,6 +463,29 @@ select * from all_tab_columns where Table_Name='T_APPLICATIONS';
 select * from dba_tab_columns where Table_Name='T_APPLICATIONS';
 ```
 
+
+不含有管理员的表
+
+```SQL
+-- 查表对应的列
+SELECT UTC.COLUMN_NAME as columnName, --列名
+       UTC.DATA_TYPE,
+       CASE UTC.DATA_TYPE WHEN 'DATE' THEN  UTC.DATA_TYPE
+            ELSE    UTC.DATA_TYPE || '(' || UTC.DATA_LENGTH || ')'
+       END columnType,  -- 类型
+       UCC.COMMENTS as columnComment,  -- 表字段的注释
+       UTC.DATA_DEFAULT as dataDefault,  -- 默认值
+        UTC.NULLABLE as nullable
+ FROM USER_TAB_COLUMNS  UTC ,
+     USER_COL_COMMENTS UCC
+WHERE UTC.TABLE_NAME =UCC.TABLE_NAME
+  AND UTC.COLUMN_NAME = UCC.COLUMN_NAME
+  AND UTC.TABLE_NAME= 'RISK_SURVEY_PARAM'
+  ORDER BY UTC.COLUMN_ID ASC
+```
+
+含有管理员的表
+
 ```sql
 -- 查表对应的列
 SELECT UTC.COLUMN_NAME as columnName, --列名

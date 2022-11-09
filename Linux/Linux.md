@@ -84,7 +84,7 @@ vi /etc/sysconfig/network-scripts/ifcfg-ens33
 TYPE=Ethernet
 PROXY_METHOD=none
 BROWSER_ONLY=no
-BOOTPROTO=none
+BOOTPROTO=static
 DEFROUTE=yes
 IPV5_FAILURE_FATAL=no
 IPV6INIT=yes
@@ -107,6 +107,20 @@ DNS1=192.168.80.1
 DNS2=8.8.8.8
 DNS3=223.6.6.6
 DNS4=114.114.114.114
+```
+
+这个是网络配置参数：
+ - BOOTPROTO=static 静态IP
+ - BOOTPROTO=dhcp 动态IP
+ - BOOTPROTO=none 无（不指定）
+
+通常情况下是dhcp或者static,固定IP可以为 static或者none
+ - ONBOOT ：是否开机
+
+重启网络即可
+
+```bash
+service network restart
 ```
 
 ## wget

@@ -83,3 +83,52 @@ RR (Resource Records) – 来自WIKI百科以及计算机网络: 自顶向下(7t
 
 ![Resource Records](../Assets/images/resource_records.png)
 
+
+## windows 软连接
+
+windows 在 win10 创建类似 linux 的软链接，需要开启开发人员模式（在「设置」搜 develop）。
+
+命令：`mklink`
+
+删除：`rmdir`
+
+创建：
+```
+mklink D:\ghi.txt C:\Users\Tom\Desktop\test-link\abc\ghi.txt
+```
+
+删除：
+
+```
+rmdir D:\ghi.txt 
+```
+
+- 参数顺序跟 linux 相反，即先软链接名（link file）后源文件（source file）；且就算软链接名跟源文件同名，也不可省略。
+- 如果当前就在 D:\，第一个参数（软链接名）可以去掉路径前缀。
+- 第二个参数（源文件）也可以用相对路径，但这样把软链接移去其它路径就会引用失败。所以首选绝对路径。
+
+创建符号链接。
+
+MKLINK [[/D] | [/H] | [/J]] Link Target
+
+-    /D      创建目录符号链接。默认为文件符号链接。
+-    /H      创建硬链接而非符号链接。
+-    /J      创建目录联接。
+-    Link    指定新的符号链接名称。
+-    Target  指定新链接引用的路径
+            (相对或绝对)。
+            
+```text
+mklink D:\ghi.txt C:\Users\Tom\Desktop\test-link\abc\ghi.txt
+```
+
+windows 添加软连接
+
+```text
+mklink /j "C:\Program Files\Docker\"  "D:\apps\docker"
+```
+windows 移除软连接
+
+```text
+rmdir "C:\Program Files\Docker\"
+```

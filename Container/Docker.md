@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Docker Install
-parent: DevNotes
-nav_order: 5
+parent: Container
+nav_order: 1
 ---
 
 # Docker Install
