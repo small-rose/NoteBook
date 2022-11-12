@@ -164,6 +164,16 @@ https://192.168.147.130:31038/#/login
 
 输入token登录、
 
+token 是会过期的。
+
+
+删除服务账户和集群角色绑定：
+
+```bash
+kubectl -n kubernetes-dashboard delete serviceaccount dashboard-admin
+kubectl -n kubernetes-dashboard delete clusterrolebinding dashboard-admin
+```  
+
 
 [k8s-rabc权限控制](https://blog.csdn.net/BigData_Mining/article/details/88849696)
 

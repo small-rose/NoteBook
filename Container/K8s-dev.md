@@ -1,6 +1,6 @@
 ---
 layout: default
-title: K8s 1.25.x Install
+title: Kubernetes Cluster
 parent: Container
 nav_order: 10
 ---
@@ -705,6 +705,7 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6InVLWGVwWTU0akNZdk9WbHRNZkhfRDZ4WEUtTWJRclhCVUw1Qk5K
 
 帖入token登录即可。
 
+token 默认是 15 分钟过期，可以修改 `--token-ttl`的值进行修改。
 
 
 ## 7、检查状态
