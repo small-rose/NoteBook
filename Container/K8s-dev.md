@@ -382,6 +382,7 @@ ctr version && runc --version
 
 {: .note }
 > <1>`ctr`是`containerd`自带的CLI命令行工具。`crictl`是k8s中CRI（容器运行时接口）的客户端，k8s使用该客户端和containerd进行交互。所以就也安装一下吧。
+>
 > <2> containerd 相比于docker , 多了namespace概念, 每个image和container 都会在各自的namespace下可见，crictl 使用命名空间 k8s.io 。
 
 ## 3、安装 crictl [所有节点安装]
@@ -705,7 +706,7 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6InVLWGVwWTU0akNZdk9WbHRNZkhfRDZ4WEUtTWJRclhCVUw1Qk5K
 
 帖入token登录即可。
 
-token 默认是 15 分钟过期，可以修改 `--token-ttl`的值进行修改。
+~~token 默认是 15 分钟过期，可以修改 `--token-ttl`的值进行修改。~~
 
 
 ## 7、检查状态
@@ -904,7 +905,8 @@ kubeadm init  --apiserver-advertise-address=192.168.147.130 --image-repository r
 
 
 :memo: 常见错误4(所有节点)
-```txt
+
+```
 WARN[0000] image connect using default endpoints: [unix:///var/run/dockershim.sock unix:///run/containerd/containerd.sock unix:///run/crio/crio.sock unix:///var/run/cri-dockerd.sock]. As the default settings are now deprecated, you should set the endpoint instead. 
 ERRO[0000] unable to determine image API version: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial unix /var/run/dockershim.sock: connect: no such file or directory"  
 ```
