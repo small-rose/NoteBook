@@ -38,5 +38,5 @@ callouts:
     title: important
     color: red
   tips:
-    title: important
+    title: tips
     color: green
