@@ -230,6 +230,7 @@ echo 'Asia/Shanghai' > /etc/timezone
 
 # 二、安装 k3s 【脚本在线安装】
 
+>从 v1.17.4+k3s1 开始，K3s 支持[自动升级](https://www.w3cschool.cn/tedsy/tedsy-oryn3pjz.html)。
 
 ## 1、安装 containerd 【所有节点】
 
@@ -329,6 +330,8 @@ K108b359c44cd8f494ac630a6978819044b83aa85fff25c2e5f07ad7d2103eb9598::server:f1a9
 验证集群状态：
 
 ```bash
+systemctl status k3s-agent -l
+
 kubectl get nodes
 ```
 
@@ -400,6 +403,8 @@ https://get.k3s.io
 ```bash
 sudo mkdir -p /var/lib/rancher/k3s/agent/images/
 sudo cp ./k3s-airgap-images-arm64.tar /var/lib/rancher/k3s/agent/images/
+sudo cp k3s /usr/local/bin/k3s
+chmod +x /usr/local/bin/k3s
 ```
 
 载入镜像到本地镜像仓库，也可放自己的私有仓库。
@@ -410,12 +415,8 @@ sudo cp ./k3s-airgap-images-arm64.tar /var/lib/rancher/k3s/agent/images/
 docker load -i k3s-airgap-images-amd64.tar
 
 # containerd 容器运行时
-crictl image import k3s-airgap-images-amd64.tar
+crictl -n=k8s.io image import k3s-airgap-images-amd64.tar
 ```
-
-将 k3s 二进制文件放在 ​`/usr/local/bin/k3s` ​路径下并授权可执行权限。
-
-
 
 2、执行安装
 
@@ -433,11 +434,13 @@ crictl image import k3s-airgap-images-amd64.tar
  -  –node-taint value：用一组污点注册kubelet（默认情况下，k3s 启动 master 节点也同时具有 worker 角色，是可调度的，因此可以在它们上启动工作，可以采用此方式解决）
 
 
+**k3s-server 节点安装**
+
 - 单节点模式
 
 ```bash
 
-# docker 为容器运行时
+# docker 为容器运行时 多了一个 --docker 参数
 INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_EXEC='server --write-kubeconfig ~/.kube/config --write-kubeconfig-mode 644  --docker --node-ip 152.136.181.95' ./k3s-ag-install.sh
 
 # containerd 为容器运行时
@@ -454,3 +457,40 @@ INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_EXEC='server --write-kubeconfig ~/.ku
 # ETCD
 INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_EXEC='server --write-kubeconfig ~/.kube/config --write-kubeconfig-mode 644 --node-ip 192.168.147.140  --datastore-endpoint='https://ETCD_IP:2379'' ./k3s-ag-install.sh
 ```
+
+**k3s-agent 节点安装**
+
+获取 server 节点 Token：K3S_TOKEN 是 Server 端的，位于 `/var/lib/rancher/k3s/server/node-token` 下
+
+```bash
+cat /var/lib/rancher/k3s/server/node-token
+```
+
+上传 k3s 二进制文件：
+
+```bash
+cp k3s /usr/local/bin/k3s
+chmod +x /usr/local/bin/k3s
+```
+
+加入 server 集群
+
+```bash
+# 新增临时变量的模式传参
+export INSTALL_K3S_SKIP_DOWNLOAD=true
+
+export K3S_TOKEN=K108b359c44cd8f494ac630a6978819044b83aa85fff25c2e5f07ad7d2103eb9598::server:f1a9bcb9262fccd7a602fd4dbf2e6c38
+
+export K3S_URL=https://192.168.147.140:6443
+
+INSTALL_K3S_EXEC=' --write-kubeconfig ~/.kube/config --write-kubeconfig-mode 644' ./k3s-install.sh
+```
+
+也可以整理出一条命令:
+
+```bash
+INSTALL_K3S_SKIP_DOWNLOAD=true \
+INSTALL_K3S_EXEC='--server https://192.168.147.140:6443 --token K108b359c44cd8f494ac630a6978819044b83aa85fff25c2e5f07ad7d2103eb9598::server:f1a9bcb9262fccd7a602fd4dbf2e6c38  --write-kubeconfig ~/.kube/config --write-kubeconfig-mode 644' \
+./k3s-install.sh
+```
+
