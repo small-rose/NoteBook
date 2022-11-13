@@ -60,7 +60,7 @@ wget -O https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy
 
 vim recommended.yaml
 
-#在kind 为 service 部分，增加了 type: NodePort 。`nodePort: 30001` 是在指定pod容器端口，不指定就是随机端口。
+#在kind 为 service 部分，增加了 type: NodePort 。`nodePort: 30001` 是在指定pod容器端口，不指定就是随机端口,由于 NodePort 限制，默认限制端口范围只能为 30000-32767。
 
 ----
 spec:
