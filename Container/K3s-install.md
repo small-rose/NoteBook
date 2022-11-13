@@ -371,12 +371,16 @@ k3s-agent1   Ready    <none>                 13m   v1.25.3+k3s1
 
 # 二、AirGap安装 k3s 【下载镜像离线安装】
 
+
+## 1、基础环境准被
+
 （1）这里基础环境跟前面一样。
+
 （2）安装 containerd 【所有节点】 (喜欢 docker 或其他容器运行时的都可以)
+
 （3）server节点访问其他节点的免密设置
 
-
-1、准备安装文件
+## 2、准备安装文件
 
 
 （1）下载镜像包 https://github.com/k3s-io/k3s/releases/
@@ -386,8 +390,7 @@ k3s-agent1   Ready    <none>                 13m   v1.25.3+k3s1
 （3）下载安装脚本
 
 
-```txt
-
+```
 # 镜像文件地址
 https://github.com/k3s-io/k3s/releases/download/v1.25.3+k3s1/k3s-airgap-images-arm64.tar
 
@@ -418,7 +421,7 @@ docker load -i k3s-airgap-images-amd64.tar
 crictl -n=k8s.io image import k3s-airgap-images-amd64.tar
 ```
 
-2、执行安装
+## 3、执行安装
 
 [K3S 安装配置参考](https://docs.rancher.cn/docs/k3s/installation/install-options/server-config/_index)
 
@@ -494,3 +497,13 @@ INSTALL_K3S_EXEC='--server https://192.168.147.140:6443 --token K108b359c44cd8f4
 ./k3s-install.sh
 ```
 
+## 4、验证安装
+
+```bash
+systemctl status k3s -l
+systemctl status k3s-agent -l
+kubectl get node
+kubectl get node -o wide
+kubectl get svc
+kubectl get pod -n kube-sys
+```
