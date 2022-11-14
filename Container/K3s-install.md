@@ -118,6 +118,9 @@ ping   k3s-agent2
 ```bash
 systemctl stop firewalld && systemctl disable firewalld && iptables -F
 ```
+{: .tips }
+> 注意，生产环境如果不能关闭防火墙，跟k8s一样,请依次开放所需默认端口，如（master）6443、2379-2380、2379-2380、10250、10257、10259,(worker)10250、30000-32767，也可以全部都自定义。
+
 
 关闭selinux
 
@@ -557,3 +560,279 @@ svclb-traefik-4fe23bf5-v87ck              2/2     Running     0             14m
 ```bash
 /usr/local/bin/k3s-agent-uninstall.sh
 ```
+
+
+# 四、安装 rancher
+
+## 安装 helm
+
+### 1、自动安装
+
+下载安装脚本
+
+```bash
+curl -fsSL -o install_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+
+#设置权限
+chmod 700 install_helm.sh
+
+#执行脚本
+./install_helm.sh
+```
+
+### 2、手动安装（针对网络不稳定）
+
+下载
+
+```bash
+cd /opt/k3s-plugins/
+wget https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz
+
+
+# 解压
+
+tar -zxvf helm-v3.2.4-linux-amd64.tar.gz
+
+# 移动 或者使用软连接
+
+mv helm-v3.2.4-linux-amd64/helm  /usr/local/bin/helm
+ln -s /opt/k3s-plugins/helm-v3.2.4-linux-amd64/helm  /usr/local/bin/helm
+```
+
+### 3、配置仓库
+
+添加Helm Chart仓库
+
+```bash
+helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
+```
+
+
+## 2、安装证书
+
+由于Rancher Server 默认需要 SSL/TLS 配置来保证访问的安全性。
+
+- 1.**Rancher 生成的自签名证书**： 在这种情况下，您需要在集群中安装cert-manager。 Rancher 利用cert-manager签发并维护证书。Rancher 将生成自己的 CA 证书，并使用该 CA 签署证书。然后，cert-manager负责管理该证书。
+- 2.**Let's Encrypt**： Let's Encrypt 选项也需要使用cert-manager。但是，在这种情况下，cert-manager与特殊的 Issuer 结合使用，cert-manager将执行获取 Let's Encrypt 发行的证书所需的所有操作（包括申请和验证）。此配置使用 HTTP 验证（HTTP-01），因此负载均衡器必须具有可以从公网访问的公共 DNS 记录。
+- 3.**使用自签名证书**： 此选项使您可以使用自己的权威 CA 颁发的证书或自签名 CA 证书。 Rancher 将使用该证书来保护 WebSocket 和 HTTPS 流量。在这种情况下，您必须上传名称分别为tls.crt和tls.key的 PEM 格式的证书以及相关的密钥。如果使用私有 CA，则还必须上传该证书。这是由于您的节点可能不信任此私有 CA。 Rancher 将获取该 CA 证书，并从中生成一个校验和，各种 Rancher 组件将使用该校验和来验证其与 Rancher 的连接。
+
+由于我是虚拟机内网，使用自签名证书。
+
+官方生成证书脚本 [一键生成 ssl 自签名证书脚本](https://docs.rancher.cn/docs/rancher2/installation/resources/advanced/self-signed-ssl/_index/)
+
+```bash
+#!/bin/bash -e
+
+help ()
+{
+    echo  ' ================================================================ '
+    echo  ' --ssl-domain: 生成ssl证书需要的主域名，如不指定则默认为www.rancher.local，如果是ip访问服务，则可忽略；'
+    echo  ' --ssl-trusted-ip: 一般ssl证书只信任域名的访问请求，有时候需要使用ip去访问server，那么需要给ssl证书添加扩展IP，多个IP用逗号隔开；'
+    echo  ' --ssl-trusted-domain: 如果想多个域名访问，则添加扩展域名（SSL_TRUSTED_DOMAIN）,多个扩展域名用逗号隔开；'
+    echo  ' --ssl-size: ssl加密位数，默认2048；'
+    echo  ' --ssl-cn: 国家代码(2个字母的代号),默认CN;'
+    echo  ' 使用示例:'
+    echo  ' ./create_self-signed-cert.sh --ssl-domain=www.test.com --ssl-trusted-domain=www.test2.com \ '
+    echo  ' --ssl-trusted-ip=1.1.1.1,2.2.2.2,3.3.3.3 --ssl-size=2048 --ssl-date=3650'
+    echo  ' ================================================================'
+}
+
+case "$1" in
+    -h|--help) help; exit;;
+esac
+
+if [[ $1 == '' ]];then
+    help;
+    exit;
+fi
+
+CMDOPTS="$*"
+for OPTS in $CMDOPTS;
+do
+    key=$(echo ${OPTS} | awk -F"=" '{print $1}' )
+    value=$(echo ${OPTS} | awk -F"=" '{print $2}' )
+    case "$key" in
+        --ssl-domain) SSL_DOMAIN=$value ;;
+        --ssl-trusted-ip) SSL_TRUSTED_IP=$value ;;
+        --ssl-trusted-domain) SSL_TRUSTED_DOMAIN=$value ;;
+        --ssl-size) SSL_SIZE=$value ;;
+        --ssl-date) SSL_DATE=$value ;;
+        --ca-date) CA_DATE=$value ;;
+        --ssl-cn) CN=$value ;;
+    esac
+done
+
+# CA相关配置
+CA_DATE=${CA_DATE:-3650}
+CA_KEY=${CA_KEY:-cakey.pem}
+CA_CERT=${CA_CERT:-cacerts.pem}
+CA_DOMAIN=cattle-ca
+
+# ssl相关配置
+SSL_CONFIG=${SSL_CONFIG:-$PWD/openssl.cnf}
+SSL_DOMAIN=${SSL_DOMAIN:-'www.rancher.local'}
+SSL_DATE=${SSL_DATE:-3650}
+SSL_SIZE=${SSL_SIZE:-2048}
+
+## 国家代码(2个字母的代号),默认CN;
+CN=${CN:-CN}
+
+SSL_KEY=$SSL_DOMAIN.key
+SSL_CSR=$SSL_DOMAIN.csr
+SSL_CERT=$SSL_DOMAIN.crt
+
+echo -e "\033[32m ---------------------------- \033[0m"
+echo -e "\033[32m       | 生成 SSL Cert |       \033[0m"
+echo -e "\033[32m ---------------------------- \033[0m"
+
+if [[ -e ./${CA_KEY} ]]; then
+    echo -e "\033[32m ====> 1. 发现已存在CA私钥，备份"${CA_KEY}"为"${CA_KEY}"-bak，然后重新创建 \033[0m"
+    mv ${CA_KEY} "${CA_KEY}"-bak
+    openssl genrsa -out ${CA_KEY} ${SSL_SIZE}
+else
+    echo -e "\033[32m ====> 1. 生成新的CA私钥 ${CA_KEY} \033[0m"
+    openssl genrsa -out ${CA_KEY} ${SSL_SIZE}
+fi
+
+if [[ -e ./${CA_CERT} ]]; then
+    echo -e "\033[32m ====> 2. 发现已存在CA证书，先备份"${CA_CERT}"为"${CA_CERT}"-bak，然后重新创建 \033[0m"
+    mv ${CA_CERT} "${CA_CERT}"-bak
+    openssl req -x509 -sha256 -new -nodes -key ${CA_KEY} -days ${CA_DATE} -out ${CA_CERT} -subj "/C=${CN}/CN=${CA_DOMAIN}"
+else
+    echo -e "\033[32m ====> 2. 生成新的CA证书 ${CA_CERT} \033[0m"
+    openssl req -x509 -sha256 -new -nodes -key ${CA_KEY} -days ${CA_DATE} -out ${CA_CERT} -subj "/C=${CN}/CN=${CA_DOMAIN}"
+fi
+
+echo -e "\033[32m ====> 3. 生成Openssl配置文件 ${SSL_CONFIG} \033[0m"
+cat > ${SSL_CONFIG} <<EOM
+[req]
+req_extensions = v3_req
+distinguished_name = req_distinguished_name
+[req_distinguished_name]
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = clientAuth, serverAuth
+EOM
+
+if [[ -n ${SSL_TRUSTED_IP} || -n ${SSL_TRUSTED_DOMAIN} || -n ${SSL_DOMAIN} ]]; then
+    cat >> ${SSL_CONFIG} <<EOM
+subjectAltName = @alt_names
+[alt_names]
+EOM
+    IFS=","
+    dns=(${SSL_TRUSTED_DOMAIN})
+    dns+=(${SSL_DOMAIN})
+    for i in "${!dns[@]}"; do
+      echo DNS.$((i+1)) = ${dns[$i]} >> ${SSL_CONFIG}
+    done
+
+    if [[ -n ${SSL_TRUSTED_IP} ]]; then
+        ip=(${SSL_TRUSTED_IP})
+        for i in "${!ip[@]}"; do
+          echo IP.$((i+1)) = ${ip[$i]} >> ${SSL_CONFIG}
+        done
+    fi
+fi
+
+echo -e "\033[32m ====> 4. 生成服务SSL KEY ${SSL_KEY} \033[0m"
+openssl genrsa -out ${SSL_KEY} ${SSL_SIZE}
+
+echo -e "\033[32m ====> 5. 生成服务SSL CSR ${SSL_CSR} \033[0m"
+openssl req -sha256 -new -key ${SSL_KEY} -out ${SSL_CSR} -subj "/C=${CN}/CN=${SSL_DOMAIN}" -config ${SSL_CONFIG}
+
+echo -e "\033[32m ====> 6. 生成服务SSL CERT ${SSL_CERT} \033[0m"
+openssl x509 -sha256 -req -in ${SSL_CSR} -CA ${CA_CERT} \
+    -CAkey ${CA_KEY} -CAcreateserial -out ${SSL_CERT} \
+    -days ${SSL_DATE} -extensions v3_req \
+    -extfile ${SSL_CONFIG}
+
+echo -e "\033[32m ====> 7. 证书制作完成 \033[0m"
+echo
+echo -e "\033[32m ====> 8. 以YAML格式输出结果 \033[0m"
+echo "----------------------------------------------------------"
+echo "ca_key: |"
+cat $CA_KEY | sed 's/^/  /'
+echo
+echo "ca_cert: |"
+cat $CA_CERT | sed 's/^/  /'
+echo
+echo "ssl_key: |"
+cat $SSL_KEY | sed 's/^/  /'
+echo
+echo "ssl_csr: |"
+cat $SSL_CSR | sed 's/^/  /'
+echo
+echo "ssl_cert: |"
+cat $SSL_CERT | sed 's/^/  /'
+echo
+
+echo -e "\033[32m ====> 9. 附加CA证书到Cert文件 \033[0m"
+cat ${CA_CERT} >> ${SSL_CERT}
+echo "ssl_cert: |"
+cat $SSL_CERT | sed 's/^/  /'
+echo
+
+echo -e "\033[32m ====> 10. 重命名服务证书 \033[0m"
+echo "cp ${SSL_DOMAIN}.key tls.key"
+cp ${SSL_DOMAIN}.key tls.key
+echo "cp ${SSL_DOMAIN}.crt tls.crt"
+cp ${SSL_DOMAIN}.crt tls.crt
+```
+
+
+复制官方提供的代码另存为create_self-signed-cert.sh或者其他您喜欢的文件名。
+
+
+在自己的hosts文件里添加 192.168.147.140  rancher.demo.com
+
+
+常用参数：
+
+```
+--ssl-domain: 生成ssl证书需要的主域名，如不指定则默认为www.rancher.local，如果是ip访问服务，则可忽略；
+--ssl-trusted-ip: 一般ssl证书只信任域名的访问请求，有时候需要使用ip去访问server，那么需要给ssl证书添加扩展IP，多个IP用逗号隔开；
+--ssl-trusted-domain: 如果想多个域名访问，则添加扩展域名（TRUSTED_DOMAIN）,多个TRUSTED_DOMAIN用逗号隔开；
+--ssl-size: ssl加密位数，默认2048；
+--ssl-cn: 国家代码(2个字母的代号),默认CN；
+```
+
+使用示例:
+./create_self-signed-cert.sh --ssl-domain=rancher.demo.com --ssl-trusted-domain=rancher.demo.com \
+--ssl-trusted-ip=192.168.147.140,192.168.147.141,192.168.147.142 --ssl-size=2048 --ssl-date=3650
+```
+
+验证生疏
+
+## 3、安装rancehr
+
+
+{: .important }
+>Rancher 需要安装在受支持的 Kubernetes 版本上。要了解你的 Rancher 版本支持哪些版本的 Local Kubernetes，请参考[rancher 版本选择参考矩阵]（https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-6-9/) 或 [Rancher Release](https://github.com/rancher/rancher/releases)。
+>
+> 例如：Rancher v2.5.12 支持的 Kubernetes 版本包括 1.20、1.19、1.18 和 1.17。所以你的 Local Kubernetes 集群可以选择 1.20、1.19、1.18 或 1.17 版本。
+
+
+在k3s中创建rancher的名名空间（Namespace）
+
+```bash
+kubectl create namespace myrancher-system
+```
+安装并rancher  如果您使用的是私有 CA 证书，请在命令中增加 --set privateCA=true。
+
+```bash
+helm install rancher rancher-latest/rancher \
+      --namespace small-rancher \
+      --set hostname=rancher.demo.com \
+      --set ingress.tls.source=secret
+```
+
+
+验证安装：
+
+```bash
+kubectl -n small-rancher rollout status deploy/rancher
+```
+
+安装完成后使用域名访问 rancher : https://rancher.demo.com
+
