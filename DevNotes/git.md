@@ -20,6 +20,10 @@ permalink: docs/git
 Git emoji
 -----------------------------
 
+## emoji 大全
+
+https://emojixd.com/
+
 ## git 常用 emoji
 
 

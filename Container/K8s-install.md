@@ -264,7 +264,7 @@ lsmod | grep -e ip_vs -e nf_conntrack_ipv4
 ```
 
 {: .important }
-> 特别注意，linux kernel 4.19版本已经将 nf_conntrack_ipv4 更新为 nf_conntrack， 而 kube-proxy 1.13 以下版本，强依赖 nf_conntrack_ipv4。 我的环境内核版本3.10 所以写是 nf_conntrack_ipv4，内核版本 >= 4.19 要写 nf_conntrack，可以升级 kube-proxy 1.13+，或者降级内核版本。
+> 😅 特别注意，linux kernel 4.19版本已经将 nf_conntrack_ipv4 更新为 nf_conntrack， 而 kube-proxy 1.13 以下版本，强依赖 nf_conntrack_ipv4。 我的环境内核版本3.10 所以写是 nf_conntrack_ipv4，如果机器内核版本 >= 4.19 换成 nf_conntrack 即可。另外也选择可以升级 kube-proxy 1.13+，或者降级内核版本。😌
 
 
 
@@ -341,11 +341,9 @@ vim /etc/containerd/config.toml
 
 修改内容：
 
-`SystemdCgroup = false` 改为 `SystemdCgroup = true`
+(1) `SystemdCgroup = false` 改为 `SystemdCgroup = true`
 
-{: .warning }
-> 旧的版本是 `SystemdCgroup = false` 新的版本是：`systemd_cgroup = false`
-
+(2) `sandbox_image` 的镜像仓库地址。
 ```
 # sandbox_image = "k8s.gcr.io/pause:3.6"
 ```
@@ -354,13 +352,14 @@ vim /etc/containerd/config.toml
 sandbox_image = "registry.aliyuncs.com/google_containers/pause:3.6"
 ```
 {: .warning }
->旧的版本是 `k8s.gcr.io/pause:3.6` 新的版本是：`registry.k8s.io/pause:3.7` 特别说明一下，依赖里显示的是3.8，但是安装的时候阿里云没有3.8，只有3.7
+>旧的版本是 `k8s.gcr.io/pause:3.6` 新的版本是：`registry.k8s.io/pause:3.7` 特别说明一下，依赖里显示的是3.8，但是安装的时候阿里云还没有3.8，只有3.7
 
 替换命令：
 
 ```bash
-sed -i 's#registry.k8s.io#registry.aliyuncs.com/google_containers#g' /etc/containerd/config.toml
 sed -i 's#k8s.gcr.io#registry.aliyuncs.com/google_containers#g' /etc/containerd/config.toml
+
+sed -i 's#registry.k8s.io#registry.aliyuncs.com/google_containers#g' /etc/containerd/config.toml
 sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml 
 ```
 
@@ -430,8 +429,6 @@ EOF
 ```bash
 systemctl restart containerd
 ```
-
-
 
 # 四、安装k8s 1.25.3
 
@@ -792,7 +789,7 @@ exec bash
 
 ## 2、其他
 
-- kubelet 参数查看
+- **kubelet 参数查看**
 
 ```bash
 # kubelet配置文件
@@ -809,15 +806,15 @@ KUBELET_EXTRA_ARGS=--container-runtime=remote --container-runtime-endpoint=/run/
 #查看运行时参数
 kubelet --help | grep runtime
 ```
-- kubeadm 集群初始化失败 [master]
+- **kubeadm 集群初始化失败 [master]**
 
-:memo: 常见错误1:
+:collision: 常见错误1:
 
 ```
 [wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory “/etc/kubernetes/manifests”. This can take up to 4m0s
 [kubelet-check] Initial timeout of 40s passed.
 ```
-通常是镜像下载问题，可以先用国内镜像源拉下来，然后再改tag 
+❤️‍🩹 通常是镜像下载问题，可以先用国内镜像源拉下来，然后再改tag 
 ```
 k8s.gcr.io/XXXX
 registry.k8s.io/xxx
@@ -852,7 +849,7 @@ crictl  image import kube-scheduler
 ...
 ```
 
-:memo: 常见错误2
+:collision: 常见错误2
 
 主节点获取节点信息报错如下:
 ```
@@ -864,7 +861,7 @@ The connection to the server localhost:8080 was refused - did you specify the ri
 
 > 环境变量原因：kubernetes master没有与本机绑定，集群初始化的时候没有绑定，此时设置在本机的环境变量即可解决问题。
 
-可以通过设置环境变量解决
+❤️‍🩹 可以通过设置环境变量解决
 
 ```bash
 #具体根据情况，此处记录linux设置该环境变量
@@ -893,9 +890,9 @@ k8s-node01   NotReady   <none>          11m    v1.25.3
 ```
 
 
-:memo: 常见错误3:
+:collision: 常见错误3:
 
-主要就是 端口被占用  和 一些k8s组件的yaml文件已存在的错误。`kubeadm init` 失败 需要`kubeadm reset` 
+❤️‍🩹 主要就是 端口被占用  和 一些k8s组件的yaml文件已存在的错误。`kubeadm init` 失败 需要`kubeadm reset` 
 
 ```bash
 kubeadm reset && rm -fr  $HOME/.kube/config
@@ -904,14 +901,14 @@ kubeadm init  --apiserver-advertise-address=192.168.147.130 --image-repository r
 ```
 
 
-:memo: 常见错误4(所有节点)
+:collision: 常见错误4(所有节点)
 
 ```
 WARN[0000] image connect using default endpoints: [unix:///var/run/dockershim.sock unix:///run/containerd/containerd.sock unix:///run/crio/crio.sock unix:///var/run/cri-dockerd.sock]. As the default settings are now deprecated, you should set the endpoint instead. 
 ERRO[0000] unable to determine image API version: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial unix /var/run/dockershim.sock: connect: no such file or directory"  
 ```
 
-安装一下 crictl
+❤ ‍🩹 安装一下 crictl
 
 ```bash
 cat <<EOF > /etc/crictl.yaml 
@@ -924,9 +921,9 @@ EOF
 然后重启一下 `systemctl restart containerd` 。
 
 
-- kubectl join 报错
+- **kubectl join 报错**
 
-:memo: 其他node加入集群时报错：
+:collision: 其他node加入集群时报错：
 
 ```bash
 [root@k8s-node02 k8s-images]# kubeadm join 192.168.147.130:6443 --token e7g3g9.e1y6bdqd53takj8r --discovery-token-ca-cert-hash sha256:628d4e2345640d2b98c6b3ef7d7c71fa5125e489fcb9037e0605993bba403e6d
@@ -935,7 +932,7 @@ error execution phase preflight: couldn't validate the identity of the API Serve
 To see the stack trace of this error execute with --v=5 or higher
 ```
 
-解决参考： https://blog.csdn.net/qq_49530779/article/details/122037992
+❤️‍🩹 解决参考： https://blog.csdn.net/qq_49530779/article/details/122037992
 
 (1)k8s api server不可达
 
@@ -970,10 +967,11 @@ k8s-node02   NotReady   <none>          3s    v1.25.4
 [root@k8s-master k8s-images]# 
 ```
 
-- 非主节点使用命令
-:memo: 非主节点无法执行 kubectl 命令
+- **非主节点使用kubectl命令**
 
-在node节点把主节点的`admin.conf`拷贝过来，添加配置即可。
+:collision:  非主节点无法执行 kubectl 命令
+
+❤️‍🩹在node节点把主节点的`admin.conf`拷贝过来，添加配置即可。
 
 ```bash
 cd /etc/kubernetes && scp root@192.168.147.130:/etc/kubernetes/admin.conf .
@@ -981,7 +979,9 @@ echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bash_profile
 source ~/.bash_profile
 ```
 
-- pod 出现 CrashLoopBackOff 状态
+- **pod 出现 CrashLoopBackOff 状态**
+
+💥 pod 状态出现CrashLoopBackOff，无法访问了 
 
 ```bash
 [root@k8s-master k8s-images]# kubectl get pod -n kubernetes-dashboard
@@ -991,3 +991,4 @@ kubernetes-dashboard-784f89dbd-l58qr         0/1     CrashLoopBackOff   4 (52s a
 [root@k8s-master k8s-images]# 
 ``` 
 
+❤️‍🩹  咋处理 ?
