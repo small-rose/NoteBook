@@ -39,4 +39,4 @@ callouts:
     color: red
   tips:
     title: tips
-    color: green
+    color: '#64dd17'  #green

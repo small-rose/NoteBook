@@ -369,7 +369,7 @@ k3s-agent1   Ready    <none>                 13m   v1.25.3+k3s1
 
 
 
-# 二、AirGap安装 k3s 【下载镜像离线安装】
+# 三、AirGap安装 k3s 【下载镜像离线安装】
 
 
 ## 1、基础环境准被
@@ -505,5 +505,55 @@ systemctl status k3s-agent -l
 kubectl get node
 kubectl get node -o wide
 kubectl get svc
-kubectl get pod -n kube-sys
+kubectl get pod -n kube-system
+```
+
+
+```bash
+[root@k3s-agent2 k3s]# kubectl get node
+NAME         STATUS   ROLES                  AGE   VERSION
+k3s-server   Ready    control-plane,master   15h   v1.25.3+k3s1
+k3s-agent1   Ready    <none>                 14h   v1.25.3+k3s1
+k3s-agent2   Ready    <none>                 6m    v1.25.3+k3s1
+[root@k3s-agent2 k3s]# kubectl get node -o wide
+NAME         STATUS   ROLES                  AGE     VERSION        INTERNAL-IP       EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION           CONTAINER-RUNTIME
+k3s-server   Ready    control-plane,master   15h     v1.25.3+k3s1   192.168.147.140   <none>        CentOS Linux 7 (Core)   3.10.0-1160.el7.x86_64   containerd://1.6.8-k3s1
+k3s-agent1   Ready    <none>                 14h     v1.25.3+k3s1   192.168.147.141   <none>        CentOS Linux 7 (Core)   3.10.0-1160.el7.x86_64   containerd://1.6.8-k3s1
+k3s-agent2   Ready    <none>                 6m20s   v1.25.3+k3s1   192.168.147.142   <none>        CentOS Linux 7 (Core)   3.10.0-1160.el7.x86_64   containerd://1.6.8-k3s1
+[root@k3s-agent2 k3s]# kubectl get svc
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   15h
+[root@k3s-agent2 k3s]# kubectl get pod -n kube-system
+NAME                                      READY   STATUS      RESTARTS      AGE
+helm-install-traefik-crd-nx952            0/1     Completed   0             15h
+helm-install-traefik-tbkcn                0/1     Completed   2             15h
+traefik-9c6dc6686-vnxb5                   1/1     Running     1 (83m ago)   15h
+svclb-traefik-4fe23bf5-6zmwv              2/2     Running     2 (83m ago)   15h
+coredns-75fc8f8fff-8qxqw                  1/1     Running     1 (83m ago)   15h
+local-path-provisioner-5b5579c644-rf8hk   1/1     Running     2 (82m ago)   15h
+metrics-server-5c8978b444-qvx67           1/1     Running     2 (82m ago)   15h
+svclb-traefik-4fe23bf5-99755              2/2     Running     2 (40m ago)   14h
+svclb-traefik-4fe23bf5-v87ck              2/2     Running     0             14m
+```
+
+可以看到组件，如果不想用某个组件，比如不想用`traefik`，安装的时候添加` --disable traefik`即可 。
+
+
+
+# 四、卸载 k3s
+
+如果您使用安装脚本安装了 K3s，那么在安装过程中会生成一个卸载 K3s 的脚本。
+
+>卸载 K3s 会删除集群数据和所有脚本。要使用不同的安装选项重新启动集群，请使用不同的标志重新运行安装脚本。
+
+要从 server 节点卸载 K3s，请运行：
+
+```bash
+/usr/local/bin/k3s-uninstall.sh
+```
+
+要从 agent 节点卸载 K3s，请运行：
+
+```bash
+/usr/local/bin/k3s-agent-uninstall.sh
 ```
