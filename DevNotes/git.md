@@ -20,6 +20,12 @@ permalink: docs/git
 Git emoji
 -----------------------------
 
+## git & github 使用秘籍
+
+
+- [github-cheat-sheet](https://github.com/tiimgreen/github-cheat-sheet/blob/master/README.zh-cn.md)
+
+
 ## emoji 大全
 
 https://emojixd.com/

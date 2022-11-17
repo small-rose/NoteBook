@@ -40,6 +40,8 @@ k3s是经过CNCF认证的由Rancher公司开发维护的一个轻量级的 Kuber
 
 2.1、单节点的k3s架构
 
+![单节点的k3s架构](../Assets/images/k3s-Danti.png)
+
 1）k3s server节点是运行k3s server命令的机器（裸机或者虚拟机），而k3s Agent 节点是运行k3s agent命令的机器。
 
 2）单点架构只有一个控制节点（在 K3s 里叫做server node，相当于 K8s 的 master node），而且K3s的数据存储使用 sqlite 并内置在了控制节点上
@@ -48,6 +50,8 @@ k3s是经过CNCF认证的由Rancher公司开发维护的一个轻量级的 Kuber
 
 
 2.1、高可用的K3S架构
+
+![高可用的K3S架构](../Assets/images/k3s-HA.png)
 
 虽然单节点 k3s 集群可以满足各种用例，但对于 Kubernetes control-plane 的正常运行至关重要的环境，可以在高可用配置中运行 K3s。一个高可用 K3s 集群由以下几个部分组成：
 
