@@ -132,3 +132,19 @@ windows 移除软连接
 ```text
 rmdir "C:\Program Files\Docker\"
 ```
+
+
+## 内外网同时使用
+
+
+```bash
+route delete 0.0.0.0 
+
+route delete 21.117.0.0
+
+# 添加默认路由为当前无线网的默认网关
+route -p add 0.0.0.0 mask 0.0.0.0 192.168.120.1
+
+# 添加默认路由为当前有线网的默认网关
+route -p add 21.117.0.0 mask 255.255.0.0 132.230.50.254
+```

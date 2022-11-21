@@ -33,6 +33,13 @@ Centos国内下载源
 - http://mirrors.163.com/centos/7/isos/x86_64/
 - http://ftp.sjtu.edu.cn/centos/7/isos/x86_64/ 
 
+
+
+>帐号：1583039459@qq.com
+>密码：www.lovecoder.cn123W
+>请大家不要修改密码。注意：此帐号只用于下载JDK使用，请勿用于非法用途。
+
+
 ### 电脑护眼色
 
 绿豆沙色能有效的减轻长时间用电脑的用眼疲劳！
