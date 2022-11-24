@@ -123,6 +123,48 @@ DNS4=114.114.114.114
 service network restart
 ```
 
+
+备份原始官方源
+
+```bash
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+```
+
+换源
+
+```bash
+# CentOS 6
+
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
+
+curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
+
+# CentOS 7
+
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+
+curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo    
+
+# CentOS 8
+
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-8.repo
+
+curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-8.repo
+```
+
+刷新缓存
+
+```bash
+yum clean all  && yum makecache
+```
+
+更新系统
+
+```bash
+yum update
+```
+
+
 ## wget
 ---------------------------
 
@@ -692,18 +734,18 @@ cat /proc/sys/kernel/random/uuid
       "settings": {
         "clients": [
           {
-            "id": "98ee3c11-fe5b-4e57-a2ca-882b10c7b402", // ID
+            "id": "98ee3c11-fe5b-4e57-a2ca-882b10c7b402", 
             "alterId": 66
           }
         ]
       }
     },
     {
-      "port": 444, // SS 协议服务端监听端口
+      "port": 444,  
       "protocol": "shadowsocks",
       "settings": {
-        "method": "aes-128-gcm", // 加密方式
-        "password": "small.CAI" //密码
+        "method": "aes-128-gcm",  
+        "password": "small.CAI"  
       }
     }
   ],

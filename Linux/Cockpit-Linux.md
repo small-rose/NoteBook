@@ -34,6 +34,8 @@ yum install cockpit
 systemctl start cockpit.service
 #设置开机启动
 systemctl enable --now cockpit.socket
+# 开启防火墙
+firewall-cmd --add-service=cockpit --permanent
 ```
 
 安装完成之后访问即可，默认端口为 **9090** 。https://192.168.80.81:9090/

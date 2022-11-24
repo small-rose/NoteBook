@@ -63,7 +63,7 @@ $ sudo yum-config-manager \
 默认按照stable版本
 
 ```bash
-sudo yum install docker-ce docker-ce-cli containerd.io
+sudo yum install docker-ce docker-ce-cli containerd.io -y
 ```
 也可以指定版本安装。
 
@@ -107,6 +107,26 @@ sudo systemctl start docker
 5、验证
 ```
 docker version
+```
+
+```bash
+vi /etc/docker/daemon.json
+{
+ "data-root":"/var/lib/docker",
+ "registry-mirrors" : [
+   "https://mirror.ccs.tencentyun.com",
+   "http://registry.docker-cn.com",
+   "http://docker.mirrors.ustc.edu.cn",
+   "http://hub-mirror.c.163.com"
+ ],
+ "insecure-registries" : [
+   "registry.docker-cn.com",
+   "docker.mirrors.ustc.edu.cn"
+ ],
+ "debug" : false,
+ "experimental": false
+}
+
 ```
 
 6、卸载
