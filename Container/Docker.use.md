@@ -1492,8 +1492,7 @@ docker pull mongo:6.0
 2、准备持久化卷
 
 ```
-mkdir -p /opt/docker/mongo/conf/
-mkdir -p /opt/docker/mongo/data/
+mkdir -p /opt/docker/mongo/conf/  && mkdir -p /opt/docker/mongo/data/
 ```
 
 3、启动

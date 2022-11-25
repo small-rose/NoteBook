@@ -150,3 +150,60 @@ yum install  docker-compose-plugin
 [root@VM-0-3-centos ~]# docker compose version
 Docker Compose version v2.5.0
 ```
+
+
+自己打包镜像 jdk 镜像
+
+```
+docker build -t small/alpinejdk8.tar .
+```
+
+
+Dockerfile 文件：
+
+```
+# using alpine-glibc instead of alpine  is mainly because JDK relies on glibc
+FROM alpine:3.17
+
+LABEL maintainer="small-rose@qq.com"
+
+ENV TZ=Asia/Shanghai
+
+WORKDIR /app
+
+
+# A streamlined jre
+ADD  jdk-8u202-linux-x64.tar.gz  /usr/local/
+
+
+# Alpine linux为了精简本身并没有安装太多的常用软件,apk类似于ubuntu的apt-get，
+# 用来安装一些常用软V件，其语法如下：apk add bash wget curl git make vim docker
+# wget是linux下的ftp/http传输工具，没安装会报错“/bin/sh: 　　wget: not found”，网上例子少安装wget
+# ca-certificates证书服务，是安装glibc前置依赖
+#******************更换Alpine源为mirrors.ustc.edu.cn******************
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone  \
+	&& echo http://mirrors.aliyun.com/alpine/v3.17/main/ > /etc/apk/repositories && \
+    echo http://mirrors.aliyun.com/alpine/v3.17/community/ >> /etc/apk/repositories \
+	&& apk update && apk upgrade \
+	&& apk --no-cache add libstdc++ ca-certificates bash wget \
+    && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.35-r0/glibc-2.35-r0.apk \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.35-r0/glibc-bin-2.35-r0.apk \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.35-r0/glibc-i18n-2.35-r0.apk \
+    && apk add --force-overwrite glibc-2.35-r0.apk && apk add glibc-bin-2.35-r0.apk && apk add glibc-i18n-2.35-r0.apk \
+    && rm -rf /var/cache/apk/* glibc-2.35-r0.apk glibc-bin-2.35-r0.apk glibc-i18n-2.35-r0.apk \
+    && rm -rf  /usr/local/jdk-8u202-linux-x64.tar.gz
+
+
+
+# 配置环境变量
+ENV JAVA_HOME /usr/local/jdk1.8.0_202
+ENV JRE_HOME /usr/local/jdk1.8.0_202/jre
+
+ENV CLASSPATH .:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+ENV PATH $JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+
+#容器启动时需要执行的命令
+#CMD ["java","-version"]
+```

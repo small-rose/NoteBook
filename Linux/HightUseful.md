@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Linux Command
-has_children: true
+parent: Linux
 nav_order: 11
 ---
 
@@ -76,12 +76,18 @@ tar zcvf  abc.tar,gz  file1 file2
 ```bash
 firewall-cmd --permanent --add-port=80/tcp  && firewall-cmd --reload
 firewall-cmd --permanent --add-port=8080/tcp  && firewall-cmd --reload
+firewall-cmd --permanent --add-port=8081/tcp  && firewall-cmd --reload
+firewall-cmd --permanent --add-port=8096/tcp  && firewall-cmd --reload
+firewall-cmd --permanent --add-port=8848/tcp  && firewall-cmd --reload
+
 firewall-cmd --permanent --add-port=9000/tcp  && firewall-cmd --reload
+
 
 firewall-cmd --permanent --add-port=3306/tcp  && firewall-cmd --reload
 firewall-cmd --permanent --add-port=1521/tcp  && firewall-cmd --reload
 firewall-cmd --permanent --add-port=6379/tcp  && firewall-cmd --reload
 firewall-cmd --permanent --add-port=27017/tcp  && firewall-cmd --reload
+
 ```
 
 ## nginx
@@ -130,3 +136,46 @@ cd /usr/local/bin/
 ./docker-php-ext-install pdo_mysql
 ```
 
+
+## redis
+
+```bash
+docker run -d --name redis-7 
+
+mkdir -p /opt/docker-vdata/redis/data && mkdir -p /opt/docker-vdata/redis/redis.conf
+
+docker run -d --name redis-test  redis 
+docker cp redis-test:/etc/redis/redis.conf  /opt/docker-vdata/redis/redis.conf
+docker stop redis-test  && docker rm redis-test && ls /opt/docker-vdata/redis
+
+docker run -d --restart=always -p 6379:6379 --name redis-7 -v /opt/docker-vdata/redis/data:/data -v /opt/docker-vdata/redis/redis.conf:/etc/redis/redis.conf redis 
+```
+
+## mongoDB
+
+```bash
+mkdir -p /u01/data/mongodb_data/data
+mkdir -p /u01/data/mongodb_data/conf
+mkdir -p /u01/data/mongodb_data/log
+
+docker run -d --name mongoDB --privileged=true --restart always -p 27017:27017 -v /u01/data/mongodb_data/data:/data/db -v /u01/data/mongodb_data/conf/:/data/conf -v /u01/data/mongodb_data/log:/data/log -e MONGO_INITDB_ROOT_USERNAME=admin  -e MONGO_INITDB_ROOT_PASSWORD=Fnd123456  mongo:4.0.5
+```
+
+
+
+
+## jellyfin
+
+```bash
+
+mkdir -p /opt/docker-vdata/jellyfin/conf && mkdir -p /opt/docker-vdata/jellyfin/data 
+
+# 启动jellyfin容器
+docker run -d --restart=always \
+--name=jellyfin \
+-p 8096:8096 -p 7359:7359/udp -p 1900:1900/udp \
+-v /opt/docker-vdata/jellyfin/conf:/config -v /opt/docker-vdata/jellyfin/data:/media \
+--add-host api.themoviedb.org:52.84.125.121 \
+linuxserver/jellyfin:latest
+```
+http://192.168.147.100:8096
