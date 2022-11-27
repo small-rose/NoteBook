@@ -93,6 +93,8 @@ firewall-cmd --permanent --add-port=27017/tcp  && firewall-cmd --reload
 ## nginx
 
 ```bash
+
+mkdir -p /opt/docker-vdata/nginx/{conf/conf.d,html,log}
 docker run -d --name nginx-test nginx:1.22.1
 
 docker cp nginx-test:/etc/nginx/nginx.conf  /opt/docker-vdata/nginx/conf/nginx.conf
@@ -142,7 +144,7 @@ cd /usr/local/bin/
 ```bash
 docker run -d --name redis-7 
 
-mkdir -p /opt/docker-vdata/redis/data && mkdir -p /opt/docker-vdata/redis/redis.conf
+mkdir -p /opt/docker-vdata/redis/data 
 
 docker run -d --name redis-test  redis 
 docker cp redis-test:/etc/redis/redis.conf  /opt/docker-vdata/redis/redis.conf
@@ -154,9 +156,7 @@ docker run -d --restart=always -p 6379:6379 --name redis-7 -v /opt/docker-vdata/
 ## mongoDB
 
 ```bash
-mkdir -p /u01/data/mongodb_data/data
-mkdir -p /u01/data/mongodb_data/conf
-mkdir -p /u01/data/mongodb_data/log
+mkdir -p /u01/data/mongodb_data/{data,conf,log}
 
 docker run -d --name mongoDB --privileged=true --restart always -p 27017:27017 -v /u01/data/mongodb_data/data:/data/db -v /u01/data/mongodb_data/conf/:/data/conf -v /u01/data/mongodb_data/log:/data/log -e MONGO_INITDB_ROOT_USERNAME=admin  -e MONGO_INITDB_ROOT_PASSWORD=Fnd123456  mongo:4.0.5
 ```
@@ -168,7 +168,7 @@ docker run -d --name mongoDB --privileged=true --restart always -p 27017:27017 -
 
 ```bash
 
-mkdir -p /opt/docker-vdata/jellyfin/conf && mkdir -p /opt/docker-vdata/jellyfin/data 
+mkdir -p /opt/docker-vdata/jellyfin/{conf,data}
 
 # 启动jellyfin容器
 docker run -d --restart=always \
