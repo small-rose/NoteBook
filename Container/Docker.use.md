@@ -770,9 +770,7 @@ docker pull elasticsearch:7.8.0
 创建映射目录
 
 ```bash
-mkdir -p /opt/elk/elasticsearch/config
-mkdir -p /opt/elk/elasticsearch/data
-mkdir -p /opt/elk/elasticsearch/plugins
+mkdir -vp /opt/elk/elasticsearch/{config,data,plugins}
 chmod -R 777 /opt/elk/elasticsearch
 ```
 
@@ -827,12 +825,8 @@ docker pull elasticsearch:7.17.0
 映射目录卷
 
 ```bash
-# Elasticsearch配置文件
-mkdir -p /opt/docker/elk/elasticsearch/config
-# 数据目录
-mkdir -p /opt/docker/elk/elasticsearch/data
-# 插件目录
-mkdir -p /opt/docker/elk/elasticsearch/plugins
+# Elasticsearch配置文件,数据目录, 插件目录
+mkdir -p /opt/docker/elk/elasticsearch/{config,data,plugins}
 
 # 给相关目录权限
 chmod -R 777 /opt/docker/elk/elasticsearch
@@ -915,8 +909,8 @@ curl localhost:9200 -u elastic
 docker pull logstash:7.17.0
 
 #logstash 配置文件
-mkdir -p /opt/docker/elk/logstash/config
-mkdir -p /opt/docker/elk/logstash/conf.d
+mkdir -vp /opt/docker/elk/logstash/{config,conf.d}
+
 
 docker run -it -d -p 5044:5044 --name logstash  --net host \
 -v /opt/docker/elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml \
@@ -1062,9 +1056,7 @@ docker pull gitlab/gitlab-ce:latest
 将 GitLab 的配置 (etc) 、 日志 (log) 、数据 (data) 放到容器之外进行持久化， 便于日后升级， 因此先准备这三个目录
 
 ```bash
-mkdir -p /opt/docker/gitlab/config
-mkdir -p /opt/docker/gitlab/logs 
-mkdir -p /opt/docker/gitlab/data
+mkdir -vp /opt/docker/gitlab/{config,logs,data}
 ```
 
 3、启动容器

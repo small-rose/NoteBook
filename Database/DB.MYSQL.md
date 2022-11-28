@@ -56,17 +56,43 @@ MySQL 改密码策略，改秘密
 ----------------------------
 
 修改：密码最小长度策略
-```mysql
+```
 set global validate_password_length=0;
 ```
 修改：密码强度检查等级策略，0/LOW、1/MEDIUM、2/STRONG
-```mysql
+```
 set global validate_password_policy=0;
 ```
 
-修改密码
+**记得密码改密码 MYSQL5.7**
 
-```mysql
+（1）直接改
+
+```sql
+mysqladmin -uroot -pshapolang password 123456
+```
+（2）登录之后改
+```SQL
+--登录
+mysql -uroot -p
+--切換mysql
+use mysql;
+--设置新密码。
+update mysql.user set authentication_string=password('新密码') where user='用户名' and Host ='localhost'; 
+--刷新权限。
+flush privileges; 
+```
+
+
+**忘记密码改密码 MYSQL5.7**
+
+（1）进行免密登录
+
+在mysql的配置文件中找到[mysqld]然后添加 `skip-grant-tables`,然后直接`mysql -uroot -p` 免密登录。
+
+（2）修改密码
+
+``` SQL
 set password for 'root'@'localhost' = password('123456');
 ## -------------------------------------------------------
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
@@ -74,8 +100,32 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTI
 flush privileges;
 ```
 
+
+重新登录进行验证.
+
+**忘记密码改密码 MYSQL 8**
+
+（1）进行免密登录
+
+在mysql的配置文件中找到[mysqld]然后添加 `skip-grant-tables`,然后直接`mysql -uroot -p` 免密登录。
+
+（2）修改密码
+
+```SQL
+use mysql; 
+
+--将字段置为空
+update user set authentication_string='' where user='root';
+
+--修改密码为root
+ALTER user 'root'@'localhost' IDENTIFIED BY 'root';
+-- 刷新权限
+flush privileges;
+```
+   
+
 MySQL无密码登录
-----------------------------
+
 Windows
 
 1.打开命令窗口cmd，输入命令：`net stop mysql`，停止MySQL服务，
@@ -88,7 +138,6 @@ Windows
 mysqld --console --skip-grant-tables --shared-memory 
 ```
         
-
 3.新开cmd 窗口 
 ```text
 mysql -uroot -p
@@ -528,5 +577,85 @@ begin
 end;
 
 ```
+两个存过均需要重新验证
 
+```sql
+create
+    definer = root@`37.220.51.%` procedure check_zh_cn()
+begin
+
+    DECLARE v_table_name  varchar(50) ;
+    DECLARE v_table_column  varchar(50) ;
+    DECLARE v_sql  varchar(1000) ;
+    DECLARE v_count  int(10) default 0;
+    DECLARE v_index  int(10) default 0;
+    DECLARE isFlag INT DEFAULT TRUE;
+
+    declare r_table_name varchar(20) default 'CHECK_ZHCN_RESULT';
+    -- 查询所有的表
+    DECLARE v_table_names cursor for
+        SELECT table_name FROM information_schema.tables WHERE table_schema='hrbyq';
+    -- 查询某张表的所有列
+    DECLARE v_table_columns cursor for
+        select COLUMN_NAME FROM information_schema.columns c WHERE c.table_schema = 'hrbyq' AND c.table_name = v_table_name order by ORDINAL_POSITION asc ;
+
+     -- #游标中的内容循环执行完后将 isFlag 设置为flase
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET isFlag = FALSE;
+
+    set @d_sql = concat('drop table ',r_table_name);
+    set @c_sql = concat(concat('create table ',r_table_name),' (table_name varchar(100), column_name  varchar(100))');
+    PREPARE d_sql from  @d_sql ;
+    PREPARE c_sql from @c_sql;
+
+    -- 结果表
+    SELECT count(1) into v_count FROM information_schema.TABLES where TABLE_NAME = r_table_name;
+    IF v_count > 0 then
+        execute  d_sql ;
+        execute  c_sql ;
+    else
+        execute  c_sql ;
+    end IF;
+
+    -- 打开声明的游标
+    open v_table_names ;
+    loop_label:loop
+        -- 取出游标中的变量,
+        fetch v_table_names into v_table_name ;
+        insert into procedure_log select concat('tableName is ', v_table_name);
+        while isFlag  is TRUE DO
+            -- 每次循环开始时重新对num进行赋值
+            -- set @num = 0;
+            -- 开启第二个游标
+            open v_table_columns;
+            inner_loop: LOOP
+                fetch v_table_columns into v_table_column;
+                -- 打印过程
+                -- select num;
+                IF isFlag THEN
+                    LEAVE inner_loop;
+                END IF;
+                set @v_sql = concat('select count(1) into @count from ', v_table_name , ' where hex(convert(',v_table_column ,' using ucs2) )  like ''%FFFD%'' ');
+                insert into procedure_log select concat('@v_sql is ', @v_sql);
+                prepare v_sql from @v_sql;
+                execute  v_sql  ;
+                if @count >0 then
+                        set v_index := v_index+1;
+                        set @i_sql = concat('insert into ',r_table_name,' (table_name, column_name) values (',v_table_name,',', v_table_column,')');
+                        insert into procedure_log select concat('@i_sql is ', @i_sql);
+                        PREPARE i_sql from @i_sql;
+                        execute  i_sql ;
+                        DEALLOCATE PREPARE v_sql;
+                        commit ;
+                end if;
+
+            END LOOP;
+            close v_table_columns;
+            -- 第一个循环结束时done=1
+            -- 故需手动设置done=0,否则外层循环仅会执行一次
+            SET isFlag = 0;
+        end while;
+    end loop;
+end;
+
+```
 
