@@ -1574,3 +1574,40 @@ https://192.168.147.100:10000
 将电脑的dns地址指向服务器地址，比如我在Mac下修改DNS地址。
 
 [原文地址](https://cloud.tencent.com/developer/article/2027134#:~:text=%E4%BD%BF%E7%94%A8Docker%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8%201%201.%E6%90%AD%E5%BB%BA%20%E6%90%AD%E5%BB%BA%E4%BE%9D%E7%84%B6%E4%BD%BF%E7%94%A8docker%EF%BC%8C%E5%AE%89%E8%A3%85%E5%89%8D%E8%AF%B7%E5%AE%89%E8%A3%85%E5%A5%BDdocker%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E7%8E%AF%E5%A2%83%E3%80%82%20...%202%202.%E8%AE%BF%E9%97%AE%20%E4%BD%BF%E7%94%A8%E4%BD%A0%E7%9A%84https%3A%2F%2Fip%3A10000%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E6%89%93%E5%BC%80%E3%80%82,%E5%B0%9D%E8%AF%95%E7%BB%91%E5%AE%9A%E4%B8%80%E4%B8%8Bdns%EF%BC%8C%E4%BE%9D%E6%AC%A1%E7%82%B9%E5%87%BB%E5%9B%BE%E6%A0%87%E4%B8%AD%E7%9A%84%E4%BE%8B%E5%AD%90%E3%80%82%20...%204%204.%E4%BD%BF%E7%94%A8%20%E5%B0%86%E7%94%B5%E8%84%91%E7%9A%84dns%E5%9C%B0%E5%9D%80%E6%8C%87%E5%90%91%20%E6%9C%8D%E5%8A%A1%E5%99%A8%20%E5%9C%B0%E5%9D%80%EF%BC%8C%E6%AF%94%E5%A6%82%E6%88%91%E5%9C%A8Mac%E4%B8%8B%E4%BF%AE%E6%94%B9DNS%E5%9C%B0%E5%9D%80%E3%80%82%20)
+
+## Nexus
+
+```bash
+docker pull sonatype/nexus3
+mkdir -p /opt/docker-vdata/nexus/data   && chmod 777 -R /opt/docker-vdata/nexus/data
+
+docker run -d --name nexus3 -p 8081:8081 --restart always -v /opt/docker-vdata/nexus/data:/nexus-data  sonatype/nexus3
+```
+
+访问 http://192.168.147.100:8081/
+
+查看密码
+
+```bash
+cat /data/nexus/data/admin.password
+```
+添加阿里云maven代理
+
+点击settings->Repository->Repositories
+
+点击 `Create repositoty` 按钮
+
+选择 `maven2 (proxy)` 
+
+填写如下两个字段，分别是代理库的名称，所代理的上层库的url。阿里云url为：`http://maven.aliyun.com/nexus/content/groups/public/`
+
+滚动到页面最下方，点击 `Create repositoty` 按钮。
+
+可以看到刚刚新建的代理库已经存在了。
+
+重新配置`maven-public`组，使其包含新建的 `aliyun-maven`。点击 `maven-public` 进入到配置页面。按下图进行修改。把`aliyun-maven`移至右侧，并向上移至第一位。然后点击保存。
+
+
+
+
+ 

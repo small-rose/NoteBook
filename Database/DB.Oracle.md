@@ -8,7 +8,7 @@ parent: Database
 # ORACLE
 {: .no_toc }
 
-## Table of contents
+## TABLE of contents
 {: .no_toc .text-delta }
 
 1. TOC
@@ -70,12 +70,12 @@ grant create procedure to user_name;
 grant create public synonym to user_name;
 grant create sequence to user_name;
 grant create session to user_name;
-grant create table to user_name;
+grant create TABLE to user_name;
 grant create trigger to user_name;
 grant create type to user_name;
 grant create view to user_name;
 grant unlimited tablespace to user_name;
-alter user user_name quota unlimited on tbs_name;
+ALTER user user_name quota unlimited on tbs_name;
 
 grant debug any procedure to user_name;
 grant debug connect session to user_name;
@@ -91,15 +91,15 @@ conn username/password;
 ### 表的重命名：
 
 ```sql
-alter table old_table_name rename to new_table_name
+ALTER TABLE old_table_name rename to new_table_name
 ```
 
-说明：alter table 表名 rename to 新表名
+说明：ALTER TABLE 表名 rename to 新表名
 
 示例：
 
 ```sql
-alter table sf_user rename to t_user;
+ALTER TABLE sf_user rename to t_user;
 ```
 
 
@@ -109,17 +109,17 @@ alter table sf_user rename to t_user;
 （1）**增加字段语法**：
 
 ```sql
-alter table table_name add (column datatype [default value][null/not null],….);
+ALTER TABLE table_name add (column datatype [default value][null/not null],….);
 ```
 
-说明：alter table 表名 add (字段名 字段类型 默认值 是否为空);
+说明：ALTER TABLE 表名 add (字段名 字段类型 默认值 是否为空);
 
 示例：
 
 ```sql
-alter table t_users add (user_image blob);
+ALTER TABLE t_users add (user_image blob);
 
-alter table t_users add (userName varchar2(30) default '空' not null);
+ALTER TABLE t_users add (userName varchar2(30) default '空' not null);
 ```
 
 
@@ -130,10 +130,10 @@ alter table t_users add (userName varchar2(30) default '空' not null);
 - rename 改名字。
 
 ```sql
-alter table table_name modify (column datatype [default value][null/not null],….); 
+ALTER TABLE table_name modify (column datatype [default value][null/not null],….); 
 ```
 
-说明：alter table 表名 modify (字段名 字段类型 默认值 是否为空);
+说明：ALTER TABLE 表名 modify (字段名 字段类型 默认值 是否为空);
 
 示例：
 
@@ -143,7 +143,7 @@ ALTER TABLE t_users MODIFY (BILLCODE number(4));
 
 
 ```sql
-alter table table_name modify (column datatype [default value][null/not null],….); 
+ALTER TABLE table_name modify (column datatype [default value][null/not null],….); 
 ```
 
 说明：ALTER TABLE 表名 MODIFY (字段名 字段类型 默认值 是否为空);
@@ -170,19 +170,19 @@ ALTER TABLE table_name RENAME column product_id  TO product_num;
 
 ```sql
 -- 搜索用户下的某个字段，都存在于哪张表（t.OWNER指定用户，大写；t.COLUMN_NAME要搜索的字段）
-select distinct t1.TABLE_NAME,t.COLUMN_NAME
-from DBA_TAB_COLS t,
+SELECT distinct t1.TABLE_NAME,t.COLUMN_NAME
+FROM DBA_TAB_COLS t,
      DBA_TABLES t1
-where t.TABLE_NAME = t1.TABLE_NAME
+WHERE t.TABLE_NAME = t1.TABLE_NAME
   and t.OWNER = 'PAYMT' -- 用户
   and t.COLUMN_NAME = 'VEHKIND' --列表
 order by t1.TABLE_NAME,t.COLUMN_NAME;
 
 -- 拼接出字段修改类型修改sql（t.OWNER指定用户，大写；t.COLUMN_NAME要搜索的字段；字段类型及长度需要修改为自己想要的）
-select 'alter table ' || t.TABLE_NAME || ' modify ' || t.COLUMN_NAME || ' varchar2(30);'
-from DBA_TAB_COLS t,
+SELECT 'ALTER TABLE ' || t.TABLE_NAME || ' modify ' || t.COLUMN_NAME || ' varchar2(30);'
+FROM DBA_TAB_COLS t,
      DBA_TABLES t1
-where t.TABLE_NAME = t1.TABLE_NAME
+WHERE t.TABLE_NAME = t1.TABLE_NAME
   and t.OWNER = 'PAYMT' -- 用户
   and t.COLUMN_NAME = 'VEHKIND' --列表
 order by t1.TABLE_NAME,t.COLUMN_NAME;
@@ -209,15 +209,15 @@ ALTER TABLE t_users DROP COLUMN user_image;
 
 ```sql
 -- 其中：column是关键字
-alter table table_name  rename  column  old_cloumn_name to  new_cloumn_name  
+ALTER TABLE table_name  rename  column  old_cloumn_name to  new_cloumn_name  
 ```
 
-说明：alter table 表名 rename  column 列名 to 新列名  （其中：column是关键字）
+说明：ALTER TABLE 表名 rename  column 列名 to 新列名  （其中：column是关键字）
 
 示例：
 
 ```sql
-alter table t_users rename column  nlcke_name  to  nick_name;
+ALTER TABLE t_users rename column  nlcke_name  to  nick_name;
 ```
 
 ### 删除数据
@@ -225,19 +225,19 @@ alter table t_users rename column  nlcke_name  to  nick_name;
 （1）删除数据，没有事务，无法回滚。
 
 ```sql
-truncate table table_name ;
+truncate TABLE table_name ;
 ```
 
 （2）删除数据，有事务，可以回滚。
 
 ```sql
-delete from table_name ;
+delete FROM table_name ;
 ```
 
 （3）删除表和数据。
 
 ```sql
-drop table table_name ;
+drop TABLE table_name ;
 ```
 
 ### 检测中文乱码
@@ -248,15 +248,15 @@ drop table table_name ;
 - `UNISTR` 函数可以反转回中文。
 
 ```sql
-select asciistr('安诚') from  dual ;
+SELECT asciistr('安诚') FROM  dual ;
 
-select unistr('\5B89\8BDA') from  dual ;
+SELECT unistr('\5B89\8BDA') FROM  dual ;
 ```
 
 检测指定的字段是否含有中文乱码:
 
 ```sql
-select column_name from table_name where asciistr('column_name') like '%??%' or asciistr('column_name') like '%\FFFD%' ;
+SELECT column_name FROM table_name WHERE asciistr('column_name') like '%??%' or asciistr('column_name') like '%\FFFD%' ;
 ```
 
 检测指定表或指定库是否包含中文乱码，并使用DBMS输出到控制台：
@@ -276,15 +276,15 @@ begin
       begin
         v_table_name := v_table_data.TABLE_NAME ;
         -- 否则查询出表的列数据
-        for v_table_column_data in (select * from user_tab_columns where Table_Name=v_table_name ORDER BY COLUMN_ID ASC ) loop
+        for v_table_column_data in (SELECT * FROM user_tab_columns WHERE Table_Name=v_table_name ORDER BY COLUMN_ID ASC ) loop
 
             begin
             v_table_column := v_table_column_data.COLUMN_NAME ;
             if  instr(v_table_column_data.DATA_TYPE, 'VARCHAR') > 0 then
                 -- 判断乱码
-                --v_sql := 'select count(1) from  :v_table_name where asciistr(:v_table_column) like ''%??%'' or asciistr(:v_table_column) like ''%\FFFD%'' ';
+                --v_sql := 'SELECT count(1) FROM  :v_table_name WHERE asciistr(:v_table_column) like ''%??%'' or asciistr(:v_table_column) like ''%\FFFD%'' ';
                 --execute immediate v_sql into v_count  using v_table_name, v_table_column,v_table_column;
-                v_sql := 'select count(1) from '|| v_table_name || ' where asciistr('|| v_table_column ||') like ''%??%'' or asciistr('|| v_table_column ||') like ''%\FFFD%'' ';
+                v_sql := 'SELECT count(1) FROM '|| v_table_name || ' WHERE asciistr('|| v_table_column ||') like ''%??%'' or asciistr('|| v_table_column ||') like ''%\FFFD%'' ';
                 execute immediate v_sql into v_count;
                 if v_count >0 then
                    -- L_RESULT[v_index] = v_table_name || '.' || v_table_column ;
@@ -309,8 +309,8 @@ create  or replace procedure check_zh_cn_to_table is
     v_count  int(10) := 0;
     v_index  int(10) := 0;
     r_table_name varchar2(20) := 'CHECK_ZHCN_RESULT';
-    d_sql varchar2(500) := 'drop table '||r_table_name ;
-    c_sql varchar2(500) := 'create table '||r_table_name||' (table_name varchar2(100), column_name  varchar2(100))';
+    d_sql varchar2(500) := 'drop TABLE '||r_table_name ;
+    c_sql varchar2(500) := 'create TABLE '||r_table_name||' (table_name varchar2(100), column_name  varchar2(100))';
     i_sql varchar2(500) := 'insert into '||r_table_name||' (table_name, column_name) values (:c1, :c2)';
     -- 查询所有的表
     cursor v_table_names is
@@ -318,7 +318,7 @@ create  or replace procedure check_zh_cn_to_table is
 
 begin
     -- 结果表
-    SELECT count(1) into v_count FROM USER_TABLES where TABLE_NAME = r_table_name;
+    SELECT count(1) into v_count FROM USER_TABLES WHERE TABLE_NAME = r_table_name;
     IF v_count > 0 then
         execute immediate d_sql ;
         execute immediate c_sql ;
@@ -330,13 +330,13 @@ begin
       begin
         v_table_name := v_table_data.TABLE_NAME ;
         -- 否则查询出表的列数据
-        for v_table_column_data in (select * from user_tab_columns where Table_Name=v_table_name ORDER BY COLUMN_ID ASC ) loop
+        for v_table_column_data in (SELECT * FROM user_tab_columns WHERE Table_Name=v_table_name ORDER BY COLUMN_ID ASC ) loop
 
             begin
             v_table_column := v_table_column_data.COLUMN_NAME ;
             if  instr(v_table_column_data.DATA_TYPE, 'VARCHAR') > 0 then
                 -- 判断乱码
-                 v_sql := 'select count(1) from '|| v_table_name || ' where asciistr('|| v_table_column ||') like ''%??%'' or asciistr('|| v_table_column ||') like ''%\FFFD%'' ';
+                 v_sql := 'SELECT count(1) FROM '|| v_table_name || ' WHERE asciistr('|| v_table_column ||') like ''%??%'' or asciistr('|| v_table_column ||') like ''%\FFFD%'' ';
                 execute immediate v_sql into v_count;
                 if v_count >0 then
                     v_index := v_index+1;
@@ -355,21 +355,11 @@ end;
 
 ## 常用查询
 
-### 查询数据库全部序列
+### 查版本
 
- 
---查看当前用户的所有序列 PAYMT 为数据库名称
-
-```sql
-select SEQUENCE_OWNER,SEQUENCE_NAME from dba_sequences where sequence_owner='PAYMT';
+```SQL
+select * from V$VERSION  ;
 ```
-
-### 查看数据库版本：
-
-```sql
-select * from v$version;
-```
-
 查询结果：
 
 | BANNER | CON_ID |
@@ -381,25 +371,35 @@ select * from v$version;
 |NLSRTL Version 12.2.0.1.0 - Production | 0 |
 
 
+### 查询数据库全部序列
+
+ 
+--查看当前用户的所有序列 PAYMT 为数据库名称
+
+```sql
+SELECT SEQUENCE_OWNER,SEQUENCE_NAME FROM dba_sequences WHERE sequence_owner='PAYMT';
+```
+
+
 ### 查询表-字段-注释
 
 查表DDL最后更新时间
 
 ```sql
-select uat.table_name as tableName,
-    (select last_ddl_time from user_objects where  OBJECT_TYPE='TABLE' AND object_name = uat.table_name ) as lasDdlTime
-from user_all_tables uat ;
+SELECT uat.table_name as tableName,
+    (SELECT last_ddl_time FROM user_objects WHERE  OBJECT_TYPE='TABLE' AND object_name = uat.table_name ) as lasDdlTime
+FROM user_all_tables uat ;
 ```
 
 查用户所有的表:
 
 ```sql
--- 查指定用户的所有表
+-- 查指定用户的所有表(dba权限)
 SELECT TABLE_NAME FROM DBA_TABLES WHERE OWNER='用户名' ;
 ```
 
 ```sql
--- 查用户所有的表
+-- 查用户所有的表(dba权限)
 SELECT TABLE_NAME FROM DBA_TABLES WHERE OWNER='BPJYDATA';
 
 -- 当前用户拥有的表
@@ -456,11 +456,11 @@ AND a.OWNER ='BPJYDATA' AND a.TABLE_NAME IN (
 
 ```sql
 -- 查（当前用户）表对应的列
-select * from user_tab_columns where Table_Name='T_APPLICATIONS' ORDER BY COLUMN_ID ASC;
+SELECT * FROM user_tab_columns WHERE Table_Name='T_APPLICATIONS' ORDER BY COLUMN_ID ASC;
 -- 查（全部用户）表名全部的列
-select * from all_tab_columns where Table_Name='T_APPLICATIONS';
+SELECT * FROM all_tab_columns WHERE Table_Name='T_APPLICATIONS';
 -- 查（全部用户，含系统表）表名全部的列
-select * from dba_tab_columns where Table_Name='T_APPLICATIONS';
+SELECT * FROM dba_tab_columns WHERE Table_Name='T_APPLICATIONS';
 ```
 
 
@@ -511,7 +511,7 @@ WHERE UTC.TABLE_NAME = T.TABLE_NAME AND T.TABLE_NAME=UCC.TABLE_NAME
 查表对应的注释:
 
 ```sql
-select* from all_indexes where table_name='T_APPLICATIONS';
+SELECT* FROM all_indexes WHERE table_name='T_APPLICATIONS';
 
 -- 查表对应的注释
 SELECT UIC.INDEX_NAME, TC.COLUMN_NAME, UIC.*, TC.* 
@@ -526,29 +526,29 @@ ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 
 ### 查询表约束
 
-查找表约束：`select constraint_name from user_cons_columns a where a.table_name='tablename';`
+查找表约束：`SELECT constraint_name FROM user_cons_columns a WHERE a.table_name='tablename';`
 
-增加表约束：`alter table tablename add constraint pk_name primary key(column);`
+增加表约束：`ALTER TABLE tablename ADD CONSTRAINT pk_name primary key(column);`
 
-删除表约束：`alter table tablename drop constraint constraint_name `----（SYS_C002715）;
+删除表约束：`ALTER TABLE tablename DROP CONSTRAINT constraint_name `----（SYS_C002715）;
 
-修改表约束：1）禁用表主键：`alter table tablename disable primary key;`
+修改表约束：1）禁用表主键：`ALTER TABLE tablename DISABLE primary key;`
 
-　　　　　　2）启用表主键：`alter table tablename enable primary key;`
+　　　　　　2）启用表主键：`ALTER TABLE tablename ENABLE primary key;`
 
-　　　　　　3）重命名表主键：`alter table tablename rename constraint pk_id to new_pk_id;`
+　　　　　　3）重命名表主键：`ALTER TABLE tablename RENAME CONSTRAINT pk_id TO new_pk_id;`
 
 ```sql
 --查外键约束
-select * from user_cons_columns cl where cl.constraint_name = 外键名称
+SELECT * FROM user_cons_columns cl WHERE cl.constraint_name = 外键名称
 
 --查当前schema的约束
-select table_name,constraint_name,constraint_type from user_constraints
-where table_name='大写的表名'
+SELECT table_name,constraint_name,constraint_type FROM user_constraints
+WHERE table_name='大写的表名'
 
 --查所有的约束
-select table_name,constraint_name,constraint_type from dba_constraints
-where table_name='大写的表名'
+SELECT table_name,constraint_name,constraint_type FROM dba_constraints
+WHERE table_name='大写的表名'
 
 
 -- 查约束
@@ -563,37 +563,37 @@ WHERE table_name = 'table_name' and owner = 'owner_name';
 
 ```sql
 --查询出所有表的唯一键约束的,生成禁用sql
-select 'alter table ' || table_name || ' disable constraint '||constraint_name||';'
-from user_constraints where constraint_type='U';
+SELECT 'ALTER TABLE ' || table_name || ' disable constraint '||constraint_name||';'
+FROM user_constraints WHERE constraint_type='U';
 ```
 
 如下：
 
 ```sql
-alter table MM_PERMISSIONS_TD disable constraint MM_PERMISSIONS_TD_UNIQUE ;
-alter table MM_PLAN_TD disable constraint U_PLAN_TD;
-alter table MM_PREPAYINFO_TD disable constraint U_PREPAYINFO_TD_01;
-alter table MM_PREPAYMENTIN_TD disable constraint U_PREPAYMENTID_TD_01;
+ALTER TABLE MM_PERMISSIONS_TD DISABLE CONSTRAINT MM_PERMISSIONS_TD_UNIQUE ;
+ALTER TABLE MM_PLAN_TD DISABLE CONSTRAINT U_PLAN_TD;
+ALTER TABLE MM_PREPAYINFO_TD DISABLE CONSTRAINT U_PREPAYINFO_TD_01;
+ALTER TABLE MM_PREPAYMENTIN_TD DISABLE CONSTRAINT U_PREPAYMENTID_TD_01;
 ```
 
 
 ```sql
 --查询出所有表的唯一键约束的,生成启用sql
-select 'alter table ' || table_name || ' enable constraint '||constraint_name||';'
-from user_constraints where constraint_type='U';
+SELECT 'ALTER TABLE ' || table_name || ' ENABLE CONSTRAINT '||constraint_name||';'
+FROM user_constraints WHERE constraint_type='U';
 ```
 
 如下：
 ```sql
-alter table SYENTINFO2 enable constraint UQ_SY20180806;
-alter table WEB_INFO enable constraint UQWEBINFO201807211136;
-alter table ENT_INFO_WUHAN enable constraint SYS_C0024733;
+ALTER TABLE SYENTINFO2 enable constraint UQ_SY20180806;
+ALTER TABLE WEB_INFO enable constraint UQWEBINFO201807211136;
+ALTER TABLE ENT_INFO_WUHAN enable constraint SYS_C0024733;
 ```
 
 ```sql
 --查询所有表的所有外键 
-select 'alter table ' || table_name || ' enable constraint '||constraint_name||';'
-from user_constraints where constraint_type='R';
+SELECT 'ALTER TABLE ' || table_name || ' enable constraint '||constraint_name||';'
+FROM user_constraints WHERE constraint_type='R';
 ```
 
 ### 查询表索引
@@ -602,10 +602,10 @@ from user_constraints where constraint_type='R';
 ```sql
 
 -- 查用户所有的所有
-select * from USER_INDEXES where table_name = '大写的表名'
+SELECT * FROM USER_INDEXES WHERE table_name = '大写的表名'
 
 -- 查所有的所有
-select* from all_indexes where table_name='T_APPLICATIONS';
+SELECT* FROM all_indexes WHERE table_name='T_APPLICATIONS';
 
 
 -- 查表的索引信息
@@ -627,7 +627,7 @@ ORDER BY UIC.INDEX_NAME, UIC.COLUMN_POSITION ;
 ### 查视图
 
 ```sql
-select * from all_views WHERE OWNER='PAYMT'
+SELECT * FROM all_views WHERE OWNER='PAYMT'
 ORDER BY VIEW_NAME
 ```
 
@@ -635,9 +635,9 @@ ORDER BY VIEW_NAME
 ### 查看空表-函数：
 
 ```sql
-select sysdate from dual;
+SELECT sysdate FROM dual;
 -- 等价于mysql
-select CURRENT_TIMESTAMP ;
+SELECT CURRENT_TIMESTAMP ;
 ```
 
 ### TO_CHAR()函数
@@ -738,7 +738,7 @@ concat(字符串1, 字符串2)
 1.查服务端字符集编码
 
 ```sql
-select userenv('language') from dual;
+SELECT userenv('language') FROM dual;
 ```
 
 结果
@@ -748,10 +748,10 @@ select userenv('language') from dual;
 1	SIMPLIFIED CHINESE_CHINA.AL32UTF8
 ```
 
-2.执行语句 `select * from V$NLS_PARAMETERS` 查看第一行中PARAMETER项中为NLS_LANGUAGE 对应的VALUE项中是否和第一步得到的值一样。
+2.执行语句 `SELECT * FROM V$NLS_PARAMETERS` 查看第一行中PARAMETER项中为NLS_LANGUAGE 对应的VALUE项中是否和第一步得到的值一样。
 
 ```sql
-select * from V$NLS_PARAMETERS 
+SELECT * FROM V$NLS_PARAMETERS 
 ```
 
 结果
@@ -821,12 +821,12 @@ begin
      connect to  用户名 identified by "密码"
      using ''192.168.1.100:1521/orcl'' ';
 
-   --    open out_cursor for 'select * from A@dblink1';
+   --    open out_cursor for 'SELECT * FROM A@dblink1';
   
 
   -- 返回个数值
     out_cursor :=0;
-    execute immediate 'select count(*) from A@dblink1'  into out_cursor ;
+    execute immediate 'SELECT count(*) FROM A@dblink1'  into out_cursor ;
     
     -- 取消连接
     execute immediate 'drop database link dblink1';
@@ -836,6 +836,228 @@ begin
 end  ;
 ```
 
+
+## 元数据查询
+
+ORACLE 数据字典视图的种类分别为：USER,ALL 和 DBA.
+- USER_* ：有关用户所拥有的对象信息，即用户自己创建的对象信息。
+- ALL_* ：有关用户可以访问的对象的信息，即用户自己创建的对象的信息加上其他用户创建的对象但该用户有权访问的信息。
+- DBA_* ：有关整个数据库中对象的信息，需要DBA权限。
+
+> *可以为TABLES,INDEXES,OBJECTS,USERS等。
+
+### 1、查用户
+
+查看当前登录用户名、创建时间、默认表空间、临时表空间：
+```SQL
+SELECT * FROM user_users;
+```
+查询全部的用户信息（信息有限，不能查看默认表空间等）：
+
+```SQL
+SELECT * FROM all_users;
+```
+
+查看全部的用户(信息全，需要dba角色)：
+```SQL
+SELECT * FROM dba_users;
+```
+
+查看用户是否以dba身份登录：
+```SQL
+SELECT SYS_CONTEXT('BVIS','ISDBA') FROM dual;
+```
+显示 TRUE/FALSE
+
+
+### 2、查角色
+
+查看所有的角色（需要已授权dba角色）：
+```SQL
+SELECT * FROM dba_roles;
+```
+查看当前用户拥有的角色：
+```SQL
+SELECT * FROM user_role_privs;
+```
+查看哪些用户有sysdba或sysoper系统权限(需要dba角色)：
+```SQL
+SELECT * FROM V$PWFILE_USERS
+```
+查看角色的授予情况：
+```SQL
+SELECT * FROM dba_role_privs;
+```
+### 3、查权限
+
+查看所有的系统权限：
+```SQL
+SELECT * FROM system_privilege_map;
+```
+查看直接授予给当前用户的系统权限：
+```SQL
+SELECT * FROM user_sys_privs;
+```
+查看当前用户可以使用的权限信息（将解析拥有的角色对应的权限）：
+```SQL
+SELECT * FROM session_privs
+```
+查看已经授予所有用户的系统权限信息（需要dba角色）：
+```SQL
+SELECT * FROM dba_sys_privs
+```
+
+查看当前用户的对象权限：
+```SQL
+SELECT * FROM user_tab_privs;
+```
+查看所有授予的对象权限（需要dba角色）：
+```SQL
+SELECT * FROM dba_tab_privs;
+```
+
+### 4、查登录数据库
+
+查看当前登录的数据库名：
+```SQL
+SELECT SYS_CONTEXT('USERENV','DB_NAME') FROM dual;
+```
+
+查看当前登录的实例名称：
+```SQL
+SELECT SYS_CONTEXT('USERENV','INSTANCE_NAME') FROM dual;
+```
+
+### 5、查数据库表
+
+查看当前用户的所有表：
+```SQL
+SELECT * FROM user_tables;
+```
+
+查看当前用户的表的表结构：
+```SQL
+SELECT *
+  FROM USER_TAB_COLUMNS T, USER_COL_COMMENTS C
+ WHERE T.TABLE_NAME = C.TABLE_NAME
+   AND T.COLUMN_NAME = C.COLUMN_NAME
+   AND T.TABLE_NAME = UPPER('T_APPLICATION')
+```
+
+### 5、查视图
+
+查看当前用户的所有视图：
+```SQL
+SELECT * FROM user_views;
+```
+
+### 6、查存储过程
+
+```sql
+create or replace procedure DEMO_PROC
+(
+--定义输入、输出参数--
+num_A in number ,
+num_B in number,
+numType in number,
+num_C out number
+)
+as
+--定义变量--
+ -- numCount integer;
+ -- numStr varchar(20);  
+begin   
+     --判断计算类型--
+     if numType=1 then
+        num_C := num_A + num_B;
+     elsif numType=2 then
+        num_C := num_A - num_B;
+     elsif numType=3 then
+        num_C := num_A * num_B; 
+     elsif numType=4 then
+        num_C := num_A / num_B; 
+     else
+     --其它处理
+       dbms_output.put_line('其它处理');
+     end if;
+end;
+-- 调用存储过程
+declare num_C number;
+begin
+   --调用存储过程---
+   DEMO_PROC(3,4,3,num_C);
+   dbms_output.put_line('输出结果：'|| num_C );
+end;
+```
+
+查看当前用户创建的所有存储过程：
+
+```SQL
+SELECT * FROM user_procedures;
+```
+查看存储过程定义语句：
+
+```SQL
+SELECT * FROM user_source WHERE NAME ='DEMO_PROC' ORDER BY line;
+```
+
+### 7、查序列
+
+
+```SQL
+-- 创建一个序列
+create sequence t_common_seq start with 1 increment by 1;
+SELECT * FROM user_sequences;
+```
+
+### 8、查触发器
+
+查看创建的触发器：
+```SQL
+SELECT * FROM user_triggers;
+```
+
+### 9、查函数
+
+创建函数
+
+```SQL
+CREATE OR REPLACE FUNCTION FUNC_ADD (
+    x int,
+    y int
+) RETURN int IS
+    res int;
+BEGIN
+    return x+y;
+END;
+```
+
+调用函数
+
+```SQL
+DECLARE results NUMBER;
+BEGIN
+results := FUNC_ADD(2,3);
+DBMS_OUTPUT.PUT_LINE('输出: 2+3='||results);
+END;
+```
+
+查看函数：
+
+```SQL
+SELECT * FROM USER_OBJECTS WHERE OBJECT_TYPE='FUNCTION';
+SELECT * FROM user_source WHERE TYPE='FUNCTION'; 
+
+```
+
+### 10、查索引
+
+
+查看当前用户的索引：
+
+```SQL
+SELECT * FROM user_indexes;
+```
 
 
 ## 常见错误
@@ -854,25 +1076,25 @@ end  ;
 	
 
 ```sql
- select username,profile from dba_users;
+ SELECT username,profile FROM dba_users;
 ```
 
 2.查看概要文件中设置的密码错误后限制的登录次数
 	
 ```sql
-select * from dba_profiles where profile='DEFAULT' and resource_name='FAILED_LOGIN_ATTEMPTS';
+SELECT * FROM dba_profiles WHERE profile='DEFAULT' and resource_name='FAILED_LOGIN_ATTEMPTS';
 ```
 
 3.如图，将10次（默认）改为不受限制，改动后立即生效
 
 ```sql
-alter profile default limit failed_login_attempts unlimited;　
+ALTER profile default limit failed_login_attempts unlimited;　
 ```
 
 4.检查已经被锁定的用户
 	
 ```sql
-select username,account_status from dba_users;
+SELECT username,account_status FROM dba_users;
 ```
 
 如图，账号的状态大致被分为：
@@ -884,7 +1106,7 @@ select username,account_status from dba_users;
 
 解锁被锁定的账户
 ```sql
-alter user user_name account unlock;
+ALTER user user_name account unlock;
 ```
 
 
@@ -907,13 +1129,13 @@ SELECT * FROM v$session_wait;
 查看被锁的表
 
 ```sql
-select b.owner,b.object_name,a.session_id,a.locked_mode from v$locked_object a,dba_objects b where b.object_id = a.object_id;
+SELECT b.owner,b.object_name,a.session_id,a.locked_mode FROM v$locked_object a,dba_objects b WHERE b.object_id = a.object_id;
 ```
 
 查看那个用户那个进程照成死锁
 
 ```sql
-select b.username,b.sid,b.serial#,logon_time from v$locked_object a,v$session b where a.session_id = b.sid order by b.logon_time;
+SELECT b.username,b.sid,b.serial#,logon_time FROM v$locked_object a,v$session b WHERE a.session_id = b.sid order by b.logon_time;
 ```
 
 查看连接的进程
@@ -938,6 +1160,6 @@ ORDER BY sid;
 
 杀掉进程 sid,serial#
 ```sql
-alter system kill session'210,11562';
+ALTER system kill session'210,11562';
 ```
 
