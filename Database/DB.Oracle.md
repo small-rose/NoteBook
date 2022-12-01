@@ -357,7 +357,7 @@ end;
 
 ### 查版本
 
-```SQL
+```sql
 select * from V$VERSION  ;
 ```
 查询结果：
@@ -466,7 +466,7 @@ SELECT * FROM dba_tab_columns WHERE Table_Name='T_APPLICATIONS';
 
 不含有管理员的表
 
-```SQL
+```sql
 -- 查表对应的列
 SELECT UTC.COLUMN_NAME as columnName, --列名
        UTC.DATA_TYPE,
@@ -849,22 +849,22 @@ ORACLE 数据字典视图的种类分别为：USER,ALL 和 DBA.
 ### 1、查用户
 
 查看当前登录用户名、创建时间、默认表空间、临时表空间：
-```SQL
+```sql
 SELECT * FROM user_users;
 ```
 查询全部的用户信息（信息有限，不能查看默认表空间等）：
 
-```SQL
+```sql
 SELECT * FROM all_users;
 ```
 
 查看全部的用户(信息全，需要dba角色)：
-```SQL
+```sql
 SELECT * FROM dba_users;
 ```
 
 查看用户是否以dba身份登录：
-```SQL
+```sql
 SELECT SYS_CONTEXT('BVIS','ISDBA') FROM dual;
 ```
 显示 TRUE/FALSE
@@ -873,70 +873,70 @@ SELECT SYS_CONTEXT('BVIS','ISDBA') FROM dual;
 ### 2、查角色
 
 查看所有的角色（需要已授权dba角色）：
-```SQL
+```sql
 SELECT * FROM dba_roles;
 ```
 查看当前用户拥有的角色：
-```SQL
+```sql
 SELECT * FROM user_role_privs;
 ```
 查看哪些用户有sysdba或sysoper系统权限(需要dba角色)：
-```SQL
+```sql
 SELECT * FROM V$PWFILE_USERS
 ```
 查看角色的授予情况：
-```SQL
+```sql
 SELECT * FROM dba_role_privs;
 ```
 ### 3、查权限
 
 查看所有的系统权限：
-```SQL
+```sql
 SELECT * FROM system_privilege_map;
 ```
 查看直接授予给当前用户的系统权限：
-```SQL
+```sql
 SELECT * FROM user_sys_privs;
 ```
 查看当前用户可以使用的权限信息（将解析拥有的角色对应的权限）：
-```SQL
+```sql
 SELECT * FROM session_privs
 ```
 查看已经授予所有用户的系统权限信息（需要dba角色）：
-```SQL
+```sql
 SELECT * FROM dba_sys_privs
 ```
 
 查看当前用户的对象权限：
-```SQL
+```sql
 SELECT * FROM user_tab_privs;
 ```
 查看所有授予的对象权限（需要dba角色）：
-```SQL
+```sql
 SELECT * FROM dba_tab_privs;
 ```
 
 ### 4、查登录数据库
 
 查看当前登录的数据库名：
-```SQL
+```sql
 SELECT SYS_CONTEXT('USERENV','DB_NAME') FROM dual;
 ```
 
 查看当前登录的实例名称：
-```SQL
+```sql
 SELECT SYS_CONTEXT('USERENV','INSTANCE_NAME') FROM dual;
 ```
 
 ### 5、查数据库表
 
 查看当前用户的所有表：
-```SQL
+```sql
 SELECT * FROM user_tables;
 ```
 
 查看当前用户的表的表结构：
-```SQL
+```sql
 SELECT *
   FROM USER_TAB_COLUMNS T, USER_COL_COMMENTS C
  WHERE T.TABLE_NAME = C.TABLE_NAME
@@ -947,7 +947,7 @@ SELECT *
 ### 5、查视图
 
 查看当前用户的所有视图：
-```SQL
+```sql
 SELECT * FROM user_views;
 ```
 
@@ -992,19 +992,19 @@ end;
 
 查看当前用户创建的所有存储过程：
 
-```SQL
+```sql
 SELECT * FROM user_procedures;
 ```
 查看存储过程定义语句：
 
-```SQL
+```sql
 SELECT * FROM user_source WHERE NAME ='DEMO_PROC' ORDER BY line;
 ```
 
 ### 7、查序列
 
 
-```SQL
+```sql
 -- 创建一个序列
 create sequence t_common_seq start with 1 increment by 1;
 SELECT * FROM user_sequences;
@@ -1013,7 +1013,7 @@ SELECT * FROM user_sequences;
 ### 8、查触发器
 
 查看创建的触发器：
-```SQL
+```sql
 SELECT * FROM user_triggers;
 ```
 
@@ -1021,7 +1021,7 @@ SELECT * FROM user_triggers;
 
 创建函数
 
-```SQL
+```sql
 CREATE OR REPLACE FUNCTION FUNC_ADD (
     x int,
     y int
@@ -1034,7 +1034,7 @@ END;
 
 调用函数
 
-```SQL
+```sql
 DECLARE results NUMBER;
 BEGIN
 results := FUNC_ADD(2,3);
@@ -1044,7 +1044,7 @@ END;
 
 查看函数：
 
-```SQL
+```sql
 SELECT * FROM USER_OBJECTS WHERE OBJECT_TYPE='FUNCTION';
 SELECT * FROM user_source WHERE TYPE='FUNCTION'; 
 
@@ -1055,9 +1055,68 @@ SELECT * FROM user_source WHERE TYPE='FUNCTION';
 
 查看当前用户的索引：
 
-```SQL
+```sql
 SELECT * FROM user_indexes;
 ```
+
+### 10、查集合
+
+```sql
+DELIMITER $$
+CREATE OR REPLACE TYPE ty_str_split IS TABLE OF VARCHAR2 (4000);
+$$
+```
+
+查看当前用户的集合：
+
+```sql
+SELECT * FROM USER_OBJECTS WHERE OBJECT_TYPE='TYPE';
+SELECT * FROM user_source WHERE TYPE='TYPE'; 
+```
+使用，定义一个函数 fn_split
+
+```sql
+CREATE OR REPLACE FUNCTION fn_split (p_str IN VARCHAR2, p_delimiter IN VARCHAR2)
+    RETURN ty_str_split PIPELINED
+IS
+    j INT := 0;
+    i INT := 1;
+    len INT := 0;
+    len1 INT := 0;
+    str VARCHAR2 (4000);
+BEGIN
+    len := LENGTH (p_str);
+    len1 := LENGTH (p_delimiter);
+
+    WHILE j < len
+    LOOP
+        j := INSTR (p_str, p_delimiter, i);
+
+        IF j = 0
+        THEN
+            j := len;
+            str := SUBSTR (p_str, i);
+            PIPE ROW (str);
+
+            IF i >= len
+            THEN
+                EXIT;
+            END IF;
+        ELSE
+            str := SUBSTR (p_str, i, j - i);
+            i := j + len1;
+            PIPE ROW (str);
+        END IF;
+    END LOOP;
+
+    RETURN;
+END fn_split;
+```
+调用函数得到集合：
+```sql
+select fn_split('111,222', ',')  from dual;
+```
+查询结果就是集合，类似 `List<Object>`
 
 
 ## 常见错误
