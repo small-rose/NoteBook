@@ -8,6 +8,10 @@ parent: Tools
 # Excel
 {: .no_toc }
 
+Record some excel skills that can be used for development, such as functions.
+{: .fs-6 .fw-300 }
+
+
 ## Table of contents
 {: .no_toc .text-delta }
 

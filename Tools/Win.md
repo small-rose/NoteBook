@@ -18,16 +18,23 @@ parent: Tools
 ## windows 端口占用
 
 ```text
-netstat -aon | findstr :80
+netstat -aon | findstr :8088
 ```
 
 找到对应的PID,根据PID找到对应的服务名称
 
 ```text
-tasklist|findstr “12824”
+tasklist|findstr “8088”
 
 tasklist /fi “PID eq 12824”
 ```
+
+任务
+
+```sql
+taskkill /pid 8088 /F
+```
+
 
 ## windows 端口转发
 
