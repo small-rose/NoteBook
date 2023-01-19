@@ -44,8 +44,8 @@ These are some guidelines for surfing the Internet to help us quickly search for
 
 ### Search Tools
 
-[https://v2rayse.com/](https://v2rayse.com/
-
+- [x] [https://v2rayse.com/](https://v2rayse.com/
+- [x] [https://tgstat.ru/en](https://tgstat.ru/en)
 
 
 ### Search PAN
@@ -56,8 +56,10 @@ These are some guidelines for surfing the Internet to help us quickly search for
 - [x] [https://pan.qianfan.app](https://pan.qianfan.app)
 - [x] [https://www.alipansou.com](https://www.alipansou.com)
 - [x] [https://soupan007.com](https://soupan007.com)
+- [x] [https://www.aliyunpanziyuan.com](https://www.aliyunpanziyuan.com)
+- [x] [https://aliyun.panpanr.com/](https://aliyun.panpanr.com/)
+- [x] [https://pan666.cn/](https://pan666.cn/)
 
- 
 
 ### Search Online
 
@@ -71,5 +73,7 @@ These are some guidelines for surfing the Internet to help us quickly search for
  - [x] [https://www.toplinks.cc/s/](https://www.toplinks.cc/s/)
  - [x] [https://nav.sbkko.com](https://nav.sbkko.com)
  - [x] [https://skrbtgo.xyz/](https://skrbtgo.xyz)
+ 
+
 
  
