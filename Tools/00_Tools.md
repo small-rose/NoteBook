@@ -143,6 +143,8 @@ GitHub加速下载
 
 [https://www.pdai.tech/ Java 全栈知识体系](https://www.pdai.tech/)
 
+[http://coderleixiaoshuai.gitee.io/java-eight-part/#/](八股文)
+
 [http://doc.yonyoucloud.com/doc/wiki/project/GradleUserGuide-Wiki/index.html](Gradle用户指南官方文档中文版)
 
 [https://www.githubs.cn/top](https://www.githubs.cn/top)
