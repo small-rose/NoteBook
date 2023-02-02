@@ -162,6 +162,18 @@ GitHub加速下载
 [😁 Emoji在线3](https://www.emojiall.com/zh-hans){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [😆 Emoji在线4](https://emojipedia.org/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
   
+### MixResource
+
+<p mark="linkMe">
+
+<a href="https://www.ziyuanm.com/T" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">资源猫</a>
+<a href="https://cilitiantang.me" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">磁力池</a>
+<a href="https://www.100font.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">免费字体</a>
+<a href="https://search.yibook.org/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">找书易</a>
+<a href="https://www.transferfile.io/#/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">临时文件传输</a>
+
+</p>
+  
 ### Tool
 
 <p mark="linkMe">
@@ -287,6 +299,8 @@ GitHub加速下载
 
 <p mark="linkMe">
 
+<a href="https://www.nen9.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">青柠</a>
+<a href="https://www.dianyinggou.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">电影狗</a>
 <a href="https://www.mvcat.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MV CAT</a>
 <a href="https://ddrk.me/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
 <a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
