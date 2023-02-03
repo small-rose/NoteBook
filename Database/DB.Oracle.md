@@ -1255,7 +1255,26 @@ SELECT T.TABLE_NAME,T.NUM_ROWS FROM USER_TABLES T
 ```
 
 
-## 常见错误
+### 查询存过
+
+执行SQL 查询存过、存过包、函数等:
+
+```sql
+-- 查询包含特定字符串的存过
+SELECT NAME , LINE, TEXT FROM USER_SOURCE WHERE NAME = 'MM_MIRROR_PKG_SS'
+AND (TEXT like '%$$plsql_unit%' or TEXT like '%$$PLSQL_UNIT%');
+
+-- 查询需要处理行号集
+SELECT NAME , LISTAGG(LINE, ',')WITHIN GROUP(ORDER BY NAME) AS LINE
+FROM USER_SOURCE WHERE 1=1 -- AND NAME = 'AMS_HQ_CS'
+AND (TEXT like '%$$plsql_unit%' or TEXT like '%$$PLSQL_UNIT%')
+GROUP BY  NAME
+
+```
+
+
+
+## 常见错误 
 
 ### 锁账户
 

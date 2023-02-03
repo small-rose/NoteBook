@@ -299,6 +299,7 @@ GitHub加速下载
 
 <p mark="linkMe">
 
+<a href="https://www.foxcup.cc" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">狐茶杯</a>
 <a href="https://www.nen9.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">青柠</a>
 <a href="https://www.dianyinggou.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">电影狗</a>
 <a href="https://www.mvcat.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MV CAT</a>
