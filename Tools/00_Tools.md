@@ -166,11 +166,22 @@ GitHub加速下载
 
 <p mark="linkMe">
 
+<a href="http://www.ziyuandi.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">资源帝</a>
+<a href="https://docs.qq.com/sheet/DRU5MWHZCTHFGQnhM" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">课程知识库</a>
 <a href="https://www.ziyuanm.com/T" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">资源猫</a>
 <a href="https://cilitiantang.me" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">磁力池</a>
+
+<a href="https://www.iconfont.cn" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">iconFont</a>
 <a href="https://www.100font.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">免费字体</a>
+<a href="https://www.fontspace.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">FontSpace</a>
 <a href="https://search.yibook.org/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">找书易</a>
 <a href="https://www.transferfile.io/#/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">临时文件传输</a>
+<a href="https://lkssite.vip" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">lkssite</a>
+
+<a href="https://www.futurepedia.io" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">AI工具</a>
+<a href="https://x.magiconch.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">表情包</a>
+<a href="https://lab.magiconch.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">奇奇怪怪</a>
+
 
 </p>
   
@@ -302,6 +313,8 @@ GitHub加速下载
 <a href="https://www.foxcup.cc" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">狐茶杯</a>
 <a href="https://www.nen9.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">青柠</a>
 <a href="https://www.dianyinggou.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">电影狗</a>
+<a href="http://www.breakfan.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">breakfan</a>
+<a href="http://tkys.vip/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">sky</a>
 <a href="https://www.mvcat.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MV CAT</a>
 <a href="https://ddrk.me/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
 <a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
@@ -334,8 +347,8 @@ GitHub加速下载
 
 
 <p mark="linkMe">
-
 <a href="https://wallhere.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallhere</a>
+<a href="https://bz.zzzmh.cn/index" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">极简壁纸</a>
 <a href="https://zhutix.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">zhutix</a>
 <a href="https://www.wallpaperup.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallpaperup</a>
 <a href="https://wallpaperstock.net/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallpaperstock</a>
@@ -347,6 +360,21 @@ GitHub加速下载
 <a href="https://www.xuges.com/wuxia/gulong/index.htm" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gu Long</a>
 <a href="http://t.icesmall.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ming Zhu</a>
 </p>
+
+<p mark="linkMe">
+<a href="https://mp.weixin.qq.com/s/0QPrmVE7unxoVDSqkm8e_g" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">软件目录</a>
+<a href="https://www.xuges.com/wuxia/gulong/index.htm" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gu Long</a>
+<a href="http://t.icesmall.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ming Zhu</a>
+</p>
+
+
+### GAMES
+
+<p mark="linkMe">
+<a href="https://docs.qq.com/sheet/DUGNXSUZSY05LdHZK?tab=BB08J2" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">games</a>
+</p>
+
+
 
 
 ### github 

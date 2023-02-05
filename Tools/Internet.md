@@ -73,7 +73,7 @@ These are some guidelines for surfing the Internet to help us quickly search for
  - [x] [https://www.toplinks.cc/s/](https://www.toplinks.cc/s/)
  - [x] [https://nav.sbkko.com](https://nav.sbkko.com)
  - [x] [https://skrbtgo.xyz/](https://skrbtgo.xyz)
- 
+ - [x] [https://yiso.fun/](https://yiso.fun/)
 
 
  
