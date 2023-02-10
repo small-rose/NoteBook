@@ -1222,6 +1222,50 @@ select fn_split('111,222', ',')  from dual;
 ```
 查询结果就是集合，类似 `List<Object>`
 
+集合对象在存过中的使用示例：
+
+
+```sql
+create or replace package TYPE_TEST_DEMO is
+    procedure init ;
+    procedure exe_test ;
+end TYPE_TEST_DEMO ;
+/
+create or replace package body TYPE_TEST_DEMO is
+
+    TYPE T_VALUE2S IS RECORD(
+        value0 VARCHAR2(100),
+        value1 VARCHAR2(100));
+    TYPE T_VALUE2S_F IS TABLE OF T_VALUE2S INDEX BY BINARY_INTEGER;
+    C_COLLECTTION T_VALUE2S_F ;    
+        
+    procedure exe_qy_out(i_sql in varchar2, o_value2s out T_VALUE2S_F) is
+    begin
+      --dbms_output.put_line(i_sql);
+      EXECUTE IMMEDIATE i_sql bulk collect
+      into o_value2s;
+    end exe_qy_out;
+        
+    procedure init is
+       v_sql varchar2(1000);
+    begin
+        v_sql := 'SELECT PARAM_KEY, PARAM_VALUE  FROM AMS_TASK_PROCEDURE_PARAM_TD ';
+        
+        exe_QY_out(v_sql, C_COLLECTTION);
+        for i in 1 .. C_COLLECTTION.count() LOOP
+            DBMS_OUTPUT.PUT_LINE(C_COLLECTTION(i).value0 || C_COLLECTTION(i).value1 );
+        end loop;
+    end init;
+
+    procedure exe_test is
+    begin
+        init;
+    end exe_test;
+   
+end TYPE_TEST_DEMO ;
+/
+```
+
 ### 查表的数据量
 
 执行SQL 更新oracle记录的最新数据:
