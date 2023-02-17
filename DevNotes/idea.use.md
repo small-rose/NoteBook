@@ -31,9 +31,37 @@ RGB颜色红：199，绿：237，蓝：204；
 十六进制颜色：#C7EDCC  或用 #CCE8CF
 
 
-<table width="400px"><tr><td>#C7EDCC</td><td bgcolor="#C7EDCC">#C7EDCC</td></tr></table> 
+<table  width="200px">
+<tr>
+<td style="background-color: #C7EDCC" width="40px" height="40px">#C7EDCC</td>
+<td style="background-color: #CCE8CF" width="40px" height="40px">#CCE8CF</td>
+<td style="background-color: #FAF9DE" width="40px" height="40px">#FAF9DE</td>
+<td style="background-color: #FFF2E2" width="40px" height="40px">#FFF2E2</td>
+<td style="background-color: #FDE6E0" width="40px" height="40px">#FDE6E0</td>
+</tr>
+<tr>
+<td style="background-color: #E3EDCD" width="40px" height="40px">#E3EDCD</td>
+<td style="background-color: #DCE2F1" width="40px" height="40px">#DCE2F1</td>
+<td style="background-color: #E9EBFE" width="40px" height="40px">#E9EBFE</td>
+<td style="background-color: #EAEAEF" width="40px" height="40px">#EAEAEF</td>
+<td style="background-color: #B7E8BD" width="40px" height="40px">#B7E8BD</td>
+</tr>
+<tr>
+<td style="background-color: #19CAAD" width="40px" height="40px">#19CAAD</td>
+<td style="background-color: #8CC7B5" width="40px" height="40px">#8CC7B5</td>
+<td style="background-color: #A0EEE1" width="40px" height="40px">#A0EEE1</td>
+<td style="background-color: #BEE7E9" width="40px" height="40px">#BEE7E9</td>
+<td style="background-color: #BEEDC7" width="40px" height="40px">#BEEDC7</td>
+</tr>
+<tr>
+<td style="background-color: #D6D5B7" width="40px" height="40px">#D6D5B7</td>
+<td style="background-color: #D1BA74" width="40px" height="40px">#D1BA74</td>
+<td style="background-color: #E6CEAC" width="40px" height="40px">#E6CEAC</td>
+<td style="background-color: #ECAD9E" width="40px" height="40px">#ECAD9E</td>
+<td style="background-color: #F4606C" width="40px" height="40px">#F4606C</td>
 
-<table width="400px"><tr><td>#CCE8CF</td><td bgcolor="#CCE8CF">#CCE8CF</td></tr></table>
+</tr>
+</table>
 
 
 
