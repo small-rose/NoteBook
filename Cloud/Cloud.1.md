@@ -16,6 +16,28 @@ This is the development related spring cloud.
 {: .fs-6 .fw-300 }
 
 
+## 微服务的主要技术栈：
+
+|微服务条目	|主流技术 |
+|-----------|--------|
+|服务开发	|Springboot、Spring、SpringMVC|
+|服务配置与管理	|Netflix公司的Archaius、阿里的Diamond等|
+|服务注册与发现	|Eureka、Consul、Zookeeper、Nacos等|
+|服务调用	|Rest、RPC、gRPC|
+|服务熔断器	|Hystrix、sentinel、Envoy等|
+|负载均衡	|Ribbon、Nginx等|
+|服务接口调用(客户端调用服务的简化工具)	|Feign等|
+|消息队列	|Kafka、RabbitMQ、ActiveMQ等 |
+|服务配置中心管理	|SpringCloudConfig、Nacos、Chef等 |
+|服务路由（API网关）	|Zuul、Geteway等 |
+|服务监控	|Zabbix、Nagios、Metrics、Spectator等 |
+|全链路追踪	|Zipkin，Brave、Dapper等 |
+|服务部署	|Docker、OpenStack、Kubernetes、k3s等 |
+|数据流操作开发包	|SpringCloud Stream（封装与Redis,Rabbit、Kafka等发送接收消息） |
+|事件消息总线	|Spring Cloud Bus、Nacos等 |
+
+
+
 ## 微服务组件
 
 0、SpringCloud 微服务
