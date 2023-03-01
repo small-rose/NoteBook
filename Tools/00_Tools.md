@@ -332,6 +332,8 @@ GitHub加速下载
 <a href="https://nav.sbkko.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">SB KKO</a>
 <a href="https://www.huohuo99.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">huohuo99</a>
 <a href="https://cokemv.me/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">cokemv</a>
+<a href="https://196y.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">196y</a>
+<a href="http://wap.vipz8.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">vipz8</a>
 
 </p>
 
@@ -340,10 +342,14 @@ GitHub加速下载
 <p mark="linkMe">
 
 <a href="https://www.nbfox.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">麦田艺术</a>
+<a href="http://www.niuga.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">牛噶解析</a>
+<a href="https://www.timecn.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">全民解析</a>
 <a href="https://rebozj.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Re Bo</a>
+
 <a href="https://adzhp.cn/yin-yue-ruan-jian.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Music</a>
 <a href="https://www.onehourlife.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">One Hour Life</a>
 <a href="https://adzhp.cn/vipdianyingyuduanshipinjiexiziyuansuoyin.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">No VIP</a>
+
 </p>
 
 
@@ -360,6 +366,9 @@ GitHub加速下载
 <a href="https://www.jinyongbook.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Jin Yong</a>
 <a href="https://www.xuges.com/wuxia/gulong/index.htm" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gu Long</a>
 <a href="http://t.icesmall.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ming Zhu</a>
+
+<a href="www.futureme.org" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">写信给自己</a>
+
 </p>
 
 <p mark="linkMe">

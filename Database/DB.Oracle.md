@@ -1222,6 +1222,85 @@ select fn_split('111,222', ',')  from dual;
 ```
 查询结果就是集合，类似 `List<Object>`
 
+集合对象在存过中的使用示例：
+
+
+```sql
+create or replace package TYPE_TEST_DEMO is
+    procedure init ;
+    procedure exe_test ;
+end TYPE_TEST_DEMO ;
+/
+create or replace package body TYPE_TEST_DEMO is
+
+    TYPE T_VALUE2S IS RECORD(
+        value0 VARCHAR2(100),
+        value1 VARCHAR2(100));
+    TYPE T_VALUE2S_F IS TABLE OF T_VALUE2S INDEX BY BINARY_INTEGER;
+    C_COLLECTTION T_VALUE2S_F ;    
+        
+    procedure exe_qy_out(i_sql in varchar2, o_value2s out T_VALUE2S_F) is
+    begin
+      --dbms_output.put_line(i_sql);
+      EXECUTE IMMEDIATE i_sql bulk collect
+      into o_value2s;
+    end exe_qy_out;
+        
+    procedure init is
+       v_sql varchar2(1000);
+    begin
+        v_sql := 'SELECT PARAM_KEY, PARAM_VALUE  FROM AMS_TASK_PROCEDURE_PARAM_TD ';
+        
+        exe_QY_out(v_sql, C_COLLECTTION);
+        for i in 1 .. C_COLLECTTION.count() LOOP
+            DBMS_OUTPUT.PUT_LINE(C_COLLECTTION(i).value0 || C_COLLECTTION(i).value1 );
+        end loop;
+    end init;
+
+    procedure exe_test is
+    begin
+        init;
+    end exe_test;
+   
+end TYPE_TEST_DEMO ;
+/
+
+
+
+create or replace package  small_type_demo is
+    procedure TEST_EXE is
+end;
+/
+create or replace package body small_type_demo is
+    procedure TEST_EXE is
+        v_tmp_count1 number; 
+        v_tmp_count2 number; 
+        type m_rules is record(
+          classgrpcode  varchar2(10), --险种代码
+          classgrpcodename  varchar2(100)); --险种大类
+
+        type t_rules is table of m_rules index by binary_integer; --存放险种代码的集合
+        v_rules t_rules;
+        
+    begin
+        SELECT classgrpcode,classgrpcodename bulk collect
+          into v_rules  FROM AMS_CLASSGRP_TC ;
+        
+        v_tmp_count1 := v_rules.count;
+        DBMS_OUTPUT.PUT_LINE('v_tmp_count:' || v_tmp_count1);  
+        v_tmp_count2 := v_rules.count();
+        DBMS_OUTPUT.PUT_LINE('v_tmp_count():' || v_tmp_count2);
+        for i in 1 .. v_tmp_count2 loop
+          --读取集合内容
+          DBMS_OUTPUT.PUT_LINE('classgrpcode:' || v_rules(i).classgrpcode || 
+                                      ' classgrpcode:' || v_rules(i).classgrpcodename);
+
+        end loop ;
+    end TEST_EXE;
+end small_type_demo;
+
+```
+
 ### 查表的数据量
 
 执行SQL 更新oracle记录的最新数据:
@@ -1272,6 +1351,65 @@ GROUP BY  NAME
 
 ```
 
+## Oracle 分组统计，按照天、月份周和自然周、月、季度和年
+
+1.按天
+
+
+```sql
+select to_char(t.STARTDATE+15/24, 'YYYY-MM-DD') as 天,sum(1) as 数量
+from HOLIDAY t
+group by to_char(t.STARTDATE+15/24, 'YYYY-MM-DD') 
+ORDER by 天 NULLS  LAST;
+
+select trunc(t.STARTDATE, 'DD') as 天,sum(1) as 数量
+from HOLIDAY t
+group by trunc(t.STARTDATE, 'DD')
+ORDER by 天 NULLS  LAST;
+```
+
+2.按周
+
+```sql
+select to_char(next_day(t.STARTDATE+15/24 - 7,2),'YYYY-MM-DD') AS 周,sum(1) as 数量 
+from HOLIDAY t 
+group by to_char(next_day(t.STARTDATE+15/24 - 7,2),'YYYY-MM-DD')ORDER BY 周;
+
+
+-- 按自然周统计 
+select to_char(t.STARTDATE,'iw') AS 周,sum(1) as 数量
+from HOLIDAY t
+group by to_char(t.STARTDATE,'iw')
+ORDER BY 周;
+```
+
+3.按自然月
+
+```sql
+select to_char(t.STARTDATE,'YYYY-MM') as 月份,sum(1) as 数量
+from HOLIDAY t
+GROUP BY  to_char(t.STARTDATE,'YYYY-MM')
+ORDER BY 月份;
+```
+
+4.按季度
+
+```sql
+select to_char(t.STARTDATE,'q') 季度,sum(1) as 数量
+from HOLIDAY t
+group by to_char(t.STARTDATE,'q')
+ORDER BY 季度 NULLS  LAST;
+```
+    
+
+5.按年
+
+```sql
+select to_char(t.STARTDATE,'yyyy') AS 年度,sum(1) as 数量
+from HOLIDAY t
+group by to_char(t.STARTDATE,'yyyy')
+ORDER BY 年度;
+```
 
 
 ## 常见错误 
