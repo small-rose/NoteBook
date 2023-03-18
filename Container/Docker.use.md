@@ -492,20 +492,52 @@ admin
 
 **下载**
 
-```bash
+```shell script
+# 下载最新稳定版
 docker pull redis
+# 下载指定版
+docker pull redis:5.0
 ```
 
-测试启动，无密码
+准备持久化容器卷映射目录
 
-```bash
-docker run -itd --name redis-test -p 6379:6379 redis
+```shell script
+# 持久化配置文件，数据目录，日志
+mkdir -p /opt/docker/redis/conf/
+mkdir -p /opt/docker/redis/data/
+mkdir -p /opt/docker/redis/logs/
+chmod -R 777 /opt/docker/redis/conf/
+chmod -R 777 /opt/docker/redis/data/
 ```
+
+redis的相关目录文件位置：
+- （1）早期版本，version < 5.0 ,配置文件一般在 `/etc/redis/redis.conf`
+- （2）5.x 之后，配置文件一般在 `/usr/local/etc/redis/redis.conf`
+- （3）数据目录的位置在 `/data`
+
+使用docker的方式安装的redis默认没有配置文件，
+ 
+测试启动，无密码，先将容器的配置文件拿出来
+
+```shell script
+# 最新版本
+docker run -d --name redis-test -p 6379:6379 redis
+#指定版本
+docker run -d --name redis-test -p 6379:6379 redis:5.0
+# 低版本
+docker cp  redis-test:/ect/redis.conf  /opt/docker/redis/conf/
+# 5.x 之后的版本，有人说是在这个目录
+docker cp  redis-test:/usr/local/etc/redis/redis.conf  /opt/docker/redis/conf/
+```
+
+将配置文件复制到宿主机目录。
+
+redis 7.x docker版本 配置文件没有了，需要自己去官网下载。
+ 
+ redis 5 配置文件： [redis-v5.conf](../Assets/conf/redis-v5.conf)
+ redis 7 配置文件： [redis-v7.conf](../Assets/conf/redis-v7.conf)
 
 正式启动，持久化容器卷
- (1) 持久化配置文件
- (2) 持久化数据目录
- (3) 密码等其他参数
 
 ```bash
 docker run --restart=always --log-opt max-size=100m --log-opt max-file=2 -p 6379:6379 --name myredis -v /home/redis/myredis/myredis.conf:/etc/redis/redis.conf -v /home/redis/myredis/data:/data -d redis redis-server /etc/redis/redis.conf  --appendonly yes  --requirepass 123456
@@ -521,7 +553,7 @@ docker run --restart=always --log-opt max-size=100m --log-opt max-file=2 -p 6379
 
   - -d redis 表示后台启动redis。redis-server /etc/redis/redis.conf 以配置文件启动redis，加载容器内的conf文件，最终找到的是挂载的目录 /etc/redis/redis.conf 也就是liunx下的/home/redis/myredis/myredis.conf
   - –appendonly yes 开启redis 持久化
-  - –requirepass 000415 设置密码 
+  - –requirepass 123456 设置密码 
 
 如果忘记密码了，可以进入容器查看
 
@@ -532,6 +564,27 @@ auth 密码
 # 查看是否设置密码
 config get requirepass
 ```
+
+redis 7 
+
+```shell script
+docker run --restart=always --log-opt max-size=100m --log-opt max-file=2 \
+  -p 9733:6379 --name small-redis \
+  -v /opt/docker/redis/conf/redis.conf:/etc/redis/redis.conf \
+  -v /opt/docker/redis/data:/data \
+  -d redis:5.0  redis-server /etc/redis/redis.conf  \
+  --appendonly yes  --requirepass zxc123456 
+
+docker run -itd --restart=always --log-opt max-size=100m --log-opt max-file=2 \
+ -p 9733:6379 --name small-redis \
+ -v /opt/docker/redis/conf/redis.conf:/etc/redis/redis.conf \
+ -v /opt/docker/redis/data:/data    \
+  redis:5.0  redis-server /etc/redis/redis.conf  \
+  --appendonly yes  --requirepass zxc123456
+```
+
+{: .tips }
+>如果无法启动检查redis.conf文件中的daemonize为yes，意思是redis服务在后台运行，与docker中的-d参数冲突，需要设置为no.
 
 ## Mysql 安装
 

@@ -957,6 +957,22 @@ GROUP BY  cu.TABLE_NAME,cu.CONSTRAINT_NAME
 ORDER BY cu.TABLE_NAME, cu.CONSTRAINT_NAME;
 ```
 
+### 4.X 临时表查询
+
+1、查看当前用户下的表是否为临时表：
+```sql
+-- 其中的 duration（持续时间）为 null 表示非临时表，SYS$SESSION 表示会话临时表，SYS$TRANSACTION 表示事务临时表
+select * from user_tables where duration is not null;
+```
+
+
+2、临时表删除
+
+（1）事务临时表提交或者回滚后，只是删除其中的数据，表结构仍然还在，会话临时表也是一样，会话结束后，数据删除了，当表结构还在。
+
+（2）如果会话临时表的会话没有结束，则无法删除此临时表，事务临时表也是同理，也只能在未被使用时才能删除。
+
+
 ### 5、查视图
 
 查看当前用户的所有视图：
