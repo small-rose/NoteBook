@@ -133,7 +133,7 @@ GitHub加速下载
 - [GitHub 文件加速](https://gh.api.99988866.xyz/)
 - [GitHub加速链接生成工具](https://github.zhlh6.cn/)
 - [socialify](https://socialify.git.ci/)
-
+- [https://ghproxy.com/](https://ghproxy.com/)
 
 其他
 
@@ -341,6 +341,7 @@ GitHub加速下载
 
 <p mark="linkMe">
 
+<a href="https://www.nbfox.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">麦田艺术</a>
 <a href="http://www.niuga.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">牛噶解析</a>
 <a href="https://www.timecn.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">全民解析</a>
 <a href="https://rebozj.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Re Bo</a>
