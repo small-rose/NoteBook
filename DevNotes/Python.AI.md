@@ -36,8 +36,8 @@ nav_order: 99
 
 4、验证
 
-```shell script
-python
+```bash
+python -V
 ```
 
 ### 2. 安装conda或 miniconda 
@@ -78,12 +78,12 @@ d:\dev-tools-python\Miniconda3\Library\bin
 创建python虚拟环境，默认创建到miniconda安装目录下的envs里
 
 ```bash
-conda create -n test01 python=3.10     # -n是name的缩写，python不指定版本就默认最新版
+conda create -n sd-webui python=3.10     # -n是name的缩写，python不指定版本就默认最新版
 ```
 
 查看已经安装的虚拟环境列表
 
-```shell script
+```bash
 conda env list
 ```
 
@@ -92,30 +92,30 @@ conda env list
 
 输入需要进入的环境的名称即可。
 
-```shell script
-activate test01 
+```bash
+activate sd-webui 
 ```
 
 
-当命令前面出现括号加上我们环境的名称，如 (Test1) C:\Users\hp> ，的时候即说明我们已经进入我们创建的虚拟环境了。
+当命令前面出现括号加上我们环境的名称，如 (sd-webui) C:\Users\hp> ，的时候即说明我们已经进入我们创建的虚拟环境了。
 
 退出当前虚拟环境
 
-```shell script
+```bash
 deactivate
 ```
 
 删除虚拟环境
 
-```shell script
+```bash
 conda env remove -n test01
 ```
 
 >镜像网站
->阿里云镜像： https://mirrors.aliyun.com/pypi/simple/
->清华大学镜像：https://pypi.tuna.tsinghua.edu.cn/simple/
->豆瓣镜像：https://pypi.doubanio.com/simple/
->中科大镜像：https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/
+> - 阿里云镜像： https://mirrors.aliyun.com/pypi/simple/
+> - 清华大学镜像：https://pypi.tuna.tsinghua.edu.cn/simple/
+> - 豆瓣镜像：https://pypi.doubanio.com/simple/
+> - 中科大镜像：https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/
 
 
 ```
@@ -153,20 +153,20 @@ conda env remove -n test01
 
 （1）创建虚拟环境，终端中输入下面命令，等待安装。
 
-```shell script
+```bash
 conda create -n sd-webui python=3.10
 ```
 
 
 （2）激活创建的虚拟环境：
 
-```shell script
+```bash
 conda activate sd-webui
 ```
 
 ### 5、下载并启动安装依赖
 
-```shell script
+```bash
 git clone  https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 ```
 
@@ -175,10 +175,13 @@ git clone  https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 
 针对自动安装多次还是报错可以手动安装：
 
->从github将open_clip的源文件下载到本地，这一步可以使用git clone也可以直接下载zip文件。下载后，解压（如果用git clone就不需要）到d:\\stable-diffusion-webui\venv\Scripts目录下（stable-diffusion-webui是你stable diffusion webui的根目录，这个地址只是我电脑中的，请根据自己放的位置调整）。
-打开cmd，cd到d:\\stable-diffusion-webui\\venv\\Scripts\\open_clip下（或在该目录下打开cmd，效果相同）。
-卸载clip:d:\\stable-diffusion-webui\\venv\\Scripts\\python.exe -m pip uninstall clip
-使用d:\\dev-tools-python\\stable-diffusion-webui\\venv\\Scripts\\python.exe setup.py build install安装open_clip。
+>从github将open_clip的源文件下载到本地，这一步可以使用git clone也可以直接下载zip文件。下载后，解压（如果用git clone就不需要）
+>到`d:\\stable-diffusion-webui\venv\Scripts目`录下（stable-diffusion-webui是你stable diffusion webui的根目录，这个地址只是我电脑中的，请根据自己放的位置调整）。
+打开cmd，cd到 `d:\\stable-diffusion-webui\\venv\\Scripts\\open_clip`下（或在该目录下打开cmd，效果相同）。
+卸载clip: `d:\\stable-diffusion-webui\\venv\\Scripts\\python.exe -m pip uninstall clip`
+使用 `d:\\dev-tools-python\\stable-diffusion-webui\\venv\\Scripts\\python.exe setup.py build install`安装open_clip。
+
+
 
 打开浏览器输入 `http://127.0.0.1:7860`,即可进入webui页面。
 
