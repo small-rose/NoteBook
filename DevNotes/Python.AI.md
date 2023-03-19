@@ -174,12 +174,12 @@ git clone  https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 【安装过程可能会报错，建议开启科学上网，多试几次】
 
 针对自动安装多次还是报错可以手动安装：
-
+{: .important }
 >从github将open_clip的源文件下载到本地，这一步可以使用git clone也可以直接下载zip文件。下载后，解压（如果用git clone就不需要）
 >到`d:\\stable-diffusion-webui\venv\Scripts目`录下（stable-diffusion-webui是你stable diffusion webui的根目录，这个地址只是我电脑中的，请根据自己放的位置调整）。
 打开cmd，cd到 `d:\\stable-diffusion-webui\\venv\\Scripts\\open_clip`下（或在该目录下打开cmd，效果相同）。
-卸载clip: `d:\\stable-diffusion-webui\\venv\\Scripts\\python.exe -m pip uninstall clip`
-使用 `d:\\dev-tools-python\\stable-diffusion-webui\\venv\\Scripts\\python.exe setup.py build install`安装open_clip。
+> 卸载clip: `d:\\stable-diffusion-webui\\venv\\Scripts\\python.exe -m pip uninstall clip`
+> 安装open_clip: `d:\\dev-tools-python\\stable-diffusion-webui\\venv\\Scripts\\python.exe setup.py build install`。
 
 
 
