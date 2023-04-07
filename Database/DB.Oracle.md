@@ -1232,10 +1232,42 @@ BEGIN
     RETURN;
 END fn_split;
 ```
+
+不使用表函数实现：
+```sql
+CREATE OR REPLACE FUNCTION FN_SPLIT_STR (P_STR IN VARCHAR2, P_DELIMITER IN VARCHAR2)
+    RETURN TY_STR_SPLIT
+IS
+    L_RESULT TY_STR_SPLIT := TY_STR_SPLIT();
+    L_START INTEGER := 1;
+    L_DELIMITER_LENTH INTEGER := LENGTH(P_DELIMITER);
+    L_SUBSTR INTEGER := 0;
+BEGIN
+    IF P_STR IS NULL OR P_DELIMITER IS NULL THEN
+        RETURN L_RESULT;
+    END IF;
+    WHILE  L_START <= LENGTH(P_STR) LOOP
+        L_SUBSTR := INSTR(P_STR, P_DELIMITER, L_START);
+        IF L_SUBSTR = 0 THEN
+            L_RESULT.EXTEND(1);
+            L_RESULT(L_RESULT.LAST) := SUBSTR(P_STR, L_START);
+            L_START := LENGTH(P_STR) + 1 ;
+        ELSE
+            L_RESULT.EXTEND(1);
+            L_RESULT(L_RESULT.LAST) := SUBSTR(P_STR, L_START);
+             L_START := LENGTH(P_STR) + 1 ;
+        END IF;
+    END LOOP;
+
+    RETURN L_RESULT;
+END FN_SPLIT_STR;
+```
+
 调用函数得到集合：
 ```sql
 select fn_split('111,222', ',')  from dual;
 ```
+
 查询结果就是集合，类似 `List<Object>`
 
 集合对象在存过中的使用示例：
