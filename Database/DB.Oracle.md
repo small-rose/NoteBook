@@ -1254,8 +1254,8 @@ BEGIN
             L_START := LENGTH(P_STR) + 1 ;
         ELSE
             L_RESULT.EXTEND(1);
-            L_RESULT(L_RESULT.LAST) := SUBSTR(P_STR, L_START);
-             L_START := LENGTH(P_STR) + 1 ;
+            L_RESULT(L_RESULT.LAST) := SUBSTR(P_STR, L_START,  L_SUBSTR - L_START);
+             L_START := L_SUBSTR + L_DELIMITER_LENTH;
         END IF;
     END LOOP;
 
@@ -1563,3 +1563,25 @@ ORDER BY sid;
 ALTER system kill session'210,11562';
 ```
 
+
+oracle 分区
+
+
+```sql
+-- 查询数据库中不同用户的分区表的数目
+select owner,count(1) from dba_tables where partitioned='YES' group By owner; 
+ 
+-- 查询数据库中用户的分区表
+select * from dba_tables where partitioned='YES'  and owner='数据库用户名' ; 
+
+--查询数据库中 该用户下的对应表的分区字段
+select * from dba_part_key_columns where name='表名' and owner ='数据库用户名';  
+ 
+ ----查看该数据库中 所有用户的 所有分区表的和对应分区字段
+SELECT * FROM all_PART_KEY_COLUMNS;
+ 
+ 
+SELECT * FROM all_PART_KEY_COLUMNS t where  t.owner='数据库用户名'  and  t.name  in（select table_name from dba_tables where partitioned='YES'  and owner='数据库用户名' ）; 
+--查询数据库中，该用户下对应的分区表的表名 和分区表所对应的分区字段
+
+```

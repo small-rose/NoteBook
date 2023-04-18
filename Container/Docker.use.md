@@ -492,7 +492,7 @@ admin
 
 **下载**
 
-```shell script
+```bash
 # 下载最新稳定版
 docker pull redis
 # 下载指定版
@@ -501,7 +501,7 @@ docker pull redis:5.0
 
 准备持久化容器卷映射目录
 
-```shell script
+```bash
 # 持久化配置文件，数据目录，日志
 mkdir -p /opt/docker/redis/conf/
 mkdir -p /opt/docker/redis/data/
@@ -519,7 +519,7 @@ redis的相关目录文件位置：
  
 测试启动，无密码，先将容器的配置文件拿出来
 
-```shell script
+```bash
 # 最新版本
 docker run -d --name redis-test -p 6379:6379 redis
 #指定版本
@@ -534,8 +534,8 @@ docker cp  redis-test:/usr/local/etc/redis/redis.conf  /opt/docker/redis/conf/
 
 redis 7.x docker版本 配置文件没有了，需要自己去官网下载。
  
- redis 5 配置文件： [redis-v5.conf](../Assets/conf/redis-v5.conf)
- redis 7 配置文件： [redis-v7.conf](../Assets/conf/redis-v7.conf)
+redis 5 配置文件： [redis-v5.conf](../Assets/conf/redis-v5.conf)
+redis 7 配置文件： [redis-v7.conf](../Assets/conf/redis-v7.conf)
 
 正式启动，持久化容器卷
 
@@ -567,7 +567,7 @@ config get requirepass
 
 redis 7 
 
-```shell script
+```bash
 docker run --restart=always --log-opt max-size=100m --log-opt max-file=2 \
   -p 9733:6379 --name small-redis \
   -v /opt/docker/redis/conf/redis.conf:/etc/redis/redis.conf \
