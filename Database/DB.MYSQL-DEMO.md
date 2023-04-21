@@ -1,7 +1,7 @@
 ---
 layout: default
-title: MySQL
-nav_order: 1
+title: MySQL About
+nav_order: 11
 parent: Database
 ---
 

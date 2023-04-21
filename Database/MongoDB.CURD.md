@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Mongodb-CURD
-nav_order: 5
+nav_order: 50
 parent: Database
 ---
 

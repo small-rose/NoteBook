@@ -1,7 +1,7 @@
 ---
 layout: default
 title: KingBase V8R6 INSTALL
-nav_order: 3
+nav_order: 30
 parent: Database
 ---
 

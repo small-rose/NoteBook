@@ -1,7 +1,7 @@
 ---
 layout: default
 title: OceanBase 
-nav_order: 20
+nav_order: 60
 parent: Database
 ---
 

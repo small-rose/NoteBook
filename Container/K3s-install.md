@@ -2,7 +2,7 @@
 layout: default
 title: K3s Cluster
 parent: Container
-nav_order: 10
+nav_order: 20
 ---
 
 # K3s v1.25.3+k3s1 Install

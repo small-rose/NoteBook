@@ -1,7 +1,7 @@
 ---
 layout: default
 title: KingBase V8R6
-nav_order: 1
+nav_order: 31
 parent: Database
 ---
 
