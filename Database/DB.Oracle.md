@@ -957,6 +957,22 @@ GROUP BY  cu.TABLE_NAME,cu.CONSTRAINT_NAME
 ORDER BY cu.TABLE_NAME, cu.CONSTRAINT_NAME;
 ```
 
+### 4.X 临时表查询
+
+1、查看当前用户下的表是否为临时表：
+```sql
+-- 其中的 duration（持续时间）为 null 表示非临时表，SYS$SESSION 表示会话临时表，SYS$TRANSACTION 表示事务临时表
+select * from user_tables where duration is not null;
+```
+
+
+2、临时表删除
+
+（1）事务临时表提交或者回滚后，只是删除其中的数据，表结构仍然还在，会话临时表也是一样，会话结束后，数据删除了，当表结构还在。
+
+（2）如果会话临时表的会话没有结束，则无法删除此临时表，事务临时表也是同理，也只能在未被使用时才能删除。
+
+
 ### 5、查视图
 
 查看当前用户的所有视图：
@@ -1216,10 +1232,42 @@ BEGIN
     RETURN;
 END fn_split;
 ```
+
+不使用表函数实现：
+```sql
+CREATE OR REPLACE FUNCTION FN_SPLIT_STR (P_STR IN VARCHAR2, P_DELIMITER IN VARCHAR2)
+    RETURN TY_STR_SPLIT
+IS
+    L_RESULT TY_STR_SPLIT := TY_STR_SPLIT();
+    L_START INTEGER := 1;
+    L_DELIMITER_LENTH INTEGER := LENGTH(P_DELIMITER);
+    L_SUBSTR INTEGER := 0;
+BEGIN
+    IF P_STR IS NULL OR P_DELIMITER IS NULL THEN
+        RETURN L_RESULT;
+    END IF;
+    WHILE  L_START <= LENGTH(P_STR) LOOP
+        L_SUBSTR := INSTR(P_STR, P_DELIMITER, L_START);
+        IF L_SUBSTR = 0 THEN
+            L_RESULT.EXTEND(1);
+            L_RESULT(L_RESULT.LAST) := SUBSTR(P_STR, L_START);
+            L_START := LENGTH(P_STR) + 1 ;
+        ELSE
+            L_RESULT.EXTEND(1);
+            L_RESULT(L_RESULT.LAST) := SUBSTR(P_STR, L_START,  L_SUBSTR - L_START);
+             L_START := L_SUBSTR + L_DELIMITER_LENTH;
+        END IF;
+    END LOOP;
+
+    RETURN L_RESULT;
+END FN_SPLIT_STR;
+```
+
 调用函数得到集合：
 ```sql
 select fn_split('111,222', ',')  from dual;
 ```
+
 查询结果就是集合，类似 `List<Object>`
 
 集合对象在存过中的使用示例：
@@ -1515,3 +1563,25 @@ ORDER BY sid;
 ALTER system kill session'210,11562';
 ```
 
+
+oracle 分区
+
+
+```sql
+-- 查询数据库中不同用户的分区表的数目
+select owner,count(1) from dba_tables where partitioned='YES' group By owner; 
+ 
+-- 查询数据库中用户的分区表
+select * from dba_tables where partitioned='YES'  and owner='数据库用户名' ; 
+
+--查询数据库中 该用户下的对应表的分区字段
+select * from dba_part_key_columns where name='表名' and owner ='数据库用户名';  
+ 
+ ----查看该数据库中 所有用户的 所有分区表的和对应分区字段
+SELECT * FROM all_PART_KEY_COLUMNS;
+ 
+ 
+SELECT * FROM all_PART_KEY_COLUMNS t where  t.owner='数据库用户名'  and  t.name  in（select table_name from dba_tables where partitioned='YES'  and owner='数据库用户名' ）; 
+--查询数据库中，该用户下对应的分区表的表名 和分区表所对应的分区字段
+
+```

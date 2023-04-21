@@ -74,6 +74,6 @@ These are some guidelines for surfing the Internet to help us quickly search for
  - [x] [https://nav.sbkko.com](https://nav.sbkko.com)
  - [x] [https://skrbtgo.xyz/](https://skrbtgo.xyz)
  - [x] [https://yiso.fun/](https://yiso.fun/)
-
-
+ - [x] [https://www.wanrenmi8.com/cn/index.html](https://www.wanrenmi8.com/cn/index.html)
+ - [x] [https://docs.qq.com/sheet/DR1FTQW5odWd5ek9F](https://docs.qq.com/sheet/DR1FTQW5odWd5ek9F)
  

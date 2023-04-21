@@ -16,90 +16,6 @@ nav_order: 15
 
 
 
-<script type="text/javascript">
-
-
- function getURL(url) {
-        var xmlhttp = new ActiveXObject( "Microsoft.XMLHTTP");
-        xmlhttp.open("GET", url, false);
-        xmlhttp.send();
-        if(xmlhttp.readyState==4) {
-            if(xmlhttp.Status != 200) alert("不存在");
-            return xmlhttp.Status==200;
-        }
-        return false;
-}
-function checkAll(){
-    var elements = document.getElementsByTagName("p");
-    for(var index=0 ; index< elements.length; index ++){
-        var ele = elements[index];
-        var mark = ele.getAttribute("mark");
-        if (mark!='linkMe'){
-            continue ;
-        }
-        var childNodes = ele.childNodes;
-        for(var a=0 ; a< childNodes.length; a ++){
-                var eleLink = elements[index];
-                var link = eleLink.getAttribute("href");
-                console.log(  "yes "  + link);
-                /* && (link.startsWith("https", 0) || link.startsWith("http", 0) ) */
-                if(  (link.startsWith("https") || link.startsWith("http") ) && getURL(link)){
-                    
-                    eleLink.style.backgroundColor = 'green';
-                }else{
-                    eleLink.style.backgroundColor = 'red';
-                }
-                
-        }
-        
-    }
-    
-}
-
-/*
-if (typeof String.prototype.startsWith !== 'function') {
-    String.prototype.startsWith = function(prefix) {
-        return this.slice(0, prefix.length) === prefix;
-    };
-}
-
-if (typeof String.prototype.endsWith !== 'function') {
-    String.prototype.endsWith = function(suffix) {
-        return this.indexOf(suffix, this.length - suffix.length) !== -1;
-    };
-}
-
- 
-
-String.prototype.startsWith = function(str) {
-    if (!str || str.length > this.length){
-        return false;
-    }
-    if (this.substr(0, str.length) == str){
-        return true;
-    }else{
-        return false;
-    }
-    return true;
-}
- */
-/*  使用正则表达式 */ 
-String.prototype.startsWith = function(str) {
-    var reg = new RegExp("^" + str);
-    return reg.test(this);
-}
-
-/* 测试ok，直接使用str.endsWith("abc")方式调用即可  */ 
-String.prototype.endsWith = function(str) {
-    var reg = new RegExp(str + "$");
-    return reg.test(this);
-}
-
-
-</script>
-<button class="btn btn-purple mr-2" onclick="checkAll()" value="一键检测" >一键检测</button>
-
-
 ---
 ### github
 
@@ -279,6 +195,9 @@ GitHub加速下载
 ### Tools of Software 
 
 <p mark="linkMe">
+
+<a href="https://alternativeto.net/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">替代软件</a>
+
 <a href="https://obsidian.md" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">知识库管理工具</a>
 
 <a href="https://www.snipaste.com/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">snipaste</a>
