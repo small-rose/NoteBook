@@ -797,6 +797,17 @@ sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_
 mysql5.7.5及以上版本将sql_mode的ONLY_FULL_GROUP_BY模式默认设置为打开状态，将其关闭即可。
 
 
+like 优化问题
+
+```sql
+select distinct t.author_nickname, t.author_nickname_py from js_article_rank t where t.author_nickname like '%canyang%'
+or author_nickname_py like '%canyang%' ;
+
+select distinct t.author_nickname, t.author_nickname_py from js_article_rank t where instr(t.author_nickname,'canyang')>0
+or instr(t.author_nickname_py,'canyang')>0;
+```
+
+
 ## oracle_11g
 
 在 dockerHub 上可以搜 `oracle` 或 `oracle_11g`
