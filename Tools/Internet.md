@@ -63,6 +63,7 @@ These are some guidelines for surfing the Internet to help us quickly search for
 
 ### Search Online
 
+ - [x] [https://alternativeto.net](https://alternativeto.net)  
  - [x] [https://adzhp.cn](https://adzhp.cn)  
  - [x] [https://fxsh.com/](https://fxsh.com) 
  - [x] [http://thepiratebay.ee/](http://thepiratebay.ee) 
@@ -76,4 +77,8 @@ These are some guidelines for surfing the Internet to help us quickly search for
  - [x] [https://yiso.fun/](https://yiso.fun/)
  - [x] [https://www.wanrenmi8.com/cn/index.html](https://www.wanrenmi8.com/cn/index.html)
  - [x] [https://docs.qq.com/sheet/DR1FTQW5odWd5ek9F](https://docs.qq.com/sheet/DR1FTQW5odWd5ek9F)
+ 
+### 必备
+
+ - [x] [onlyoffice](https://www.onlyoffice.com/zh/download-desktop.aspx?from=desktop)
  
