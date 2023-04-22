@@ -596,28 +596,206 @@ docker pull mysql:5.7.39
 
 **启动**
 
+
+先启动一个临时的：
+
 ```bash
-docker run --name mysql01 -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.39
+docker run --name mysql-tmp -d -p 3307:3307 -v /opt/docker/mysql/conf:/etc/mysql/conf.d -v /opt/docker/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=AjWhEMfMwZDTJjNP@23 mysql:5.7.39
 ```
 
 解析：
 
 ```text
---name mysql-sr                                #  对容器的命名
--d                                             # 后台运行
--p 3310:3306                                   #对外暴露端口号3310
--v /home/mysql/conf:/etc/mysql/conf.d     #配置文件挂载到当前宿主机的/home/mysql/conf
--v /home/mysql/data:/var/lib/mysql            #数据挂载到当前宿主机的 /home/mysql/data
--e MYSQL_ROOT_PASSWORD=123456    #设置mysql的root用户的密码是：·123456
+--name mysql-tmp                                #  对容器的命名
+-d                                              # 后台运行
+-p 3310:3306                                    #对外暴露端口号3310
+-v /opt/docker/mysql/conf:/etc/mysql/conf.d     #配置文件挂载到当前宿主机的/home/mysql/conf
+-v /opt/docker/mysql/data:/var/lib/mysql        #数据挂载到当前宿主机的 /home/mysql/data
+-e MYSQL_ROOT_PASSWORD=123456                   #设置mysql的root用户的密码是：·123456
 ```
 
-也可以界面部署
-
-ENV:
-
+也可以界面部署，在 ENV 的:
 ```text
 MYSQL_ROOT_PASSWORD   12345678
 ```
+把mysql的配置文件拿出来。
+
+```bash
+docker cp mysql-tmp:/etc/my.cnf  /opt/docker/mysql/conf/
+```
+
+停止临时容器： 
+```bash
+docker stop mysql-tmp
+```
+
+**正式启动**：
+
+```bash 
+docker run --name mysqlsr -d -p 3306:3306 -v /opt/docker/mysql/conf:/etc/mysql/conf.d -v /opt/docker/mysql/conf/my.cnf:/etc/my.cnf  -v /opt/docker/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=AjWhEMfMwZDTJjNP@23 mysql:5.7.39
+```
+
+
+**问题**
+
+> 问题1、测试登录出现 `Access denied for user ‘root‘@‘localhost‘ (using password: YES)`
+
+解除登录限制
+
+```bash
+vi /opt/docker/mysql/conf/my.cnf
+```
+
+添加 `skip-grant-tables`
+
+```text
+[mysqld]
+skip-grant-tables
+#
+# Remove leading # and set to the amount of RAM for the most important data
+# cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
+# innodb_buffer_pool_size = 128M
+#
+# Remove leading # to turn on a very important data integrity option: logging
+# changes to the binary log between backups.
+# log_bin
+#
+# Remove leading # to set options mainly useful for reporting servers.
+# The server defaults are faster for transactions and fast SELECTs.
+# Adjust sizes as needed, experiment to find the optimal values.
+# join_buffer_size = 128M
+# sort_buffer_size = 2M
+# read_rnd_buffer_size = 2M
+skip-host-cache
+skip-name-resolve
+datadir=/var/lib/mysql
+socket=/var/run/mysqld/mysqld.sock
+secure-file-priv=/var/lib/mysql-files
+user=mysql
+
+# 关闭大小写敏感
+lower_case_table_names=1
+# 设置默认引擎
+default_storage_engine=InnoDB
+
+# 设置字符集
+character-set-server=utf8
+collation-server=utf8_general_ci
+
+# sqlmode
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+#log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+[client]
+socket=/var/run/mysqld/mysqld.sock
+
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mysql.conf.d/
+```
+
+重启容器，后进入容器登录。
+
+```bash
+docker exec -it mysqlsr /bin/bash
+
+mysql -uroot -pjWhEMfMwZDTJjNP@23
+```
+
+登录之后
+
+```sql
+use mysql;
+select host,user from user;
+
+FLUSH PRIVILEGES;
+-- 适用于开发账户，授权root在任意主机登录，拥有全部schema的全部表的全部权限
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by 'jWhEMfMwZDTJjNP@23' WITH GRANT OPTION;
+-- 刷新权限，刷新之后客户端需要重新连接方可生效
+FLUSH  PRIVILEGES;
+```
+
+理论上这样就可以考虑了，但是事实把`skip-grant-tables`注释之后还是不行，错误依旧存在。
+
+更换解决办法，不使用root用户，新建用户。
+
+创建需要使用的数据库和连接用户：
+
+```sql
+-- 新建数据库
+create database bp_demo default charset utf8mb4 COLLATE utf8mb4_general_ci;
+
+-- 新建用户
+create user 'bp_demo'@'%' identified by 'small@2023';
+
+-- 授权全部权限
+grant all privileges on bp_demo.* to 'bp_demo'@'%';
+
+-- 授予需要的权限
+grant select,insert,update on bp_demo.* to 'bp_demo'@'%';
+```
+
+```sql
+mysql> select host,user from user;
++-----------+---------------+
+| host      | user          |
++-----------+---------------+
+| %         | root          |
+| localhost | mysql.session |
+| localhost | mysql.sys     |
+| localhost | root          |
++-----------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'jWhEMfMwZDTJjNP@23' WITH GRANT OPTION;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create database bp_demo default charset utf8mb4 COLLATE utf8mb4_general_ci;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> create user 'bp_demo'@'%' identified by 'small@2023';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> grant all privileges on bp_demo.* to 'bp_demo'@'%';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| bp_demo            |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+```
+
+问题2：大小写敏感问题
+
+
+```text
+# 关闭大小写敏感 Linux 默认是 0
+lower_case_table_names=1
+``` 
+
+> 问题3 查询的排序字段不在查询列中：
+
+[HY000][3065] Expression #1 of ORDER BY clause is not in SELECT list, references column 'bp_demo.t.rank_date' which is not in SELECT list; this is incompatible with DISTINCT
+
+```bash
+# sqlmode
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
+
+mysql5.7.5及以上版本将sql_mode的ONLY_FULL_GROUP_BY模式默认设置为打开状态，将其关闭即可。
+
 
 ## oracle_11g
 
