@@ -20,7 +20,7 @@ parent: Linux
 
 1、centos 安装 nginx
 
-```shell script
+```bash
 #!/bin/sh
 #author small
 #qq small-rose#qq.com
@@ -43,7 +43,7 @@ if [  $? -eq 0 ]
 		echo "Directory created successfully"
 	else
 		echo "Directory creation failed"
-		exit 1
+		exit 1 
 fi
 
 #Solve dependency package

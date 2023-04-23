@@ -48,7 +48,7 @@ rpm -ivh obclient-2.1.2-20220507120550.el7.alios7.x86_64.rpm
 
 rpm -ivh --prefix=/data/obclient  obclient-2.1.2-20220507120550.el7.alios7.x86_64.rpm
 
-rpm -ivh --prefix=/data/jdk1.8  jdk-8u341-linux-x64.rpm
+rpm -ivh --prefix=/data/jdk1.8  /home/dcos/data/jdk-8u341-linux-x64.rpm
 cd /data/jdk1.8
 mv *  jdk1.8.0_341
 /data/jdk1.8/jdk1.8.0_341/bin/java -version
@@ -102,6 +102,8 @@ unzip ob-loader-obdumper-4.0.1-SNAPSHOT.zip
 
 # 解压到当前文件夹
 unzip -d /data  ob-loader-obdumper-4.0.1-SNAPSHOT.zip
+# 写完整路径，就可以在任意目录执行
+unzip -d /data  /home/dcos/data/ob-loader-obdumper-4.0.1-SNAPSHOT.zip
 ```
 
 解压即可。
