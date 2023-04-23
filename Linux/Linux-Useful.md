@@ -2,6 +2,7 @@
 layout: default
 title: Linux useful
 has_children: false
+parent: Linux
 nav_order: 1
 ---
 
