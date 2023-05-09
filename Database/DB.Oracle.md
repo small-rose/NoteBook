@@ -1596,3 +1596,17 @@ FROM
 FROM USER_TAB_COLUMNS T WHERE T.TABLE_NAME = 'AMS_BAD_DEBTS_LIST_TD'
 GROUP BY T.TABLE_NAME ) X ;
 ```
+
+表存在则删除操作
+
+```sql
+declare
+    table_name varchar(100) := 'tb_test';
+    num number;
+begin
+    select count(1) into num from user_tables where table_name = upper(table_name) ;
+    if num > 0 then,
+        execute immediate 'drop table '||table_name ;
+    end if;
+end;
+```
