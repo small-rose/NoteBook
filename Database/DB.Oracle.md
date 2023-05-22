@@ -18,8 +18,6 @@ parent: Database
 
 ## oracle 
 
-
-
 Oracle 在线学习：https://livesql.oracle.com
 
 ## 基础语法
@@ -88,7 +86,9 @@ conn username/password;
 ```
 
 
-### 表的重命名：
+### rename 重命名：
+
+（1）表的重命名
 
 ```sql
 ALTER TABLE old_table_name rename to new_table_name
@@ -102,6 +102,20 @@ ALTER TABLE old_table_name rename to new_table_name
 ALTER TABLE sf_user rename to t_user;
 ```
 
+
+（2）索引重命名
+
+```sql
+-- 索引重命名约束
+alter index idx_custseq  rename to idx_custseq_new;
+```
+
+（2）约束重命名
+
+```sql
+-- 重命名主键约束名
+alter table A_ALAN_TEST rename constraint pk_un_idx_custseq to pk_txun_idx_custseq;
+```
 
 
 ### 字段补偿
@@ -218,6 +232,63 @@ ALTER TABLE table_name  rename  column  old_cloumn_name to  new_cloumn_name
 
 ```sql
 ALTER TABLE t_users rename column  nlcke_name  to  nick_name;
+```
+
+（4）**索引的补偿：**
+
+
+主键属性： = 唯一索引 + 非空约束 （NOT NUL）
+
+主键属性：普通索引 + 唯一约束 + NOT NULL约束
+
+唯一索引属性：普通索引 + 唯一约束
+
+**最佳实践：**
+
+- （1）主键用唯一索引+主键约束两步骤来创建，可直接变更为唯一索引
+
+- （2）唯一索引用普通索引+唯一约束两步骤来创建，可以直接变更为普通索引
+
+
+(A) 针对没有索引、没有主键的非空字段
+
+可以直接添加设置主键。
+
+```sql
+-- 需保证 bussid 字段非空
+alter table TEST01 add constraint PK_TEST01 primary key (bussId);
+```
+
+(B) 针对已经是唯一索引的非空字段
+
+可以直接添加主键约束。
+
+```sql
+-- 已是唯一
+create unique  index un_idx_custseq on A_ALAN_TEST(CUSTSEQ) tablespace ams_index ;
+
+-- 直接添加主键约束
+alter table  A_ALAN_TEST add constraint pk_un_idx_custseq primary key (CUSTSEQ) using index pk_un_idx_custseq;
+```
+
+(B) 针对已是普通一索引的非空字段
+
+只能选择删除索引重建主键。
+
+```sql
+drop index idx_custseq ;
+alter table TEST01 add constraint PK_TEST01 primary key (bussId);
+```
+ 
+针对数据量较大，如上亿条记录。可进行并发添加索引
+```sql
+-- 【存在索引时删除】重建主键
+drop index idx_custseq ;
+create unique index pk_un_idx_custseq on A_ALAN_TEST(CUSTSEQ) tablespace AMS_INDEX  parallel 32;
+alter index  pk_un_idx_custseq noparallel;
+
+alter table  A_ALAN_TEST add constraint pk_un_idx_custseq primary key (CUSTSEQ) using index pk_un_idx_custseq;
+
 ```
 
 ### 删除数据
@@ -930,6 +1001,8 @@ SELECT SYS_CONTEXT('USERENV','INSTANCE_NAME') FROM dual;
 
 ### 5、查数据库表
 
+#### 5.1 查常规表
+
 查看当前用户的所有表：
 ```sql
 SELECT * FROM user_tables;
@@ -957,7 +1030,7 @@ GROUP BY  cu.TABLE_NAME,cu.CONSTRAINT_NAME
 ORDER BY cu.TABLE_NAME, cu.CONSTRAINT_NAME;
 ```
 
-### 4.X 临时表查询
+#### 5.2 临时表查询
 
 1、查看当前用户下的表是否为临时表：
 ```sql
@@ -973,14 +1046,14 @@ select * from user_tables where duration is not null;
 （2）如果会话临时表的会话没有结束，则无法删除此临时表，事务临时表也是同理，也只能在未被使用时才能删除。
 
 
-### 5、查视图
+### 6、查视图
 
 查看当前用户的所有视图：
 ```sql
 SELECT * FROM user_views;
 ```
 
-### 6、查存储过程
+### 7、查存储过程
 
 ```sql
 create or replace procedure DEMO_PROC
@@ -1030,7 +1103,7 @@ SELECT * FROM user_procedures;
 SELECT * FROM user_source WHERE NAME ='DEMO_PROC' ORDER BY line;
 ```
 
-### 7、查序列
+### 8、查序列
 
 
 ```sql
@@ -1039,14 +1112,14 @@ create sequence t_common_seq start with 1 increment by 1;
 SELECT * FROM user_sequences;
 ```
 
-### 8、查触发器
+### 9、查触发器
 
 查看创建的触发器：
 ```sql
 SELECT * FROM user_triggers;
 ```
 
-### 9、查函数
+### 10、查函数
 
 创建函数
 
@@ -1079,7 +1152,7 @@ SELECT * FROM user_source WHERE TYPE='FUNCTION';
 
 ```
 
-### 10、查索引
+### 11、查索引
 
 
 查看当前用户的索引：
@@ -1179,7 +1252,7 @@ SELECT LONG_TO_CHAR('COLUMN_EXPRESSION', 'SYS','USER_IND_EXPRESSIONS',
     ' TABLE_NAME = ''AMS_ACCOUNTIMPDATA_DETAIL_TI'' AND INDEX_NAME = ''IDX_ACCOUNTIMPDATA_DETAIL_TI04'' '
 ) AS COLUMN_EXPRESSION FROM DUAL  ;
 ```
-### 10、查集合
+### 12、查集合
 
 ```sql
 DELIMITER $$
@@ -1610,3 +1683,4 @@ begin
     end if;
 end;
 ```
+
