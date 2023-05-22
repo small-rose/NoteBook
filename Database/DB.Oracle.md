@@ -261,12 +261,21 @@ alter table TEST01 add constraint PK_TEST01 primary key (bussId);
 
 (B) 针对已经是唯一索引的非空字段
 
-可以直接添加主键约束。
+可以删除重建主键。
 
 ```sql
 -- 已是唯一
 create unique  index un_idx_custseq on A_ALAN_TEST(CUSTSEQ) tablespace ams_index ;
 
+-- 删除重建主键
+drop index idx_custseq ;
+alter table TEST01 add constraint PK_AT_CUSTSEQ primary key (CUSTSEQ);
+```
+
+```sql
+drop index idx_custseq ;
+create unique index pk_un_idx_custseq on A_ALAN_TEST(CUSTSEQ) tablespace AMS_INDEX  parallel 32;
+alter index  pk_un_idx_custseq noparallel;
 -- 直接添加主键约束
 alter table  A_ALAN_TEST add constraint pk_un_idx_custseq primary key (CUSTSEQ) using index pk_un_idx_custseq;
 ```
@@ -281,6 +290,8 @@ alter table TEST01 add constraint PK_TEST01 primary key (bussId);
 ```
  
 针对数据量较大，如上亿条记录。可进行并发添加索引
+
+
 ```sql
 -- 【存在索引时删除】重建主键
 drop index idx_custseq ;
