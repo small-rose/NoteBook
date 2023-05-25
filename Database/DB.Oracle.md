@@ -1673,7 +1673,7 @@ SELECT * FROM all_PART_KEY_COLUMNS t where  t.owner='数据库用户名'  and  t
 生成insert into select 
 
 ```sql
-SELECT 'INSERT INTO ' || X.TABLE_NAME ||'_ZZY (' || COLUMN_NAMES||') SELECT ' || COLUMN_NAMES ||' FROM ' || X.TABLE_NAME
+SELECT 'INSERT INTO ' || X.TABLE_NAME ||'_NEW (' || COLUMN_NAMES||') SELECT ' || COLUMN_NAMES ||' FROM ' || X.TABLE_NAME ||'_OLD'
 AS MY_SQL
 FROM
 (SELECT T.TABLE_NAME,LISTAGG(T.COLUMN_NAME , ',')WITHIN GROUP(ORDER BY T.COLUMN_ID)  AS COLUMN_NAMES
@@ -1695,3 +1695,20 @@ begin
 end;
 ```
 
+
+分区表与非分区表查询
+
+```sql
+--查询用户分区表
+SELECT table_name FROM dba_tab_partitions 
+WHERE table_owner='CFMS' AND table_name not like 'BIN$%' GROUP BY table_name
+```
+
+```sql
+--查询用户非分区表
+SELECT ut.* FROM user_tables ut WHERE ut.TABLE_NAME NOT IN(
+   SELECT table_name FROM dba_tab_partitions WHERE table_owner ='CFMS' 
+AND table_name NOT LIKE 'BIN$%' GROUP BY table_name
+)
+
+```
