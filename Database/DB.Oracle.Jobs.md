@@ -24,6 +24,32 @@ Oracle 在线学习：https://livesql.oracle.com
 ### Oracle DBA_JOBS
 
 
+【Oracle】dba_jobs字段说明
+
+```
+ 1 字段（列）               数据类型              描述 
+ 2 JOB                    NUMBER               任务的唯一标示号 
+ 3 LOG_USER               VARCHAR2(30)         提交任务的用户 
+ 4 PRIV_USER              VARCHAR2(30)         赋予任务权限的用户 
+ 5 SCHEMA_USER            VARCHAR2(30)         对任务作语法分析的用户模式 
+ 6 LAST_DATE              DATE                 最后一次成功运行任务的时间 
+ 7 LAST_SEC               VARCHAR2(8)          如HH24:MM:SS格式的last_date日期的小时，分钟和秒 
+ 8 THIS_DATE              DATE                 正在运行任务的开始时间，如果没有运行任务则为null 
+ 9 THIS_SEC               VARCHAR2(8)          如HH24:MM:SS格式的this_date日期的小时，分钟和秒 
+10 NEXT_DATE              DATE                 下一次定时运行任务的时间 
+11 NEXT_SEC               VARCHAR2(8)          如HH24:MM:SS格式的next_date日期的小时，分钟和秒 
+12 TOTAL_TIME             NUMBER               该任务运行所需要的总时间，单位为秒 
+13 BROKEN                 VARCHAR2(1)          标志参数，Y标示任务中断，以后不会运行 
+14 INTERVAL               VARCHAR2(200)        用于计算下一运行时间的表达式 
+15 FAILURES               NUMBER               任务运行连续没有成功的次数 
+16 WHAT                   VARCHAR2(2000)       执行任务的PL/SQL块 
+17 CURRENT_SESSION_LABEL  RAW MLSLABEL         该任务的信任Oracle会话符 
+18 CLEARANCE_HI           RAW MLSLABEL         该任务可信任的Oracle最大间隙 
+19 CLEARANCE_LO           RAW MLSLABEL         该任务可信任的Oracle最小间隙 
+20 NLS_ENV                VARCHAR2(2000)       任务运行的NLS会话设置 
+21 MISC_ENV               RAW(32)              任务运行的其他一些会话参数
+```
+
 
 ### Oracle Schedule
 
