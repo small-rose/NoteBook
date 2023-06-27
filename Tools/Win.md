@@ -195,7 +195,7 @@ route -p add 21.117.0.0 mask 255.255.0.0 172.16.20.1
 
 此示例为普通用户添加
 
-2、在 HKEY_CURRENT_USER\Software\Classes\*\shell 下，点击shell，右键新建项 Notepad++，在 Notepad++ 下新建项 command。
+2、在 `HKEY_CURRENT_USER\Software\Classes\*\shell` 下，点击shell，右键新建项 Notepad++，在 Notepad++ 下新建项 command。
 
 3、点击Notepad++
 
@@ -218,11 +218,11 @@ route -p add 21.117.0.0 mask 255.255.0.0 172.16.20.1
 ```
 Windows Registry Editor Version 5.00
 
-[HKEY_CLASSES_ROOT\*\shell\NotePad++]
+[HKEY_CURRENT_USER\*\shell\NotePad++]
 @="Notepad++"
 "Icon"="D:\\apps\\Notepad++\\notepad++.exe,0"
 
-[HKEY_CLASSES_ROOT\*\shell\NotePad++\Command]
+[HKEY_CURRENT_USER\*\shell\NotePad++\Command]
 @="D:\\apps\\Notepad++\\notepad++.exe %1"
 
 
