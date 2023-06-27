@@ -187,7 +187,7 @@ route -p add 21.117.0.0 mask 255.255.0.0 172.16.20.1
  - **普通用户**	HKEY_CURRENT_USER\Software\Classes\*\shell 
  
  
- ### 2、添加注册表
+### 2、添加注册表
  
 1、打开注册表编辑器
 
