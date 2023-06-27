@@ -49,7 +49,165 @@ Oracle 在线学习：https://livesql.oracle.com
 20 NLS_ENV                VARCHAR2(2000)       任务运行的NLS会话设置 
 21 MISC_ENV               RAW(32)              任务运行的其他一些会话参数
 ```
+相关视图还有all_jobs、user_jobs、dba_jobs_running-正在运行的job
 
+执行时间说明
+
+（1）每分钟执行
+
+整点执行（也就是00秒）：
+> Interval => TRUNC(sysdate,‘mi’) + 1/ (24*60)
+
+当前时间每过一分钟执行一次：
+
+>Interval => sysdate+1/(24*60)
+
+（2）每小时执行一次
+
+当前时间每过一小时执行一次：
+> Interval => ‘SYSDATE + 1/24’
+每过一个小时整点执行（00分00秒）：
+
+> interval=>trunc(sysdate,‘hh24’)+1/24
+
+（3）每天的凌晨1点执行
+
+> Interval => TRUNC(sysdate) + 1 +1/ (24)
+
+（4）每周二凌晨1点执行
+
+> Interval => TRUNC(NEXT_DAY(sysdate,2))+1/24
+
+（5）每月1日凌晨1点执行
+
+> Interval =>TRUNC(LAST_DAY(SYSDATE))+1+1/24
+
+（6）每季度的第一天凌晨1点执行
+> Interval => TRUNC(ADD_MONTHS(SYSDATE,3),‘Q’) + 1/24
+
+（7）每年7月1日和1月1日凌晨1点
+> Interval => ADD_MONTHS(trunc(sysdate,‘yyyy’),6)+1/24
+
+（8）每年1月1日凌晨1点执行
+> Interval =>ADD_MONTHS(trunc(sysdate,‘yyyy’),12)+1/24
+
+使用示例
+
+建表：
+```sql
+create table test_job(
+v_date timestamp
+);
+```
+
+存储过程：
+```sql
+create or replace procedure proc_test_job
+as
+begin
+insert into test_job(v_date)values(sysdate);
+commit;
+end;
+/
+```
+
+建立job：
+
+```sql
+declare
+    job1 number;
+begin
+dbms_job.submit(
+        JOB =>job1,
+        WHAT=>‘proc_test_job;’,
+        interval=>‘sysdate+1/(24*60)’,
+        next_date=>sysdate
+        );
+end;
+/
+```
+
+
+手动执行、删除、修改或者停止定时任务
+
+先查询定时任务的唯一标识号（也就是job字段）,根据what字段进行查询：
+
+```sql
+select job from use_jobs where what like '%proc_test_job%';
+```
+
+得到唯一标识后，如果想执行，则执行一下sql：
+```sql
+begin
+dbms_job.run(123);
+end;
+```
+> 123为上一步查询到的唯一标识
+
+得到唯一标识后，如果想删除，则执行一下sql：
+```sql
+begin
+dbms_job.remove(123);
+end;
+```
+>123为上一步查询到的唯一标识
+
+得到唯一标识后，如果想修改定时任务，则执行一下sql：
+```sql
+begin
+dbms_job.change(
+JOB =>123,
+WHAT=>‘proc_test_job;’,
+interval=>‘sysdate+2/(24*60)’,
+next_date=>sysdate
+);
+end;
+```
+>123为上一步查询到的唯一标识，根据它指定对应的job
+
+
+得到唯一标识后，如果想修改定时任务，则执行一下sql：
+
+```sql
+begin
+dbms_job.broken(
+job=>123,
+broken=>true
+);
+end;
+```
+#123为上一步查询到的唯一标识，**broken为true时是停止，false时启动**
+
+{: .tips }
+>注：
+>job的并行度由系统参数job_queue_processes控制，如果这个参数为0的时候所有job都不会运行的。我们检查job是否运行可以根据broken参数查看。为Y时说明job已经停了。如果想查看当前正在执行的job可以根据视图dba_jobs_running
+
+设置 job_queue_processes 参数
+
+```sql
+ALTER SYSTEM SET job_queue_processes = 10;
+```
+
+查看可执行的job数sql
+
+```sql
+select * from v$parameter where name = 'job_queue_process';
+```
+
+查看可执行的job数（命令窗口执行）
+```sql
+SQL> show parameter job_queue_process;
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+job_queue_processes                  integer     10
+
+```
+
+查看当前正在执行的job
+
+```sql
+select * from  dba_jobs_running ;
+```
 
 ### Oracle Schedule
 
