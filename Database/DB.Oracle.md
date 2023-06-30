@@ -1552,7 +1552,7 @@ end small_type_demo;
 
 ```
 
-### 查表的数据量
+### 13 查表的数据量
 
 执行SQL 更新oracle记录的最新数据:
 ```sql
@@ -1585,7 +1585,7 @@ SELECT T.TABLE_NAME,T.NUM_ROWS FROM USER_TABLES T
 ```
 
 
-### 查询存过
+### 14、查询存过
 
 执行SQL 查询存过、存过包、函数等:
 
@@ -1601,6 +1601,14 @@ AND (TEXT like '%$$plsql_unit%' or TEXT like '%$$PLSQL_UNIT%')
 GROUP BY  NAME
 
 ```
+
+### 15 查表分区
+
+```sql
+select tablespace_name, sum(bytes)/1024/1024 from dba_data_files group by tablespace_name;
+```
+
+
 
 ## Oracle 分组统计，按照天、月份周和自然周、月、季度和年
 
