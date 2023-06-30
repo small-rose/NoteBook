@@ -343,6 +343,68 @@ delete FROM table_name ;
 drop TABLE table_name ;
 ```
 
+（3）删除重复数据。
+
+```sql
+--查询id重复数据
+select * from TB_TEST TD where ID in 
+(select id from TB_TEST t group by t.id having count(t.id) >1 ) order by accountbatchid;
+
+-- 删除重复数据，删除前务必确认所有字段一致，非所有字段一致，慎用
+delete from TB_TEST where ID in (
+select ID from TB_TEST group by ID having count(ID) >1) 
+and rowid not in (select min(rowid) from TB_TEST group by ID having count(*)>1)
+```
+
+一、重复记录根据单个字段来判断
+
+ 
+1、首先，查找表中多余的重复记录，重复记录是根据单个字段（USER_CODE）来判断
+
+```sql
+select * from AMS_REPEATE_TEST where USER_CODE in(
+select USER_CODE from AMS_REPEATE_TEST group by USER_CODE having count(USER_CODE) >1)
+```
+ 
+
+2、删除表中多余的重复记录，重复记录是根据单个字段（USER_CODE）来判断，只留有rowid最小的记录
+
+```sql
+delete from AMS_REPEATE_TEST where (USER_CODE) in (
+select USER_CODE from AMS_REPEATE_TEST group by USER_CODE having count(USER_CODE) >1) 
+and rowid not in (select min(rowid) from AMS_REPEATE_TEST group by USER_CODE having count(*)>1)
+```
+
+二、重复记录根据多个字段来判断
+
+
+1、查找表中多余的重复记录（多个字段）
+
+ 
+```sql
+select * from AMS_REPEATE_TEST a where (a.USER_CODE,a.USER_NAME) in(
+select USER_CODE,USER_NAME from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*) > 1)
+```
+
+2、删除表中多余的重复记录（多个字段），只留有rowid最小的记录
+
+```sql
+delete from AMS_REPEATE_TEST a where (a.USER_CODE,a.USER_NAME) in (
+select USER_CODE,USER_NAME from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*) > 1) 
+and rowid not in (
+select min(rowid) from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*)>1)
+```
+
+ 
+3、查找表中多余的重复记录（多个字段），不包含rowid最小的记录
+
+```sql
+select * from AMS_REPEATE_TEST a where (a.USER_CODE,a.USER_NAME) in (
+select USER_CODE,USER_NAME from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*) > 1) 
+and rowid not in (select min(rowid) from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*)>1)
+```
+
+
 ### 自增分区：
 
 (1)在DDL中添加
