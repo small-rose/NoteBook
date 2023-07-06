@@ -1166,6 +1166,11 @@ ORDER BY cu.TABLE_NAME, cu.CONSTRAINT_NAME;
 ```sql
 -- 其中的 duration（持续时间）为 null 表示非临时表，SYS$SESSION 表示会话临时表，SYS$TRANSACTION 表示事务临时表
 select * from user_tables where duration is not null;
+
+-- 查询当前用户所有的临时表
+SELECT * FROM USER_TABLES WHERE TEMPORARY = ‘Y’ ;
+-- 查询全部用户的所有的临时表
+SELECT * FROM DBA_TABLES WHERE TEMPORARY = ‘Y’;
 ```
 
 
