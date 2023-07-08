@@ -331,8 +331,26 @@ repositories {
 
 ```
 
-IDEA配置Gradle
+IDEA 试用
+-------------------------
+有时因为一段时间没有打开IDEA， eval reset插件没有自动重置试用日期，后面就会出现因过期无法进入界面的情况，
 
+以下为解决办法：
+试用授权文件位于程序配置目录下的eval文件夹中：
+
+  - windows： %userprofile%/AppData/Roaming/JetBrains/产品名版本号
+  - Mac：~/Library/ApplicationSupport/JetBrains/产品名版本号
+  - linux：~/.config/JetBrains/产品名版本号
+
+具体步骤：
+
+1、将eval文件夹重命名或者删掉。
+2、打开https://jetbra.in/s
+下载 jetbra.zip，解压后找到readme.txt，按照说明执行脚本文件即可。
+
+ 
+IDEA配置Gradle
+---------------------
 全局配置Gradle仓库：File --> New Projects Settings --> Settings for New Projects
 
 

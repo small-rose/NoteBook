@@ -18,8 +18,6 @@ parent: Database
 
 ## oracle 
 
-
-
 Oracle 在线学习：https://livesql.oracle.com
 
 ## 基础语法
@@ -88,7 +86,9 @@ conn username/password;
 ```
 
 
-### 表的重命名：
+### rename 重命名：
+
+（1）表的重命名
 
 ```sql
 ALTER TABLE old_table_name rename to new_table_name
@@ -102,6 +102,20 @@ ALTER TABLE old_table_name rename to new_table_name
 ALTER TABLE sf_user rename to t_user;
 ```
 
+
+（2）索引重命名
+
+```sql
+-- 索引重命名约束
+alter index idx_custseq  rename to idx_custseq_new;
+```
+
+（2）约束重命名
+
+```sql
+-- 重命名主键约束名
+alter table A_ALAN_TEST rename constraint pk_un_idx_custseq to pk_txun_idx_custseq;
+```
 
 
 ### 字段补偿
@@ -220,6 +234,95 @@ ALTER TABLE table_name  rename  column  old_cloumn_name to  new_cloumn_name
 ALTER TABLE t_users rename column  nlcke_name  to  nick_name;
 ```
 
+（4）**索引的补偿：**
+
+无主键表查询
+
+```sql
+--没有主键的表
+select table_name
+  from user_tables a
+ where not exists (select *
+          from user_constraints b
+         where b.constraint_type = 'P'
+           and a.table_name = b.table_name)
+           
+           
+--SYS开头的       
+select table_name
+  from user_tables a
+ where not exists (select *
+          from user_constraints b
+         where b.constraint_type = 'P'
+           and a.table_name = b.table_name)
+and table_name  LIKE 'SYS%' 
+```
+
+主键属性： = 唯一索引 + 非空约束 （NOT NUL）
+
+主键属性：普通索引 + 唯一约束 + NOT NULL约束
+
+唯一索引属性：普通索引 + 唯一约束
+
+**最佳实践：**
+
+- （1）主键用唯一索引+主键约束两步骤来创建，可直接变更为唯一索引
+
+- （2）唯一索引用普通索引+唯一约束两步骤来创建，可以直接变更为普通索引
+
+
+(A) 针对没有索引、没有主键的非空字段
+
+可以直接添加设置主键。
+
+```sql
+-- 需保证 bussid 字段非空
+alter table TEST01 add constraint PK_TEST01 primary key (bussId);
+```
+
+(B) 针对已经是唯一索引的非空字段
+
+可以删除重建主键。
+
+```sql
+-- 已是唯一
+create unique  index un_idx_custseq on A_ALAN_TEST(CUSTSEQ) tablespace ams_index ;
+
+-- 删除重建主键
+drop index idx_custseq ;
+alter table TEST01 add constraint PK_AT_CUSTSEQ primary key (CUSTSEQ);
+```
+
+```sql
+drop index idx_custseq ;
+create unique index pk_un_idx_custseq on A_ALAN_TEST(CUSTSEQ) tablespace AMS_INDEX  parallel 32;
+alter index  pk_un_idx_custseq noparallel;
+-- 直接添加主键约束
+alter table  A_ALAN_TEST add constraint pk_un_idx_custseq primary key (CUSTSEQ) using index pk_un_idx_custseq;
+```
+
+(B) 针对已是普通一索引的非空字段
+
+只能选择删除索引重建主键。
+
+```sql
+drop index idx_custseq ;
+alter table TEST01 add constraint PK_TEST01 primary key (bussId);
+```
+ 
+针对数据量较大，如上亿条记录。可进行并发添加索引
+
+
+```sql
+-- 【存在索引时删除】重建主键
+drop index idx_custseq ;
+create unique index pk_un_idx_custseq on A_ALAN_TEST(CUSTSEQ) tablespace AMS_INDEX  parallel 32;
+alter index  pk_un_idx_custseq noparallel;
+
+alter table  A_ALAN_TEST add constraint pk_un_idx_custseq primary key (CUSTSEQ) using index pk_un_idx_custseq;
+
+```
+
 ### 删除数据
 
 （1）删除数据，没有事务，无法回滚。
@@ -238,6 +341,104 @@ delete FROM table_name ;
 
 ```sql
 drop TABLE table_name ;
+```
+
+（3）删除重复数据。
+
+```sql
+--查询id重复数据
+select * from TB_TEST TD where ID in 
+(select id from TB_TEST t group by t.id having count(t.id) >1 ) order by accountbatchid;
+
+-- 删除重复数据，删除前务必确认所有字段一致，非所有字段一致，慎用
+delete from TB_TEST where ID in (
+select ID from TB_TEST group by ID having count(ID) >1) 
+and rowid not in (select min(rowid) from TB_TEST group by ID having count(*)>1)
+```
+
+一、重复记录根据单个字段来判断
+
+ 
+1、首先，查找表中多余的重复记录，重复记录是根据单个字段（USER_CODE）来判断
+
+```sql
+select * from AMS_REPEATE_TEST where USER_CODE in(
+select USER_CODE from AMS_REPEATE_TEST group by USER_CODE having count(USER_CODE) >1)
+```
+ 
+
+2、删除表中多余的重复记录，重复记录是根据单个字段（USER_CODE）来判断，只留有rowid最小的记录
+
+```sql
+delete from AMS_REPEATE_TEST where (USER_CODE) in (
+select USER_CODE from AMS_REPEATE_TEST group by USER_CODE having count(USER_CODE) >1) 
+and rowid not in (select min(rowid) from AMS_REPEATE_TEST group by USER_CODE having count(*)>1)
+```
+
+二、重复记录根据多个字段来判断
+
+
+1、查找表中多余的重复记录（多个字段）
+
+ 
+```sql
+select * from AMS_REPEATE_TEST a where (a.USER_CODE,a.USER_NAME) in(
+select USER_CODE,USER_NAME from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*) > 1)
+```
+
+2、删除表中多余的重复记录（多个字段），只留有rowid最小的记录
+
+```sql
+delete from AMS_REPEATE_TEST a where (a.USER_CODE,a.USER_NAME) in (
+select USER_CODE,USER_NAME from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*) > 1) 
+and rowid not in (
+select min(rowid) from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*)>1)
+```
+
+ 
+3、查找表中多余的重复记录（多个字段），不包含rowid最小的记录
+
+```sql
+select * from AMS_REPEATE_TEST a where (a.USER_CODE,a.USER_NAME) in (
+select USER_CODE,USER_NAME from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*) > 1) 
+and rowid not in (select min(rowid) from AMS_REPEATE_TEST group by USER_CODE,USER_NAME having count(*)>1)
+```
+
+
+### 自增分区：
+
+(1)在DDL中添加
+
+将时间按日或按月分区
+
+```sql
+CREATE TABLE TEST_TB
+(
+ID NUMBER(20) NOT NULL,
+REMARK VARCHAR2(100),
+SUBCOMPANY VARCHAR2(100),
+CREATETIME DATE
+)
+PARTITION BY RANGE(CREATETIME) INTERVAL(NUMTODSINTERVAL(1,'DAY'))
+SUBPARTITION BY LIST(SUBCOMPANY)
+(
+    PARTITION PART_101 VALUES LESS THAN(TO_DATE('2022-10-01','yyyy-mm-dd'))
+    (
+        SUBPARTITION P1_SUB1 VALUES ('1010100') TABLESPACE AMS_DATA,
+        SUBPARTITION P1_SUB2 VALUES ('1020100') TABLESPACE AMS_DATA,
+        SUBPARTITION P1_SUBN VALUES DEFAULT TABLESPACE AMS_DATA
+    )
+);
+```
+
+(2)补偿添加
+
+```sql
+-- 自增分区间隔1天
+ALTER TABLE TEST_TB SET INTERVAL(NUMTODSINTERVAL(1,'DAY'))
+
+-- 自增分区间隔1月
+ALTER TABLE TEST_TB SET INTERVAL(NUMTOYMINTERVAL(1,'MONTH'))
 ```
 
 ### 检测中文乱码
@@ -930,6 +1131,8 @@ SELECT SYS_CONTEXT('USERENV','INSTANCE_NAME') FROM dual;
 
 ### 5、查数据库表
 
+#### 5.1 查常规表
+
 查看当前用户的所有表：
 ```sql
 SELECT * FROM user_tables;
@@ -957,12 +1160,17 @@ GROUP BY  cu.TABLE_NAME,cu.CONSTRAINT_NAME
 ORDER BY cu.TABLE_NAME, cu.CONSTRAINT_NAME;
 ```
 
-### 4.X 临时表查询
+#### 5.2 临时表查询
 
 1、查看当前用户下的表是否为临时表：
 ```sql
 -- 其中的 duration（持续时间）为 null 表示非临时表，SYS$SESSION 表示会话临时表，SYS$TRANSACTION 表示事务临时表
 select * from user_tables where duration is not null;
+
+-- 查询当前用户所有的临时表
+SELECT * FROM USER_TABLES WHERE TEMPORARY = ‘Y’ ;
+-- 查询全部用户的所有的临时表
+SELECT * FROM DBA_TABLES WHERE TEMPORARY = ‘Y’;
 ```
 
 
@@ -973,14 +1181,14 @@ select * from user_tables where duration is not null;
 （2）如果会话临时表的会话没有结束，则无法删除此临时表，事务临时表也是同理，也只能在未被使用时才能删除。
 
 
-### 5、查视图
+### 6、查视图
 
 查看当前用户的所有视图：
 ```sql
 SELECT * FROM user_views;
 ```
 
-### 6、查存储过程
+### 7、查存储过程
 
 ```sql
 create or replace procedure DEMO_PROC
@@ -1030,7 +1238,7 @@ SELECT * FROM user_procedures;
 SELECT * FROM user_source WHERE NAME ='DEMO_PROC' ORDER BY line;
 ```
 
-### 7、查序列
+### 8、查序列
 
 
 ```sql
@@ -1039,14 +1247,14 @@ create sequence t_common_seq start with 1 increment by 1;
 SELECT * FROM user_sequences;
 ```
 
-### 8、查触发器
+### 9、查触发器
 
 查看创建的触发器：
 ```sql
 SELECT * FROM user_triggers;
 ```
 
-### 9、查函数
+### 10、查函数
 
 创建函数
 
@@ -1079,7 +1287,7 @@ SELECT * FROM user_source WHERE TYPE='FUNCTION';
 
 ```
 
-### 10、查索引
+### 11、查索引
 
 
 查看当前用户的索引：
@@ -1179,7 +1387,7 @@ SELECT LONG_TO_CHAR('COLUMN_EXPRESSION', 'SYS','USER_IND_EXPRESSIONS',
     ' TABLE_NAME = ''AMS_ACCOUNTIMPDATA_DETAIL_TI'' AND INDEX_NAME = ''IDX_ACCOUNTIMPDATA_DETAIL_TI04'' '
 ) AS COLUMN_EXPRESSION FROM DUAL  ;
 ```
-### 10、查集合
+### 12、查集合
 
 ```sql
 DELIMITER $$
@@ -1349,7 +1557,7 @@ end small_type_demo;
 
 ```
 
-### 查表的数据量
+### 13 查表的数据量
 
 执行SQL 更新oracle记录的最新数据:
 ```sql
@@ -1382,7 +1590,7 @@ SELECT T.TABLE_NAME,T.NUM_ROWS FROM USER_TABLES T
 ```
 
 
-### 查询存过
+### 14、查询存过
 
 执行SQL 查询存过、存过包、函数等:
 
@@ -1398,6 +1606,14 @@ AND (TEXT like '%$$plsql_unit%' or TEXT like '%$$PLSQL_UNIT%')
 GROUP BY  NAME
 
 ```
+
+### 15 查表分区
+
+```sql
+select tablespace_name, sum(bytes)/1024/1024 from dba_data_files group by tablespace_name;
+```
+
+
 
 ## Oracle 分组统计，按照天、月份周和自然周、月、季度和年
 
@@ -1584,4 +1800,86 @@ SELECT * FROM all_PART_KEY_COLUMNS;
 SELECT * FROM all_PART_KEY_COLUMNS t where  t.owner='数据库用户名'  and  t.name  in（select table_name from dba_tables where partitioned='YES'  and owner='数据库用户名' ）; 
 --查询数据库中，该用户下对应的分区表的表名 和分区表所对应的分区字段
 
+```
+
+生成insert into select 
+
+```sql
+SELECT 'INSERT INTO ' || X.TABLE_NAME ||'_NEW (' || COLUMN_NAMES||') SELECT ' || COLUMN_NAMES ||' FROM ' || X.TABLE_NAME ||'_OLD'
+AS MY_SQL
+FROM
+(SELECT T.TABLE_NAME,LISTAGG(T.COLUMN_NAME , ',')WITHIN GROUP(ORDER BY T.COLUMN_ID)  AS COLUMN_NAMES
+FROM USER_TAB_COLUMNS T WHERE T.TABLE_NAME = 'AMS_BAD_DEBTS_LIST_TD'
+GROUP BY T.TABLE_NAME ) X ;
+```
+
+表存在则删除操作
+
+```sql
+declare
+    table_name varchar(100) := 'tb_test';
+    num number;
+begin
+    select count(1) into num from user_tables where table_name = upper(table_name) ;
+    if num > 0 then,
+        execute immediate 'drop table '||table_name ;
+    end if;
+end;
+```
+
+
+分区表与非分区表查询
+
+```sql
+--查询用户分区表
+SELECT table_name FROM dba_tab_partitions 
+WHERE table_owner='CFMS' AND table_name not like 'BIN$%' GROUP BY table_name
+```
+
+```sql
+--查询用户非分区表
+SELECT ut.* FROM user_tables ut WHERE ut.TABLE_NAME NOT IN(
+   SELECT table_name FROM dba_tab_partitions WHERE table_owner ='CFMS' 
+AND table_name NOT LIKE 'BIN$%' GROUP BY table_name
+)
+```
+
+
+```sql
+--查询分区表各分区占用空间大小（二级分区的统计，存在二级分区字段名称截取（不叫branchcode的需要调整截取长度），单表查询）
+SELECT 
+   b.segment_name,b.partition_name,sum(b.BYTES)/1024/1024
+FROM
+   (select
+       ds.segment_name,substr(ds.partition_name,0,10) partition_name,ds.segment_type,ds.tablespace_name,ds.bytes
+   FROM
+      dba_segments ds where segment_name = 'tableName'
+) b
+group by 
+   b.segment_name,b.partition_name
+order by
+   b.segment_name,b.partition_name;
+```
+
+```sql
+
+--查询分区表个人去占用空间大小（一级分区查询，针对存在二级分区的统计会有问题）
+SELECT 
+b.partition_name,sum(b.BYTES)/1024/1024 
+FROM 
+b.owner='CFMS'
+and a.table_name=b.segment_name
+and a.partition_name=b.partition_name
+and b.segment_name IN(
+   SELECT table_name FROM dba_tab_partitions WHERE table_owner='CFMS' and table_name NOT LIKE 'BIN$%' GROUP BY table_name
+)
+GROUP BY
+   b.partition_name
+ORDER BY b.partition_name;
+```
+
+查表空间与大小
+
+```sql
+select tablespace_name, sum(bytes)/1024/1024 from dba_data_files group by tablespace_name;
 ```

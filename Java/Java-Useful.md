@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Linux
+title: Java Demo
 has_children: true
-nav_order: 90
+nav_order: 70
 ---
 
 
-This is the place to explore and document Linux related content 。
+ Here are commonly used Java examples .
 {: .fs-6 .fw-300 }
 
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Cockpit Linux
-nav_order: 0
+nav_order: 10
 parent: Linux
 ---
 

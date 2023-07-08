@@ -158,6 +158,79 @@ route -p add 21.117.0.0 mask 255.255.0.0 172.16.20.1
 ```
 
 
+## windows 添加右键菜单
+
+
+### 1、右键菜单对应注册表位置
+
+不同情形下的注册表位置如下:
+
+（1）右键空白区域
+
+桌面空白区域
+
+> HKEY_CLASSES_ROOT\DesktopBackground\Shell
+
+一般空白区域
+
+ - **管理员**	HKEY_CLASSES_ROOT\Directory\Background\shell
+ - **普通用户**	HKEY_CURRENT_USER\Software\Classes\directory\Background\shell
+
+（2）右键文件夾
+
+ - **管理员**设置注册表路径: HKEY_CLASSES_ROOT\Directory\shell
+ - **普通用户**设置注册表路径:\HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\shell
+
+（2）右键文件
+
+ - **管理员**	HKEY_CLASSES_ROOT\*\shell
+ - **普通用户**	HKEY_CURRENT_USER\Software\Classes\*\shell 
+ 
+ 
+### 2、添加注册表
+ 
+1、打开注册表编辑器
+
+快捷键为“Windows+R”，打开 “运行”窗口，输入 RegEdit，然后点击“确定”。
+
+此示例为普通用户添加
+
+2、在 `HKEY_CURRENT_USER\Software\Classes\*\shell` 下，点击shell，右键新建项 Notepad++，在 Notepad++ 下新建项 command。
+
+3、点击Notepad++
+
+鼠标左键双击右侧的默认名称或者右键点击修改，修改数据为Notepad++（右键菜单中显示的名称）。
+
+4、在空白处右键新建字符串，命名为【Icon】，修改默认数据为"Notepad++.exe路径"+", 0"，如
+
+> D:\\apps\\Notepad++\\Notepad++.exe, 0
+
+
+5、点击【command】，鼠标左键双击右边默认名称或者右键点击修改，修改默认项的数据为"Notepad++.exe路径"+"空格"+"%1"，如:
+
+> D:\\apps\\Notepad++\\notepad++.exe %1
+
+6、设置完成，右键多了 notepad++ 菜单选项。
+
+
+复制以下代码保存为 `Notepad++.reg`，修改自己的"Notepad++.exe路径"后，双击运行Notepad++.reg。
+
+```
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\*\shell\NotePad++]
+@="Notepad++"
+"Icon"="D:\\apps\\Notepad++\\notepad++.exe,0"
+
+[HKEY_CURRENT_USER\*\shell\NotePad++\Command]
+@="D:\\apps\\Notepad++\\notepad++.exe %1"
+
+
+```
+
+其他软件类似。
+
+
 ## win 工具软件
 
 [录屏软件优先选v2003](https://423down.lanzouo.com/b0f197pud)
