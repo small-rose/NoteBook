@@ -20,7 +20,7 @@ parent: Linux
 
 1、centos 安装 nginx
 
-```shell script
+```bash
 #!/bin/sh
 #author small
 #qq small-rose#qq.com
