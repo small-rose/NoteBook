@@ -1150,14 +1150,15 @@ SELECT *
 查主键
 ```sql
 -- 查看所有主键
-select cu.* from user_cons_columns cu, user_constraints au
-where cu.constraint_name = au.constraint_name and au.constraint_type = 'P' ;
+SELECT CU.* FROM USER_CONS_COLUMNS CU, USER_CONSTRAINTS AU
+WHERE CU.CONSTRAINT_NAME = AU.CONSTRAINT_NAME AND AU.CONSTRAINT_TYPE = 'P' ;
 
 -- 分组查主键
-select cu.TABLE_NAME ,cu.CONSTRAINT_NAME ,LISTAGG(cu.COLUMN_NAME, ',')WITHIN GROUP(ORDER BY cu.TABLE_NAME)
-from user_cons_columns cu, user_constraints au where cu.constraint_name = au.constraint_name and au.constraint_type = 'P'
-GROUP BY  cu.TABLE_NAME,cu.CONSTRAINT_NAME
-ORDER BY cu.TABLE_NAME, cu.CONSTRAINT_NAME;
+SELECT CU.TABLE_NAME ,CU.CONSTRAINT_NAME ,LISTAGG(CU.COLUMN_NAME, ',')WITHIN GROUP(ORDER BY CU.TABLE_NAME)
+FROM USER_CONS_COLUMNS CU, USER_CONSTRAINTS AU 
+WHERE CU.CONSTRAINT_NAME = AU.CONSTRAINT_NAME AND AU.CONSTRAINT_TYPE = 'P'
+GROUP BY  CU.TABLE_NAME,CU.CONSTRAINT_NAME
+ORDER BY CU.TABLE_NAME, CU.CONSTRAINT_NAME;
 ```
 
 #### 5.2 临时表查询
