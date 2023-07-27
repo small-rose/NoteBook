@@ -229,3 +229,9 @@ Windows Registry Editor Version 5.00
 ```
 
 其他软件类似。
+
+
+## win 工具软件
+
+[录屏软件优先选v2003](https://423down.lanzouo.com/b0f197pud)
+
