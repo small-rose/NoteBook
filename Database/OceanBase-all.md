@@ -177,3 +177,43 @@ ALTER TABLE fbs3 TABLEGROUP = tg_1;--分区键名称不一样，但是结构内�
 ALTER TABLE fbs5 TABLEGROUP = tg_1;--分区键名称不一样，结构不一样。会报错， table and tablegroup use different partition options not allowed
 
 ```
+
+## 配置查询
+
+```sql
+show global variables like '%timeout%'
+```
+|variable_name|value|
+|-------------|-----|
+|connect_timeout  | 10 |
+|interactive_timeout |2880 |
+|net_read_timeout   |30 |
+|net_write_timeout  |60 |
+|ob_pl_block_timeout  |3216672000000000 |
+|ob_qeury_timeout      |100000000000 |
+|ob_trx_idle_timeout   |120000000000 |
+|ob_trx_lock_timeout   | -1 |
+|ob_trx_timeout   |100000000000 |
+|wait_timeout   |86400 |
+
+```sql
+set global ob_query_timeout = 100000000000 ;
+set global ob_trx_timeout = 100000000000 ;
+set global ob_trx_idle_timeout = 1200000000000 ;
+
+```
+
+## 查视图
+
+```sql
+select * from v$version;
+
+select * from gv$sql_audit;
+```
+QUERY_SQL 实际执行的SQL语句
+PLAN_TYPE 执行计划类型：
+- 1：本地执行计划（Local）
+- 2：远程执行计划（Remote）
+- 3：分布式执行计划（Distribute）
+
+[gv$sql_audit视图字段说明](https://www.oceanbase.com/docs/enterprise-oceanbase-database-cn-10000000000356239)

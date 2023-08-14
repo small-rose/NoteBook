@@ -1884,3 +1884,12 @@ ORDER BY b.partition_name;
 ```sql
 select tablespace_name, sum(bytes)/1024/1024 from dba_data_files group by tablespace_name;
 ```
+
+查执行
+
+```sql
+SELECT LAST_ACTIVE_TIME,sql_id,executions, elapsed_time, rows_processed, fetches,sql_fulltext,parsing_schema_name
+FROM v$sql
+where parsing_schema_name = 'ORACLE'
+order by LAST_ACTIVE_TIME asc;
+```
