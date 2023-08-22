@@ -177,6 +177,8 @@ ALTER TABLE fbs3 TABLEGROUP = tg_1;--分区键名称不一样，但是结构内�
 ALTER TABLE fbs5 TABLEGROUP = tg_1;--分区键名称不一样，结构不一样。会报错， table and tablegroup use different partition options not allowed
 
 ```
+{: .tips }
+> 建表可以没有默认分区。没有默认分区的时候可以添加新的分区，有默认分区的时候无法添加新的分区。
 
 ## 配置查询
 
@@ -217,3 +219,4 @@ PLAN_TYPE 执行计划类型：
 - 3：分布式执行计划（Distribute）
 
 [gv$sql_audit视图字段说明](https://www.oceanbase.com/docs/enterprise-oceanbase-database-cn-10000000000356239)
+
