@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Linux Docker Temp
-parent: Linux
+title: Java Stream
+parent: Java Demo
 nav_order: 11
 ---
 
