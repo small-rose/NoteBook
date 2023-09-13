@@ -405,6 +405,21 @@ and rowid not in (select min(rowid) from AMS_REPEATE_TEST group by USER_CODE,USE
 ```
 
 
+4. 幂等执行删除重复数据
+
+```sql
+DELETE FROM your_table
+WHERE ROWID IN (
+  SELECT rid
+  FROM (
+    SELECT ROWID rid,
+           ROW_NUMBER() OVER (PARTITION BY id ORDER BY ROWID) rn
+    FROM your_table
+  )
+  WHERE rn > 1
+);
+```
+
 ### 自增分区：
 
 (1)在DDL中添加
@@ -1892,4 +1907,94 @@ SELECT LAST_ACTIVE_TIME,sql_id,executions, elapsed_time, rows_processed, fetches
 FROM v$sql
 where parsing_schema_name = 'ORACLE'
 order by LAST_ACTIVE_TIME asc;
+```
+
+查询并发执行数限制
+
+要查询并发执行数限制，你可以执行以下SQL语句：
+
+```sql
+SELECT resource_name, current_utilization, max_utilization
+FROM v$resource_limit
+WHERE resource_name = 'processes';
+```
+该查询将返回当前使用的并发执行数（CURRENT_UTILIZATION）和最大并发执行数（MAX_UTILIZATION）.
+
+
+在Oracle 11中，你可以通过查询数据库的动态性能视图（Dynamic Performance Views）来获取会话的最大运行时间或并发执行数限制。以下是两个相关的视图：
+
+    V$SESSION: 此视图包含有关当前会话的信息，包括会话的状态、持续时间等。
+
+    V$RESOURCE_LIMIT: 此视图包含有关数据库资源限制的信息，如最大并发执行数等。
+
+要查询会话的最大运行时间，你可以执行以下SQL语句：
+
+```sql
+SELECT s.sid, s.serial#, s.username, r.resource_name, r.limit_value
+FROM v$session s
+JOIN v$resource_limit r ON s.sid = r.sid
+WHERE s.username = '<your_username>'
+  AND r.limit_name = 'SESSION_TIME_LIMIT';
+```
+
+将<your_username>替换为你想要查询的用户名。该查询将返回指定用户的会话ID（SID）、序列号（SERIAL#）、用户名（USERNAME）以及会话的最大运行时间限制值（VALUE），如果有设置的话。
+
+#### 主键修复
+
+oracle 表中已经有数据，主键之前未加约束，有重复，如何刷成正确的主键？
+
+1.创建一个临时表，用于保存正确的主键值和对应的数据行：
+
+```sql
+CREATE TABLE temp_table AS
+SELECT ROWID AS row_id,
+       ROW_NUMBER() OVER (ORDER BY ROWID) AS new_id,
+       col1,col2,col3
+FROM your_table;
+```
+上述查询使用 `ROWID` 创建一个临时表，并为每个数据行分配一个新的唯一主键值。
+
+2.清空原始表中的数据,(清空前建议备份数据)
+
+```sql
+DELETE FROM your_table;
+```
+
+这将删除原始表中的所有数据，为后续操作做准备
+
+```sql
+INSERT INTO your_table (id, col1, col2, ...)
+SELECT new_id, col1, col2, ...
+FROM temp_table;
+```
+
+请根据实际的表结构将 `col1, col2, ...` 替换为你的实际列名。这将使用临时表中的正确主键值和对应的数据行重新插入到原始表中。
+
+3.删除临时表
+
+```sql
+DROP TABLE temp_table;
+```
+
+一旦数据重新插入到原始表中，你可以删除临时表。
+
+
+oralce 获取异常的栈信息
+
+```sql
+DECLARE
+  excep   EXCEPTION;
+  pragma exception_init(excep, -20001);
+  v_count number(16,2);
+BEGIN
+  -- 你的代码逻辑，可能会引发异常
+  select 1/0 into v_count from dual ;
+  raise_application_error(-20001,'测试抛出异常');  
+EXCEPTION
+  WHEN excep THEN
+    DBMS_OUTPUT.PUT_LINE('Exception Message: ' || SQLERRM);
+    DBMS_OUTPUT.PUT_LINE('Exception Stack:');
+    DBMS_OUTPUT.PUT_LINE(DBMS_UTILITY.FORMAT_ERROR_BACKTRACE);
+END;
+/
 ```
