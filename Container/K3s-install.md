@@ -106,7 +106,7 @@ hostnamectl set-hostname k3s-agent2
 
 然后分别在其中一台 ping 一下另外两台：
 
-```
+```txt
 ping   k3s-server
 ping   k3s-agent1
 ping   k3s-agent2
@@ -134,6 +134,8 @@ setenforce 0
 
 # 永久关闭
 sed -i 's/enforcing/disabled/' /etc/selinux/config
+
+vi  /etc/selinux/config
 ```
 
 ## 3. 关闭swap分区
@@ -243,9 +245,15 @@ echo 'Asia/Shanghai' > /etc/timezone
 
 ```bash
 yum install -y yum-utils
+
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
 yum install containerd -y
-systemctl start containerd && systemctl enable containerd
+
+systemctl start containerd
+systemctl status containerd
+systemctl enable containerd
+
 ```
 
 2、节点访问免密设置 【所有server节点】
