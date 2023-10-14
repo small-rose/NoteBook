@@ -924,9 +924,47 @@ system用户具有DBA权限，但是没有SYSDBA权限。平常一般用该帐�
 ```yml
 url: jdbc:oracle:thin:@192.168.80.81:1521:helowin
 username: system
-password: helowin
+password: sys$1234
 ```
+
+```yml
+url: jdbc:oracle:thin:@192.168.80.81:1521:helowin
+username: BP_DEMO
+password: Helo$1234
+```
+
+
 实际使用过程中，可以创建用户，不同的用户表是相互隔离的。
+
+
+创建新的数据库
+````sql
+-- 建一个新的表空间（目录要自己建）
+CREATE TABLESPACE TBS_BP_DEMO
+DATAFILE '/home/oracle/app/oracle/oradata/bpdemo/TBS_BP_DEMO.dbf'
+SIZE 100M
+AUTOEXTEND ON;
+```
+
+新建一个schema库
+```sql
+create user BP_DEMO identified by Demo$1234 default tablespace TBS_BP_DEMO ;
+```
+
+忘记密码修改密码
+```sql
+ALTER USER system IDENTIFIED BY sys$1234;
+ALTER USER BP_DEMO IDENTIFIED BY Helo$1234;
+```
+
+解锁账户
+```sql
+
+ALTER USER SYSTEM ACCOUNT UNLOCK;
+
+SELECT USERNAME, ACCOUNT_STATUS
+FROM DBA_USERS WHERE USERNAME = 'SYSTEM';
+```
 
 
 **配置防火墙**
