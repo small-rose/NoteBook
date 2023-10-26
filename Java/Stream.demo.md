@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Java Stream
-parent: Java Demo
+parent: Java
 nav_order: 11
 ---
 
