@@ -178,16 +178,19 @@ bean还支持通配符（`*`）和逻辑符 `&&`, ` || `，` ! `。
 - `execution` 示例
 
     - 匹配service 包下的任意无参的方法切入：
+    
 ```java
 @Pointcut("execution(* cn.xiaocai.*.service+.*())")
 private void anyNoParamMethodUnderPackage() {} 
 ```
     - 匹配 service 包下的任意只有一个参数的方法执行切入：
+    
 ```java
 @Pointcut("execution(* cn.xiaocai.*.service.*(*))")
 private void anyOneParamMethodUnderPackage() {} 
 ```
     - 匹配 service 包下的不限定参数的任意方法执行切入：
+    
 ```java
 @Pointcut("execution(* cn.xiaocai.*.service.*(..))")
 private void anyMethodUnderPackage() {} 
@@ -198,16 +201,19 @@ private void anyMethodUnderPackage() {}
 private void givenParamaterType() {} 
 ```
     - 匹配 service 包下的不限定参数的任意方法且抛出`IllegalArgumentException`和`ArrayIndexOutOfBoundsException`异常执行切入：
+
 ```java
 @Pointcut("execution(* cn.xiaocai.*.service.*(..)) throws IllegalArgumentException, ArrayIndexOutOfBoundsException")
 private void anyPackageWithException() {} 
 ```
     - 匹配 任意路径下只有一个参数且参数声明（持有）`@Param`注解的任意方法执行切入：
+    
 ```java
 @Pointcut("execution(* *(@Param *)")
 private void oneParamAnnotation() {} 
 ```
     - 匹配所有被`@MyLog`注解修饰的任意方法：
+    
 ```java
 @Pointcut("@cn.xiaocai.annotation.MyLog * *(..)")
 private void myLogAnnotation() {} 
@@ -218,40 +224,47 @@ private void myLogAnnotation() {}
 private void manyAnnotation() {} 
 ```
     - 匹配任何被`@BizEmail`或`BizWarn`注解修饰的方法：
+    
 ```java
 @Pointcut("@(cn.xiaocai.annotation.BizEmail || cn.xiaocai.annotation.BizWarn) * *(..)")
 private void manyAnnotation() {} 
 ```
     - 匹配 任意路径下参数声明`@MyAnnotation`注解并且参数类型上也有`@MyAnnotation`注解的任意方法：
+    
 ```java
 @Pointcut("* *(@MyAnnotation (@cn.xiaocai.annotation.MyAnnotation *), @cn.xiaocai.annotation.MyAnnotation (@cn.javass..MyAnnotation *))")
 private void manyParamsAnnotation() {} 
 ```
 
     - 任意公共方法执行切入：
+    
 ```java
 @Pointcut("execution(public * *(..))")
 private void anyPublicOperation() {} 
 ```
 
     - 任意update开头的方法切入：
+    
 ```java
 @Pointcut("execution(* update*(..))")
 private void anyUpdateMethodOperation() {} 
 ```
 
     - AccountService接口的任意方法切入:
+    
 ```java
 @Pointcut("execution(* com.xyz.service.AccountService.*(..))")
 private void givenInterfaceOperation() {} 
 ```
 
     - `com.xyz.service`包及子包下的任意方法切入:
+    
 ```java
 @Pointcut("execution(* com.xyz.service.*.*(..))")
 private void givenPackageOperation() {} 
 ```
     - `execution` 组合引用匹配的示例：
+    
 ```java
 @Aspect
 public class CombinePointcuts{
@@ -276,16 +289,19 @@ public class CombinePointcuts{
 
 - `within` 示例
     - 指定包下的类任意连接点：
+    
 ```java
 @Pointcut("within(com.xyz.service.*)")
 private void givenService() {}
 ```
     - 匹配指定包及子包下的BizPointcutService类型及子类型的任意方法：
+    
 ```java
 @Pointcut("within(com.xyz.service.BizPointcutService+)")
 private void givenServiceAndSub() {}
 ```
     - 匹配目标对象的声明类型持有`@TTransactional`注解：
+    
 ```java
 @Pointcut("@within(org.springframework.transaction.annotation.Transactional)")
 private void anyTargethasAnnotation() {}  
@@ -294,11 +310,13 @@ private void anyTargethasAnnotation() {}
 
 - `this` 示例
     - Aop代理实现AccountService接口的任何连接点
+    
 ```java
 @Pointcut("this(com.xyz.service.AccountService)")
 private void givenServiceProxyPoint() {}
 ```
     - 声明注解的代理连接
+    
 ```java
 @Aspect
 public class UsageTracking {
@@ -312,6 +330,7 @@ public class UsageTracking {
     }
 }
 ```
+
 >这里使用`@DeclareParents`引入`UsageTracked`接口声明，就是引入接口使用接口的方法。而所有的Bean都实现了这个`UsageTracked`接口。每次调用公共切入的`businessService()` 方法时会自动找到对应的bean。  
 
 
