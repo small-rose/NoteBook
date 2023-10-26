@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Java Demo
+title: Java
 has_children: true
 nav_order: 70
 ---
