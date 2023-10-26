@@ -3,6 +3,7 @@ layout: default
 title: MySQL Login
 nav_order: 8
 parent: MySQL About
+grand_parent: Database
 permalink: docs/Database/MySQL.Denied
 ---
 
