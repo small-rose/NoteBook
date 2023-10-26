@@ -2,6 +2,7 @@
 layout: default
 title: Spring Batch
 parent: Spring
+grand_parent: Java
 nav_order: 13
 ---
 

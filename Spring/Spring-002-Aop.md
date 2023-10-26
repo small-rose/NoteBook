@@ -2,6 +2,7 @@
 layout: default
 title: Spring AOP
 parent: Spring
+grand_parent: Java
 nav_order: 11
 ---
 

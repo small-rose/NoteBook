@@ -2,6 +2,7 @@
 layout: default
 title: Spring IOC
 parent: Spring
+grand_parent: Java
 nav_order: 10
 ---
 
