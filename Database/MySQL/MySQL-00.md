@@ -1,6 +1,6 @@
 ---
 layout: default
-title: MySQL About
+title: MySQL
 nav_order: 8
 parent: Database
 has_children: true

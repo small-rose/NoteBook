@@ -1,8 +1,8 @@
 ---
 layout: default
 title: MySQL Index
-nav_order: 8
-parent: MySQL About
+nav_order: 83
+parent: MySQL
 grand_parent: Database
 permalink: docs/Database/MySQL.Index
 ---

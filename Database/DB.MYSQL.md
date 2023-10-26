@@ -1,8 +1,9 @@
 ---
 layout: default
-title: MySQL
+title: MySQL a1
 nav_order: 10
-parent: Database
+parent: MySQL
+grand_parent: Database
 ---
 
 # MySQL

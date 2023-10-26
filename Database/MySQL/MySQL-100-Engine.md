@@ -1,8 +1,8 @@
 ---
 layout: default
 title: MySQL Engine
-nav_order: 8
-parent: MySQL About
+nav_order: 82
+parent: MySQL
 grand_parent: Database
 permalink: docs/Database/MySQL.Engine
 ---
