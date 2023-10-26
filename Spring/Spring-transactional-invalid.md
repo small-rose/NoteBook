@@ -18,7 +18,9 @@ nav_order: 14
 在Spring AOP 代理时，如上图所示 `TransactionInterceptor` （事务拦截器）在目标方法执行前后进行拦截，`DynamicAdvisedInterceptor`（CglibAopProxy 的内部类）的 `intercept` 方法或 `JdkDynamicAopProxy` 的 invoke 方法会间接调用 `AbstractFallbackTransactionAttributeSource `的 `computeTransactionAttribute` 方法，获取Transactional 注解的事务配置信息:
 
 ```java
-protected TransactionAttribute computeTransactionAttribute(Method method, Class<?> targetClass) {
+public class TransactionInterceptor extends TransactionAspectSupport implements MethodInterceptor, Serializable {
+
+    protected TransactionAttribute computeTransactionAttribute(Method method, Class<?> targetClass) {
         if (this.allowPublicMethodsOnly() && !Modifier.isPublic(method.getModifiers())) {
             return null;
         } else {
@@ -50,6 +52,7 @@ protected TransactionAttribute computeTransactionAttribute(Method method, Class<
             }
         }
     }
+}
 ```
 此方法会检查目标方法的修饰符是否为 public，不是 public则不会获取 `@Transactional` 的属性配置信息。
 
@@ -98,6 +101,7 @@ rollbackFor 可以指定能够触发事务回滚的异常类型。Spring默认�
 
 示例：
 ```java
+public class XxxService{
    	@Transactional(propagation= Propagation.REQUIRED,rollbackFor= Exception.class)
     public void changeMoney(int oldId, int newId, double money) {
         System.out.println("----update come ----");
@@ -113,6 +117,7 @@ rollbackFor 可以指定能够触发事务回滚的异常类型。Spring默认�
         accountMapper.updateAccountId(newAcc);
         System.out.println("----update over ----");
     }
+}
 ```
 Exception 包含了 RuntimeException 所以可以回滚。
 
@@ -125,6 +130,7 @@ Exception 包含了 RuntimeException 所以可以回滚。
 错误示例：该示例不会回滚。
 
 ```java
+public class XxxService{
 
 	public void catchMoney(int oldId, int newId, double money) {
 
@@ -150,7 +156,7 @@ Exception 包含了 RuntimeException 所以可以回滚。
         System.out.println("----do something exception ----");
         int x = 10/0 ;
     }
-
+}
 ```
 
 如果`dosomething`方法内部抛了异常，而 `catchMoney` 方法此时`try catch`了`dosomething`方法的异常，那这个事务是不能正常回滚的。

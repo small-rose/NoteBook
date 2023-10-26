@@ -264,17 +264,19 @@ scheduled:
 启动工程访问测试API: `http://localhost:8806/job/single/noParameters`
 
 第1次执行结果：
-```txt
+
+```text
 2020-12-09 15:52:48.105  INFO 15500 --- [nio-8806-exec-8] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=singleStepJobDemo]] launched with the following parameters: [{testKey=testValue}]
 2020-12-09 15:52:48.122  INFO 15500 --- [nio-8806-exec-8] o.s.batch.core.job.SimpleStepHandler     : Executing step: [step]
 2020-12-09 15:52:48.131  INFO 15500 --- [nio-8806-exec-8] c.x.b.single.SingleJobSingleStepDemo     : ----this is my first job ....
 2020-12-09 15:52:48.138  INFO 15500 --- [nio-8806-exec-8] o.s.batch.core.step.AbstractStep         : Step: [step] executed in 16ms
 ```
+
 顺利执行了。
 
 第2次执行结果：
 
-```txt
+```text
 2020-12-09 15:52:56.200 ERROR 15500 --- [nio-8806-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException: A job instance already exists and is complete for parameters={testKey=testValue}.  If you want to run this job again, change the parameters.] with root cause
 
 org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException: A job instance already exists and is complete for parameters={testKey=testValue}.  If you want to run this job again, change the parameters.
@@ -445,7 +447,8 @@ ItemReader支持的读入的数据源也是非常丰富的，包括各种类型�
 简单的读数据库数据示例:
 
 ```java
-/**
+public class Xxx{
+    /**
      * 从数据库读取数据
      * @return
      * @throws Exception
@@ -484,6 +487,7 @@ ItemReader支持的读入的数据源也是非常丰富的，包括各种类型�
         reader.afterPropertiesSet();
         return reader;
     }
+}
 ```
 
 也可以定制自己的ItemReader，只要实现 `ItemReader<T>` 接口即可：
@@ -653,6 +657,7 @@ Spring Batch为ItemWriter也提供了非常多的有用的实现类，当然我�
 简单的写文件示例：
 
 ```java
+public class Xxx{
     /**
      *  写文件，写成字符串
      * @return
@@ -684,6 +689,7 @@ Spring Batch为ItemWriter也提供了非常多的有用的实现类，当然我�
         writer.afterPropertiesSet();
         return writer;
     }
+}
 ```
 
 ### 9、补充 
@@ -698,6 +704,7 @@ Spring Batch为ItemWriter也提供了非常多的有用的实现类，当然我�
 
 
 ```java
+public class XXX{
     private Step rwStep() throws Exception {
         return stepBuilderFactory.get("step")
                 .listener(myJobListener)
@@ -711,6 +718,7 @@ Spring Batch为ItemWriter也提供了非常多的有用的实现类，当然我�
                 .noSkip(FileNotFoundException.class)
                 .build();
     }
+}
 ```
 
 skipLimit方法的意思是我们可以设定一个我们允许的这个step可以跳过的异常数量，假如我们设定为10，则当这个step运行时，只要出现的异常数目不超过10，整个step都不会fail。注意，若不设定skipLimit，则其默认值是0.
@@ -1125,12 +1133,15 @@ public Job footballJob() {
 注意的afterJob是，无论方法是成功还是失败，都将调用该方法Job。如果需要确定成功或失败，则可以从中获取JobExecution判断：
 
 ```java
-public void afterJob(JobExecution jobExecution){
-    if (jobExecution.getStatus() == BatchStatus.COMPLETED ) {
-        //job success
-    }
-    else if (jobExecution.getStatus() == BatchStatus.FAILED) {
-        //job failure
+public class XXX{
+
+    public void afterJob(JobExecution jobExecution){
+        if (jobExecution.getStatus() == BatchStatus.COMPLETED ) {
+            //job success
+        }
+        else if (jobExecution.getStatus() == BatchStatus.FAILED) {
+            //job failure
+        }
     }
 }
 ```
@@ -1140,7 +1151,7 @@ public void afterJob(JobExecution jobExecution){
 <job id="baseJob" abstract="true">
     <listeners>
         <listener ref="listenerOne"/>
-    <listeners>
+    </listeners>
 </job>
 
 <job id="job1" parent="baseJob">
@@ -1148,7 +1159,7 @@ public void afterJob(JobExecution jobExecution){
 
     <listeners merge="true">
         <listener ref="listenerTwo"/>
-    <listeners>
+    </listeners>
 </job>
 ```
 此时的 job1 就有两个监听器了。
@@ -1183,11 +1194,11 @@ public void afterJob(JobExecution jobExecution){
 
 ```xml
 <job-repository id="jobRepository" isolation-level-for-create="REPEATABLE_READ" />
-``                
+```                
 
 使用aop的方式配置事物：
 
-​```xml
+```xml
 <aop:config>
     <aop:advisor
            pointcut="execution(* org.springframework.batch.core..*Repository+.*(..))"/>
