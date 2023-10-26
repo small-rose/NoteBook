@@ -2,7 +2,7 @@
 layout: default
 title: SpringBoot AutoConfig
 parent: SpringBoot
-nav_order: 190
+nav_order: 99
 ---
 
 ## SpringBoot  自动装配 <!-- {docsify-ignore} -->

@@ -23,9 +23,9 @@ nav_order: 10
 ```yml
 key: value
 key:
-	key2: value2
-	key2：
-		key3: value3
+  key2: value2
+  key2：
+    key3: value3
 ```
 
 `key:  value`：表示一对键值对（冒号后面必须有空格）；属性键和对应的值是大小写敏感的。
@@ -44,11 +44,11 @@ key.key2.key3=value3
 
 ```yml
 server:
-	port: 8080
-	servlet:
-		context-path: /dbcm
-		session:
-			timeout: 1800s
+  port: 8080
+  servlet:
+    context-path: /dbcm
+    session:
+      timeout: 1800s
 ```
 
 
@@ -66,7 +66,7 @@ server:
 
 ```yml
 xiaocai:
-	name: 'small \n rose' 
+  name: 'small \n rose' 
 ```
 
 解析之后得到的 name 值就是：
@@ -79,7 +79,7 @@ xiaocai:
 
 ```yml
 xiaocai:
-	name: "small \n rose" 
+  name: "small \n rose" 
 ```
 
 解析之后得到的 name 值就是：
@@ -97,8 +97,8 @@ rose
 
 ```yml
 user:
-	name: smale-rose
-	email: small-rose@qq.com
+  name: smale-rose
+  email: small-rose@qq.com
 ```
 
 也可以使用类似 map 的行间方式书写：
@@ -141,20 +141,20 @@ YAML 文档使用  `---` 进行分割文档块。
 
 ```yaml
 server:
-	port: 80
+  port: 80
 spring:
   profiles:
-    active: dev	
+    active: dev  
 ---
 
 server:
-	port: 8081
+  port: 8081
 spring:
   profiles:
     active: dev
 ---
 server:
-	port: 9090
+  port: 9090
 spring:
   profiles:
     active: prod
@@ -184,11 +184,11 @@ ${random.int[1024,65536]}
 
 ```yaml
 user:
-	name: smale-rose
-	email: ${random.value}_small-rose@qq.com
-	age: ${random.int[10,50]}
-	addr: Address_${user.name: no_user}
-	last_name: LastName_${user.lastName: no_user}
+  name: smale-rose
+  email: ${random.value}_small-rose@qq.com
+  age: ${random.int[10,50]}
+  addr: Address_${user.name: no_user}
+  last_name: LastName_${user.lastName: no_user}
 ```
 
 
@@ -202,9 +202,9 @@ user:
 ```xml
 <!‐‐导入配置文件处理器，配置文件进行绑定就会有提示‐‐>
 <dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring‐boot‐configuration‐processor</artifactId>
-	<optional>true</optional>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring‐boot‐configuration‐processor</artifactId>
+  <optional>true</optional>
 </dependency> 
 ```
 
@@ -212,13 +212,13 @@ user:
 
 ```yaml
 initvalue:
-	evn: prod
-	port: 8080
-	flag: false
-	dbTypeIdList:
-			- 1
-			- 2
-			- 3
+  evn: prod
+  port: 8080
+  flag: false
+  dbTypeIdList:
+      - 1
+      - 2
+      - 3
 ```
 
 （3）使用注解 `@ConfigurationProperties` 进行绑定
@@ -229,18 +229,18 @@ initvalue:
 @Component
 @ConfigurationProperties(prefix = "initvalue")
 public class InitValueConfig {
-	
-	private String evn ;
-	
-	private String port ;
+  
+  private String evn ;
+  
+  private String port ;
  
-	private List<Long> dbTypeIdList = new ArrayList<Long>();	
+  private List<Long> dbTypeIdList = new ArrayList<Long>();  
      private boolean flag;
- 	// setter getter ...
+   // setter getter ...
 }
 ```
 
-注意： **@ConfigurationProperties(prefix = "initvalue") ** 表示默认从全局配置文件中获取值；如果 initvalue 前缀的配置放在另外的 `initvalue.yml` 文件中，则需要添加  **`@PropertySource("classpath:initvalue.yml")` ** 表示从指定的配置中查找对应的前缀，可以指定多个配置文件  **`@PropertySource({"classpath:initvalue.yml","classpath:initvalue2.yml"})`** 
+注意： **@ConfigurationProperties(prefix = "initvalue")** 表示默认从全局配置文件中获取值；如果 initvalue 前缀的配置放在另外的 `initvalue.yml` 文件中，则需要添加  **`@PropertySource("classpath:initvalue.yml")` ** 表示从指定的配置中查找对应的前缀，可以指定多个配置文件  **`@PropertySource({"classpath:initvalue.yml","classpath:initvalue2.yml"})`** 
 
 如果是properties文件，同理：
 
@@ -260,14 +260,14 @@ initvalue.flag=false
 @PropertySource("classpath:initvalue.properties")
 @ConfigurationProperties(prefix = "initvalue")
 public class InitValueConfig {
-	
-	private String evn ;
-	
-	private String port ;
+  
+  private String evn ;
+  
+  private String port ;
  
-	private List<Long> dbTypeIdList = new ArrayList<Long>();	
-    private boolean flag;
- 	// setter getter ...
+  private List<Long> dbTypeIdList = new ArrayList<Long>();  
+  private boolean flag;
+   // setter getter ...
 }
 ```
 
@@ -287,9 +287,9 @@ public class InitValueConfig {
 @Configuration
 public class BeanConfig {
 
-	@Bean
+    @Bean
     public Filter validatorFilter() throws FileNotFoundException{ 
-	    System.out.println("-------------load validatorFilter---------------");
+      System.out.println("-------------load validatorFilter---------------");
         return new ValidatorFilter();
     }
 }
@@ -308,24 +308,24 @@ public class BeanConfig {
 ```java
 public class InitValueConfig {
     
-	@Value("${initvalue.evn}")
-	private String evn ;
+  @Value("${initvalue.evn}")
+  private String evn ;
     
-	@Value("${initvalue.port}")
-	private String port ;
+  @Value("${initvalue.port}")
+  private String port ;
     
- 	@Value("#{'${initvalue.list}'.split(',')}")
-	private List<Long> dbTypeIdList = new ArrayList<Long>();	
+  @Value("#{'${initvalue.list}'.split(',')}")
+  private List<Long> dbTypeIdList = new ArrayList<Long>();  
     
-    @Value("#{${initvalue.maps}}")  
-	private Map<String,String> maps;
+  @Value("#{${initvalue.maps}}")  
+  private Map<String,String> maps;
     
-	@Value("${initvalue.flag}")
-    private boolean flag;
+  @Value("${initvalue.flag}")
+  private boolean flag;
     
-    @Value("#{${webServiceMap}}")
-	private Map<String,String> webServiceMap;
- 	// setter getter ...
+  @Value("#{${webServiceMap}}")
+  private Map<String,String> webServiceMap;
+   // setter getter ...
 }
 ```
 
@@ -333,10 +333,10 @@ public class InitValueConfig {
 
 ```yaml
 initvalue:
-	evn: prod
-	port: 8080
-	flag: false
-	list: 1,2,3
+  evn: prod
+  port: 8080
+  flag: false
+  list: 1,2,3
     maps: "{key1: 'value1', key2: 'value2'}"
     webServiceMap: "{webServiceURL: 'http://web.com.server/xxx', success: '0000',filePath: '/home/file/'}"
 ```
@@ -353,5 +353,86 @@ initvalue:
 
 配置文件`yml` 或者 `properties` 二者都能获取到值；只获取一下配置文件中的某项值，使用@Value；参数较多时使用JavaBean来和配置文件进行绑定映射，可以直接使用`@ConﬁgurationProperties` 省去了一个个配置的麻烦。
 
+
+{: .tips }
+> (1)优先级为： properties > xml > yml > yaml
+> (2)注意  @PropertySource 注解默认是只支持 properties 格式配置文件的读取的。不支持解析 yaml/yml文件. ：
+
+支持yml解决方法
+                                         
+@PropertySource 的注解中，有一个factory属性，可指定一个自定义的PropertySourceFactory接口实现，用于解析指定的文件。默认的实现是DefaultPropertySourceFactory，使用了PropertiesLoaderUtils.loadProperties进行文件解析，所以默认就是使用Properties进行解析的。
+
+1、可以写一个类继承DefaultPropertySourceFactory，然后重写createPropertySource()方法
+
+```java
+public class YamlAndPropertySourceFactory extends DefaultPropertySourceFactory {
+    @Override
+    public PropertySource<?> createPropertySource(String name, EncodedResource resource) throws IOException {
+        if (resource == null) {
+            return super.createPropertySource(name, resource);
+        }
+        Resource resourceResource = resource.getResource();
+        if (!resourceResource.exists()) {
+            return new PropertiesPropertySource(null, new Properties());
+        } else if (resourceResource.getFilename().endsWith(".yml") || resourceResource.getFilename().endsWith(".yaml")) {
+            List<PropertySource<?>> sources = new YamlPropertySourceLoader().load(resourceResource.getFilename(), resourceResource);
+            return sources.get(0);
+        }
+        return super.createPropertySource(name, resource);
+    }
+}
+```
+
+2、使用的时候加上factory属性，属性值为YamlAndPropertySourceFactory.class；如代码：
+
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "init")
+@PropertySource(value = "classpath:application.yml", factory = YamlAndPropertySourceFactory.class)
+public class InitDataSource {
+
+    private List<DataSourceInfo> dataSourceList = new ArrayList<>();
+
+}
+```
+
+yml配置如下:
+
+```yaml
+init:
+  dataSourceList:
+    - name: ORACLE_DEV
+      driverName: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@192.168.10.118:1521:orcl
+      username: BVIS
+      password: bvis123
+    - name: ORACLE_SIT
+      driverName: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@192.168.10.118:1521:orcl
+      username: BVIS
+      password: bvis123
+    - name: MYSQL_57
+      driverName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.10.184:3306/bp_dev
+      username: sf_dev_01
+      password: Sf@123321
+```
+
+3、如果这个绑定数据因环境改不同，也可以使用这种动态化的使用方式
+
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "init")
+/* 此处可以动态化 如  value = "classpath:application-${spring.profiles.active}.yml"
+*/
+@PropertySource(value = "classpath:application-${spring.profiles.active}.yml", factory = YamlAndPropertySourceFactory.class)
+public class InitDataSource {
+
+    private List<DataSourceInfo> dataSourceList = new ArrayList<>();
+
+}
+```
 
 
