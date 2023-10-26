@@ -2,7 +2,6 @@
 layout: default
 title: Spring AOP
 parent: Spring
-has_children: false
 nav_order: 11
 ---
 
