@@ -885,16 +885,6 @@ JDBCJobStore几乎支持与任何数据库一起使用，已被广泛应用于Or
 
 
 
-<br/>
-
-**相关文章**
-
-[定时任务之Java定时API](a516f8e8.html)
-[定时任务之Spring Task](5a5ab620.html)
-[定时任务之quartz](6ddb3c14.html)
-
-
-<br/>
 
 
 本文整理参考以下前辈链接，放个链接，以示感谢：

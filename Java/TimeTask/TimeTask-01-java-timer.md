@@ -224,18 +224,20 @@ execute end time - 2020-07-18T20:00:59.817
 也可以配合日历使用
 
 ```java
-public static void main(String[] args) {
- 
-	Timer timer = new Timer();
-    DemoTask demo = new DemoTask()
-	Date startDate = new Date();
-    // 立即执行，每5s重复一次
-	timer.schedule(demo, startDate , 5 * 1000);
-        
-    // 配合日历
-    Calendar cal = Calendar.getInstance();
-	cal.set(Calendar.MINUTE, 30);
-	timer.schedule(demo, cal.getTime() , 2000);
+public class XxxTest{
+    public static void main(String[] args) {
+     
+        Timer timer = new Timer();
+        DemoTask demo = new DemoTask()
+        Date startDate = new Date();
+        // 立即执行，每5s重复一次
+        timer.schedule(demo, startDate , 5 * 1000);
+            
+        // 配合日历
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MINUTE, 30);
+        timer.schedule(demo, cal.getTime() , 2000);
+    }
 }
 ```
 
@@ -322,11 +324,4 @@ Date startDate = dateFormatter.parse("2020-07-18 20:16:00");
 
 <br/>
 
-**相关文章**
 
-[定时任务之Java定时API](a516f8e8.html)
-[定时任务之Spring Task](5a5ab620.html)
-[定时任务之quartz](6ddb3c14.html)
-
-
-<br/>
