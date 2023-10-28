@@ -4,7 +4,6 @@ title: MySQL Engine
 parent: MySQL
 grand_parent: Database
 nav_order: 82
-permalink: docs/Database/MySQL.Engine
 ---
 
 

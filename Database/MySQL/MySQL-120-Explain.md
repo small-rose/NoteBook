@@ -4,7 +4,6 @@ title: MySQL Explain
 parent: MySQL
 grand_parent: Database
 nav_order: 84
-permalink: docs/Database/MySQL.Explain
 ---
 
 

@@ -4,7 +4,6 @@ title: MySQL Login
 parent: MySQL
 grand_parent: Database
 nav_order: 87
-permalink: docs/Database/MySQL.Denied
 ---
 
 

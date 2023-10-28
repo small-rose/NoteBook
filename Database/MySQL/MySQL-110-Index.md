@@ -4,7 +4,6 @@ title: MySQL Index
 parent: MySQL
 grand_parent: Database
 nav_order: 83
-permalink: docs/Database/MySQL.Index
 ---
 
 

@@ -4,7 +4,6 @@ title: MySQL Install
 parent: MySQL
 grand_parent: Database
 nav_order: 81
-permalink: docs/Database/MySQL.Install
 ---
 
 ## MySQL 在线安装与卸载 <!-- {docsify-ignore} -->

@@ -4,7 +4,6 @@ title: MySQL V8 Setup
 parent: MySQL
 grand_parent: Database
 nav_order: 85
-permalink: docs/Database/MySQL.V8.Setup
 ---
 
 
