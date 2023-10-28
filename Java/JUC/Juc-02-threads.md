@@ -393,7 +393,7 @@ public class Thread implements Runnable {
 当多次调用start()，会抛出`IllegalThreadStateException` 异常。也就是每一个线程类的对象只允许启动一次，如果重复启动则就抛出此异常。
 
 
-![](../../../_media/juc/thread-start.png) 
+![](../Assets/images/juc/thread-start.png) 
 
 
 
@@ -430,12 +430,12 @@ public class Thread implements Runnable {
 
 Java 源码中枚举的生命周期
 
-![](../../../_media/juc/thread-life.png) 
+![](../Assets/images/juc/thread-life.png) 
 
 
 线程状态变化图
 
-![](../../../_media/juc/thread-status.png) 
+![](../Assets/images/juc/thread-status.png) 
 
 > 注意：图中 wait到 runnable状态的转换中，join实际上是Thread类的方法，但这里写成了Object。
 
