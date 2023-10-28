@@ -348,7 +348,7 @@ public class TaskController {
     <title>修改定时参数</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://docs.zhangxiaocai.cn/static/js/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="bootstrap3.3.7/css/bootstrap.min.css"
           type="text/css"/>
     <script type="text/javascript">
