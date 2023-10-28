@@ -1,9 +1,10 @@
 ---
 layout: default
-title: MySQL About1
+title: MySQL About
 parent: MySQL
 grand_parent: Database
 nav_order: 11
+permalink: docs/Database/MySQL.Type
 ---
 
 ## MYSQL全部类型

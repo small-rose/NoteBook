@@ -8,7 +8,7 @@ permalink: docs/Database/MySQL
 ---
 
 
-# Database
+# MySQL
 {: .no_toc }
 
 MySQL 相关的文档

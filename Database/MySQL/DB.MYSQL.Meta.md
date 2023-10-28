@@ -7,7 +7,7 @@ grand_parent: Database
 permalink: docs/Database/MySQL.Meta
 ---
 
-# MySQL
+# MySQL Meta
 {: .no_toc }
 
 ## Table of contents

@@ -8,7 +8,7 @@ permalink: docs/Database/MySQL.V8.Setup
 ---
 
 
- -->
+
 ## MySQL 8 解压安装记录
 
 下载zip包，解压：`C:\devtools\mysql-8.0.22-winx64`
