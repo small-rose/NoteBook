@@ -188,7 +188,7 @@ mysql> show variables like 'innodb_page_size';
 
 B-Tree中的每个节点根据实际情况可以包含大量的关键字信息和分支，如下图所示为一个3阶的B-Tree
 
-![B-Tree 结构图](../Assets/images/MySQL/B-tree.png)
+![B-Tree 结构图](https://docs.zhangxiaocai.cn/Assets/images/MySQL/B-tree.png)
 
 每个节点占用一个盘块的磁盘空间，一个节点上有两个升序排序的关键字和三个指向子树根节点的指针，指针存储的是子节点所在磁盘块的地址。两个关键词划分成的三个范围域对应三个指针指向的子树的数据的范围域。以根节点为例，关键字为17和35，P1指针指向的子树的数据范围为小于17，P2指针指向的子树的数据范围为`17~35`，P3指针指向的子树的数据范围为大于35。
 
@@ -221,7 +221,7 @@ B+Tree相对于B-Tree有几点不同：
 
 将B-Tree优化，由于B+Tree的非叶子节点只存储键值信息，假设每个磁盘块能存储4个键值及指针信息，则变成B+Tree后其结构如下图所示： 
 
-![B+Tree 结构图](../Assets/images/MySQL/B+Tree.png)
+![B+Tree 结构图](https://docs.zhangxiaocai.cn/Assets/images/MySQL/B+Tree.png)
 
 通常在B+Tree上有两个头指针，一个指向根节点，另一个指向关键字最小的叶子节点，而且所有叶子节点（即数据节点）之间是一种链式环结构。因此可以对B+Tree进行两种查找运算：一种是对于主键的范围查找和分页查找，另一种是从根节点开始，进行随机查找。
 
@@ -243,13 +243,13 @@ InnoDB存储引擎中页的大小为16KB，一般表的主键类型为INT（占�
 
 二叉树基本特点：**左子树的键值小于根的键值，右子树的键值大于根的键值。**
 
-![Binary-Tree 结构图1](../Assets/images/MySQL/binary-tree-01.png)
+![Binary-Tree 结构图1](https://docs.zhangxiaocai.cn/Assets/images/MySQL/binary-tree-01.png)
 
 对该二叉树的节点进行查找发现深度为1的节点的查找次数为1，深度为2的查找次数为2，深度为n的节点的查找次数为n，因此其平均查找次数为 (1+2+2+3+3+3) / 6 = 2.3次
 
 二叉查找树可以任意地构造，同样是2,3,5,6,7,8这六个数字，也可以按照下图的方式来构造：
 
-![Binary-Tree 结构图2](../Assets/images/MySQL/binary-tree-02.png)
+![Binary-Tree 结构图2](https://docs.zhangxiaocai.cn/Assets/images/MySQL/binary-tree-02.png)
 
 但是这棵二叉树的查询效率就低了。因此若想二叉树的查询效率尽可能高，需要这棵二叉树是平衡的，从而引出新的定义——平衡二叉树，或称AVL树。
 
@@ -257,11 +257,11 @@ InnoDB存储引擎中页的大小为16KB，一般表的主键类型为INT（占�
 
 平衡二叉树（AVL树）在符合二叉查找树的条件下，还满足任何节点的两个子树的高度最大差为1。下面的两张图片，左边是AVL树，它的任何节点的两个子树的高度差<=1；右边的不是AVL树，其根节点的左子树高度为3，而右子树高度为1； 
 
-![AVL-Tree 结构图1](../Assets/images/MySQL/AVL-Tree-01.png)
+![AVL-Tree 结构图1](https://docs.zhangxiaocai.cn/Assets/images/MySQL/AVL-Tree-01.png)
 
 如果在AVL树中进行插入或删除节点，可能导致AVL树失去平衡，这种失去平衡的二叉树可以概括为四种姿态：LL（左左）、RR（右右）、LR（左右）、RL（右左）。它们的示意图如下：
 
-![AVL-Tree 结构图2](../Assets/images/MySQL/AVL-Tree-02.png)
+![AVL-Tree 结构图2](https://docs.zhangxiaocai.cn/Assets/images/MySQL/AVL-Tree-02.png)
 
 这四种失去平衡的姿态都有各自的定义： 
 LL：LeftLeft，也称“左左”。插入或删除一个节点后，根节点的左孩子（Left Child）的左孩子（Left Child）还有非空节点，导致根节点的左子树高度比右子树高度高2，AVL树失去平衡。
@@ -282,7 +282,7 @@ LL的旋转。LL失去平衡的情况下，可以通过一次旋转让AVL树恢�
 
 LL旋转示意图如下：
 
-![AVL-Tree 结构图3](../Assets/images/MySQL/AVL-Tree-03.png)
+![AVL-Tree 结构图3](https://docs.zhangxiaocai.cn/Assets/images/MySQL/AVL-Tree-03.png)
 
 RR的旋转：RR失去平衡的情况下，旋转方法与LL旋转对称，步骤如下：
 
@@ -292,7 +292,7 @@ RR的旋转：RR失去平衡的情况下，旋转方法与LL旋转对称，步�
 
 RR旋转示意图如下： 
 
-![AVL-Tree 结构图4](../Assets/images/MySQL/AVL-Tree-04.png)
+![AVL-Tree 结构图4](https://docs.zhangxiaocai.cn/Assets/images/MySQL/AVL-Tree-04.png)
 
 LR的旋转：LR失去平衡的情况下，需要进行两次旋转，步骤如下：
 
@@ -301,7 +301,7 @@ LR的旋转：LR失去平衡的情况下，需要进行两次旋转，步骤如�
 
 LR的旋转示意图如下
 
-![AVL-Tree 结构图5](../Assets/images/MySQL/AVL-Tree-05.png)
+![AVL-Tree 结构图5](https://docs.zhangxiaocai.cn/Assets/images/MySQL/AVL-Tree-05.png)
 
 RL的旋转：RL失去平衡的情况下也需要进行两次旋转，旋转方法与LR旋转对称，步骤如下：
 
@@ -310,7 +310,7 @@ RL的旋转：RL失去平衡的情况下也需要进行两次旋转，旋转方�
 
 RL的旋转示意图如下
 
-![AVL-Tree 结构图6](../Assets/images/MySQL/AVL-Tree-06.png)
+![AVL-Tree 结构图6](https://docs.zhangxiaocai.cn/Assets/images/MySQL/AVL-Tree-06.png)
 
 
 
@@ -368,7 +368,7 @@ RL的旋转示意图如下
 
 `Innodb`通过主键聚集数据，如果没有定义主键，`innodb`会选择非空的唯一索引代替。如果没有这样的索引，`innodb`会隐式的定义一个主键来作为聚簇索引。
 
-![聚簇索引结构示例](../Assets/images/MySQL/JuCu-Index-demo-01.jpg)
+![聚簇索引结构示例](https://docs.zhangxiaocai.cn/Assets/images/MySQL/JuCu-Index-demo-01.jpg)
 
 **优点：**
 
@@ -389,7 +389,7 @@ RL的旋转示意图如下
 
 辅助索引的存在不影响数据在聚簇索引中的组织，所以一张表可以有多个辅助索引。在`innodb`中有时也称辅助索引为二级索引。
 
-![聚簇索和非局促索引对比示例](../Assets/images/MySQL/JuCu-Index-demo-02.png)
+![聚簇索和非局促索引对比示例](https://docs.zhangxiaocai.cn/Assets/images/MySQL/JuCu-Index-demo-02.png)
 
 ### 3、聚簇索引和非聚簇索引的区别
 

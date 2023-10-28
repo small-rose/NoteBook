@@ -15,7 +15,7 @@ nav_order: 82
 
 ### 1、逻辑架构图
 
-![MySQL逻辑架构图](../Assets/images/MySQL/MySQL-db.jpg)
+![MySQL逻辑架构图](https://docs.zhangxiaocai.cn/Assets/images/MySQL/MySQL-db.jpg)
 
 
 
