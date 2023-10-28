@@ -71,7 +71,7 @@ public class HelloWorld {
 
 Slf4j 官网
 
-![Slf4g集成关系图](/images/springboot-images/concrete-bindings.png)
+![Slf4g集成关系图](../Assets/images/springboot-images/concrete-bindings.png)
 
 将写成表格：
 
@@ -91,7 +91,7 @@ Slf4j 官网
 
 官方桥接策略图：
 
-![ Slf4j 桥接遗留适配图](/images/springboot-images/legacy.png)
+![ Slf4j 桥接遗留适配图](../Assets/images/springboot-images/legacy.png)
 
 Slf4j 自带了几个桥接模板，可以使Log4j，JCL和Java.util.logging的API重定向 Slf4j。
 
@@ -141,7 +141,7 @@ SpringBoot移动器的依赖中使用 日志功能；
 
 SpringBoot 底层依赖关系：
 
-![Slf4g集成关系图](/images/springboot-images/springboot-log.png)
+![Slf4g集成关系图](../Assets/images/springboot-images/springboot-log.png)
 
 SpringBoot底层也是使用 `slf4j` + `logback` 的方式进行日志记录。
 
