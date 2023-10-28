@@ -1939,7 +1939,7 @@ WHERE s.username = '<your_username>'
 
 将<your_username>替换为你想要查询的用户名。该查询将返回指定用户的会话ID（SID）、序列号（SERIAL#）、用户名（USERNAME）以及会话的最大运行时间限制值（VALUE），如果有设置的话。
 
-#### 主键修复
+### 主键重复、重复数据清理
 
 oracle 表中已经有数据，主键之前未加约束，有重复，如何刷成正确的主键？
 
