@@ -3,6 +3,7 @@ layout: default
 title: ORACLE Jobs
 nav_order: 21
 parent: Database
+permalink: docs/Database/ORACLE.Jobs
 ---
 
 # ORACLE Jobs
