@@ -1,9 +1,9 @@
 ---
 layout: default
 title: MySQL Login
-nav_order: 87
 parent: MySQL
 grand_parent: Database
+nav_order: 87
 permalink: docs/Database/MySQL.Denied
 ---
 

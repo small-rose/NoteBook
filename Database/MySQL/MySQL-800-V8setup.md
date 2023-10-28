@@ -1,9 +1,9 @@
 ---
 layout: default
 title: MySQL V8 Setup
-nav_order: 85
 parent: MySQL
 grand_parent: Database
+nav_order: 85
 permalink: docs/Database/MySQL.V8.Setup
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: default
 title: MySQL Install
-nav_order: 81
 parent: MySQL
 grand_parent: Database
+nav_order: 81
 permalink: docs/Database/MySQL.Install
 ---
 

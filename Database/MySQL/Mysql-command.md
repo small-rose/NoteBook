@@ -1,9 +1,9 @@
 ---
 layout: default
 title: MySQL Command
-nav_order: 86
 parent: MySQL
 grand_parent: Database
+nav_order: 86
 permalink: docs/Database/MySQL.Command
 ---
 
