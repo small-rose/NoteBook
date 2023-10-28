@@ -4,7 +4,7 @@ title: MySQL
 parent: Database
 has_children: true
 nav_order: 8
-permalink: docs/Database/MySQL.Index
+permalink: docs/Database/MySQL
 ---
 
 
