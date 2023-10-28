@@ -1,9 +1,10 @@
 ---
 layout: default
-title: MySQL a1
+title: MySQL Meta
 nav_order: 10
 parent: MySQL
 grand_parent: Database
+permalink: docs/Database/MySQL.Meta
 ---
 
 # MySQL
