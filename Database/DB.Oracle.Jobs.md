@@ -1,8 +1,8 @@
 ---
 layout: default
 title: ORACLE Jobs
-nav_order: 21
 parent: Database
+nav_order: 21
 ---
 
 # ORACLE Jobs

@@ -1,10 +1,9 @@
 ---
 layout: default
 title: MySQL Engine
-nav_order: 82
 parent: MySQL
 grand_parent: Database
-permalink: docs/Database/MySQL.Engine
+nav_order: 82
 ---
 
 
@@ -16,7 +15,7 @@ permalink: docs/Database/MySQL.Engine
 
 ### 1、逻辑架构图
 
-![MySQL逻辑架构图](/images/MySQL/MySQL-db.jpg)
+![MySQL逻辑架构图](https://docs.zhangxiaocai.cn/Assets/images/MySQL/MySQL-db.jpg)
 
 
 

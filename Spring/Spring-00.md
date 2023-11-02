@@ -7,7 +7,7 @@ nav_order: 71
 ---
 
 
- Here are commonly used Spring examples .
+Here are about Spring tech .
 {: .fs-6 .fw-300 }
 
 

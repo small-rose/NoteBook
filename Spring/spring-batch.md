@@ -22,7 +22,7 @@ nav_order: 13
 
 ### 1、主要原理
 
-![spring-batch 基本原理图](https://notes.zhangxiaocai.cn/images/spring-batch/spring-batch-01.png)
+![spring-batch 基本原理图](https://notes.zhangxiaocai.cn/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/spring-batch-01.png)
 
 Spring Batch里最基本的单元就是任务Job，一个Job由若干个步骤Step组成。任务启动器Job Launcher负责运行Job，任务存储仓库Job Repository存储着Job的执行状态，参数和日志等信息。
 
@@ -110,7 +110,7 @@ job是作为运行的基本单位，它内部由step组成。job本质上可以�
 一个job可以按照指定的逻辑顺序组合step，并提供了我们给所有step设置相同属性的方法，例如一些事件监听，跳过策略等。
 Job实现类主要有两种类型的job，一个是simplejob，另一个是flowjob。
 
-![](/images/spring-batch/job-code.jpg)
+![](/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/job-code.jpg)
 
 在Spring Batch中，作业Job只是Step实例的容器。它组合了逻辑上属于流程的多个Step步骤，并允许配置所有步骤全局的属性，例如可重新启动性。作业配置包含：
 
@@ -147,7 +147,7 @@ Job实现类主要有两种类型的job，一个是simplejob，另一个是flowj
 
 #### 1.1、JobInstance 作业实例
 
-![](/images/spring-batch/job-heirarchy.png)
+![](/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/job-heirarchy.png)
 
 JobInstance是Job的更加底层的一个抽象，是指逻辑作业运行的概念。
 
@@ -173,7 +173,7 @@ JobParameters 即作业运行参数。
 
 JobParameters对象包含一组用于启动批处理作业的参数，它可以在运行期间用于识别或甚至用作参考数据。通常运行时间，就可以作为一个JobParameters。
 
-![](/images/spring-batch/job-stereotypes-parameters.png)
+![](/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/job-stereotypes-parameters.png)
 
 啊哦！原来是这样，不过，我偏不信邪，我就不用运行时间作为参数标记，我偏要设置一个固定的 JobParameters。
 
@@ -333,7 +333,7 @@ Step 即作业执行步骤。Step是一个域对象，每一个Step对象都封�
 
 > 任何特定的内容Step都是由编写Job的开发人员自行决定。 一个step可以非常简单也可以非常复杂。 例如，一个step的功能是将文件中的数据加载到数据库中，那么基于现在spring batch的支持则几乎不需要写代码。 更复杂的step可能具有复杂的业务逻辑，这些逻辑作为Step处理的一部分。
 
-![](/images/spring-batch/jobHeirarchyWithSteps.png)
+![](/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/jobHeirarchyWithSteps.png)
 
 #### 2.1、StepExecution
 StepExecution表示一次执行Step的尝试, 每次运行一个Step时都会创建一个新的StepExecution，类似于JobExecution。 但是，某个步骤可能由于其之前的步骤失败而无法执行。 只有在Step实际启动时才会创建StepExecution。
@@ -417,7 +417,7 @@ Java配置当使用`@EnableBatchProcessing`注解，spring batch 就会自动提
 
 ItemReader是一个读数据的抽象，它的功能是为每一个Step提供数据输入。 当ItemReader以及读完所有数据时，它会返回null来告诉后续操作数据已经读完。Spring Batch为ItemReader提供了非常多的有用的实现类。
 
-![](/images/spring-batch/all-itemReader.png)
+![](/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/all-itemReader.png)
 
 ItemReader支持的读入的数据源也是非常丰富的，包括各种类型的数据库，文件，数据流，消息中间件等等。几乎涵盖了我们的所有场景。
 
@@ -628,7 +628,7 @@ public class CsvItemProcessor extends ValidatingItemProcessor<UserVO> {
 
 Spring Batch为ItemWriter也提供了非常多的有用的实现类，当然我们也可以去实现自己的writer功能。
 
-![](/images/spring-batch/all-itemWriter.png)
+![](https://docs.zhangxiaocai.cn/Assets/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/all-itemWriter.png)
 
 跟ItemReader一样，ItemWriter支持的写入入的数据源也是非常丰富的，包括各种类型的数据库，文件，数据流，消息中间件等等。几乎涵盖了我们的所有场景。
 
@@ -698,7 +698,7 @@ public class Xxx{
 
 一次batch的任务可能会有很多的数据读写操作，因此一条一条的处理并向数据库提交的话效率不会很高，因此spring batch提供了chunk这个概念，我们可以设定一个chunk size，spring batch 将一条一条梳理处理之后，先不提交到数据库，只有当处理的数据数量达到chunk size设定的值得时候，才一起去commit到数据库。
 
-![](/images/spring-batch/step-chunk.png)
+![](/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/step-chunk.png)
 
 #### （2）skip
 
@@ -1234,7 +1234,7 @@ public class XXX{
 
 #### 4.1、同步作业
 
-![JobLauncher 同步作业](/images/spring-batch/job-launcher-sequence-sync.png)
+![JobLauncher 同步作业](/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/job-launcher-sequence-sync.png)
 
 ```xml
 <bean id="jobLauncher"
@@ -1245,7 +1245,7 @@ public class XXX{
 
 #### 4.2、异步作业
 
-![JobLauncher 异步作业](/images/spring-batch/job-launcher-sequence-async.png)
+![JobLauncher 异步作业](/https://docs.zhangxiaocai.cn/Assets/images/spring-batch/job-launcher-sequence-async.png)
 
 ```xml
 <bean id="jobLauncher"

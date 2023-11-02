@@ -1,10 +1,9 @@
 ---
 layout: default
 title: MySQL Explain
-nav_order: 84
 parent: MySQL
 grand_parent: Database
-permalink: docs/Database/MySQL.Explain
+nav_order: 84
 ---
 
 

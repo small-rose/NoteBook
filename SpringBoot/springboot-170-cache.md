@@ -24,7 +24,7 @@ Java Caching定义了5个核心接口，分别是CachingProvider, CacheManager, 
 
 - Expiry 每一个存储在Cache中的条目有一个定义的有效期。一旦超过这个时间，条目为过期的状态。一旦过期，条目将不可访问、更新和删除。缓存有效期可以通过ExpiryPolicy设置
 
-![缓存结构图](/images//springboot-images/cache-01.png)
+![缓存结构图](https://docs.zhangxiaocai.cn/Assets/images//springboot-images/cache-01.png)
 
 基本包 cache-api-x.x.x.jar
 

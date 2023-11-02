@@ -1,10 +1,9 @@
 ---
 layout: default
 title: MySQL Install
-nav_order: 81
 parent: MySQL
 grand_parent: Database
-permalink: docs/Database/MySQL.Install
+nav_order: 81
 ---
 
 ## MySQL 在线安装与卸载 <!-- {docsify-ignore} -->

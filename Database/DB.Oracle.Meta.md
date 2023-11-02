@@ -1,6 +1,6 @@
 ---
 layout: default
-title: ORACLE
+title: ORACLE Meta
 nav_order: 20
 parent: Database
 ---

@@ -1,12 +1,12 @@
 ---
 layout: default
-title: MySQL a1
-nav_order: 10
+title: MySQL Meta
 parent: MySQL
 grand_parent: Database
+nav_order: 10
 ---
 
-# MySQL
+# MySQL Meta
 {: .no_toc }
 
 ## Table of contents

@@ -1,14 +1,13 @@
 ---
 layout: default
 title: MySQL V8 Setup
-nav_order: 85
 parent: MySQL
 grand_parent: Database
-permalink: docs/Database/MySQL.V8.Setup
+nav_order: 85
 ---
 
 
- -->
+
 ## MySQL 8 解压安装记录
 
 下载zip包，解压：`C:\devtools\mysql-8.0.22-winx64`

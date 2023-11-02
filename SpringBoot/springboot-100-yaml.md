@@ -356,6 +356,7 @@ initvalue:
 
 {: .tips }
 > (1)优先级为： properties > xml > yml > yaml
+>
 > (2)注意  @PropertySource 注解默认是只支持 properties 格式配置文件的读取的。不支持解析 yaml/yml文件. ：
 
 支持yml解决方法
