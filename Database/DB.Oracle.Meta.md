@@ -24,6 +24,22 @@ Oracle 11g R2 在线数据库：http://sqlfiddle.com/#!4/4cc558/3
 
 ## Oralce 元数据查询
 
+### 查权限
+
+Oracle数据库提供了一些系统视图和表，可以查询当前用户的权限信息。以下是一些常用的系统视图和表：
+
+```text
+DBA_SYS_PRIVS：该视图显示了授予用户的系统级权限。
+DBA_TAB_PRIVS：该视图显示了授予用户的表级权限。
+DBA_ROLE_PRIVS：该视图显示了授予用户的角色权限。
+SESSION_PRIVS：该视图显示了当前会话用户的权限。
+USER_SYS_PRIVS：该视图显示了当前用户的系统级权限。
+USER_TAB_PRIVS：该视图显示了当前用户的表级权限。
+USER_ROLE_PRIVS：该视图显示了当前用户的角色权限。
+```
+>请注意，查询系统级权限可能需要具备相应的权限或角色（如 SELECT_CATALOG_ROLE），以便查询相关的系统视图。
+
+
 ### 查表信息
 
 ```sql
