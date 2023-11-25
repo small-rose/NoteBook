@@ -235,3 +235,15 @@ Windows Registry Editor Version 5.00
 
 [录屏软件优先选v2003](https://423down.lanzouo.com/b0f197pud)
 
+
+磁盘
+
+[WinTree](https://www.diskanalyzer.com/download)
+
+[SpaceSniffer](http://www.uderzo.it/main_products/space_sniffer/download.html)
+
+检索
+
+[Everything](https://www.voidtools.com/zh-cn/)
+
+[Listary](https://www.listary.com/)
