@@ -175,7 +175,6 @@ GitHub加速下载
 <a href="http://www.jsons.cn/unicode" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">UNICODE转换</a>
 <a href="https://sqltry.com" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">sqltry</a>
 
-
 </div>
 
 <br/>
@@ -292,7 +291,6 @@ GitHub加速下载
 
 </div>
 
-<br/>
 <div class="grid grid-4">
 <a href="https://wallhere.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallhere</a>
 <a href="https://bz.zzzmh.cn/index" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">极简壁纸</a>
@@ -311,7 +309,6 @@ GitHub加速下载
 
 </div>
 
-<br/>
 <div class="grid grid-4">
 <a href="https://mp.weixin.qq.com/s/0QPrmVE7unxoVDSqkm8e_g" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">软件目录</a>
 <a href="https://www.xuges.com/wuxia/gulong/index.htm" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gu Long</a>
