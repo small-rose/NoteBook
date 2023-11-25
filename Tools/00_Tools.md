@@ -7,10 +7,19 @@ nav_order: 99
 <style type="text/css">
 .grid {
   display: grid;
+}
+.grid-3 {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px; /* 可选，用于设置项目之间的间隔 */
 }
-
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 8px; /* 可选，用于设置项目之间的间隔 */
+}
+.grid-5 {
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 5px; /* 可选，用于设置项目之间的间隔 */
+}
 .grid a {
   /* 这里可以添加其他样式，例如背景色、文字居中等 */
   display: block;
@@ -82,16 +91,6 @@ GitHub加速下载
 ---
 ### Markdown Online
 
-<ul class="list">
-    <li>111</li>
-    <li>112</li>
-    <li>111333</li>
-    <li>111444444</li>
-        <li>111</li>
-        <li>112</li>
-        <li>111333</li>
-        <li>111444444</li>
-</ul>
 [MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [MarkDown在线2](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [MarkDown在线3](https://www.zybuluo.com/mdeditor){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
@@ -104,7 +103,7 @@ GitHub加速下载
   
 ### MixResource
 
-<div mark="linkMe" class="grid">
+<div class="grid grid-4">
 
 <a href="http://www.ziyuandi.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">资源帝</a>
 <a href="https://docs.qq.com/sheet/DRU5MWHZCTHFGQnhM" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">课程知识库</a>
@@ -127,85 +126,75 @@ GitHub加速下载
   
 ### Tool
 
-<p mark="linkMe">
-
-
+<div class="grid grid-5">
 <a href="https://www.bilibili.com/video/BV1wy4y1D7JT" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">React</a>
 <a href="https://babeljs.io/docs/en/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">babeljs</a>
 <a href="https://www.tslang.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">TypeScript</a>
 <a href="https://www.jhipster.tech/cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">JHipster</a>
 <a href="https://www.filestash.app" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">filestash</a>
 
-</p>
+</div>
 
 ### Inter Tool
 
-<p mark="linkMe">
+<div class="grid grid-5">
 <a href="https://dnschecker.org" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Dns Checker</a>
 <a href="https://ipaddress.com" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">IP ADDRESS</a>
 <a href="https://www.kuaidaili.com/free/inha/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">国内代理</a>
 
-</p>
+</div>
 
 ### Mock Tool
 
-<p mark="linkMe">
+<div class="grid grid-5">
 
 <a href="https://github.com/wiremock/wiremock" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">WireMock</a>
-
 <a href="https://github.com/mock-server/mockserver" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Mock-Server</a>
-
 <a href="http://www.jsons.cn/unicode" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">okhttp/mockwebserver</a>
-
 <a href="https://mocki.io/mock-http-server" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Mock-Http-Server</a>
 
 <a href="https://www.cnblogs.com/larva-zhh/p/11678940.html" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">单元测试Mock-Serve选型r</a>
-</p>
+</div>
 
 ### Tools Online
 
-<p mark="linkMe">
+<div class="grid grid-5">
 
 <a href="https://my-mind.github.io/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">My-Mind</a>
 <a href="https://c.runoob.com/front-end/710/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">XML在线格式化</a>
-
 <a href="https://www.diffchecker.com/diff" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">文本/文件在线比较</a>
 
 <a href="http://www.jsons.cn/unicode" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">UNICODE转换</a>
 <a href="https://sqltry.com" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">sqltry</a>
 
 
-</p>
+</div>
 
-<p mark="linkMe">
+<br/>
+
+<div class="grid grid-5">
 
 <a href="http://linux.51yip.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Linux 命令手册</a>
-
 <a href="http://cron.ciding.cc/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Cron在线表达式</a>
-
 <a href="https://jex.im/regulex/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">regulex</a>
 
 <a href="https://www.67tool.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Tool-Online</a>
-
 <a href="https://www.toolnb.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Tool-NB</a>
-
 <a href="https://fastthread.io/ft-index.jsp" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Thread Dump Analyzer</a>
 
 
 <a href="https://blog.luckly-mjw.cn/tool-show/m3u8-downloader/index.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">m3u8-Downloader</a>
-
 <a href="http://www.ico51.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">生成透明ICO</a>
-
 <a href="https://nav.rdonly.com/laboratory/bgimage/backimage.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">BgImage</a>
 
 <a href="https://www.aigei.com/bgremover/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">BgRemover</a>
 
-</p>
+</div>
 
 
 ### system of Software 
 
-<p mark="linkMe">
+<div class="grid grid-4">
 <a href="https://developers.redhat.com/products/rhel/download" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">RHEL</a>
 <a href="https://www.centos.org/centos-stream/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">CentOS-Stream</a>
 <a href="https://mirrors.tuna.tsinghua.edu.cn/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.TUNA</a>
@@ -215,11 +204,11 @@ GitHub加速下载
 <a href="http://dootask.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">dootask</a>
 <a href="https://etherpad.org/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">etherpad</a>
 
-</p>
+</div>
 
 ### Tools of Software 
 
-<p mark="linkMe">
+<div class="grid grid-4">
 
 <a href="https://alternativeto.net/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">替代软件</a>
 
@@ -238,21 +227,21 @@ GitHub加速下载
 <a href="https://github.com/RocketChat/Rocket.Chat" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Rocket.Chat</a>
 
 
-</p>
+</div>
 
 ### Learn Online
 
-<p mark="linkMe">
+<div class="grid grid-4">
 <a href="https://www.w3cschool.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">w3cSchool</a>
 <a href="https://www.xuetangx.com/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">xuetangx</a>
 <a href="http://www.javathinker.net" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Java Thinker</a>
 
-</p>
+</div>
 
 
 ### Watch movies Online
 
-<p mark="linkMe">
+<div class="grid grid-5">
 
 <a href="https://www.foxcup.cc" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">狐茶杯</a>
 <a href="https://www.nen9.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">青柠</a>
@@ -279,11 +268,11 @@ GitHub加速下载
 <a href="https://196y.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">196y</a>
 <a href="http://wap.vipz8.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">vipz8</a>
 
-</p>
+</div>
 
 ### Other
 
-<p mark="linkMe">
+<div class="grid grid-4">
 
 <a href="https://www.nbfox.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">麦田艺术</a>
 <a href="http://www.niuga.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">牛噶解析</a>
@@ -294,39 +283,40 @@ GitHub加速下载
 <a href="https://www.onehourlife.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">One Hour Life</a>
 <a href="https://adzhp.cn/vipdianyingyuduanshipinjiexiziyuansuoyin.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">No VIP</a>
 
-</p>
+</div>
 
-
-<p mark="linkMe">
+<br/>
+<div class="grid grid-4">
 <a href="https://wallhere.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallhere</a>
 <a href="https://bz.zzzmh.cn/index" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">极简壁纸</a>
 <a href="https://zhutix.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">zhutix</a>
 <a href="https://www.wallpaperup.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallpaperup</a>
 <a href="https://wallpaperstock.net/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallpaperstock</a>
 <a href="https://wallpaperscraft.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wallpaperscraft</a>
-</p>
+</div>
 
-<p mark="linkMe">
+<br/>
+<div class="grid grid-4">
 <a href="https://www.jinyongbook.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Jin Yong</a>
 <a href="https://www.xuges.com/wuxia/gulong/index.htm" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gu Long</a>
 <a href="http://t.icesmall.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ming Zhu</a>
-
 <a href="www.futureme.org" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">写信给自己</a>
 
-</p>
+</div>
 
-<p mark="linkMe">
+<br/>
+<div class="grid grid-4">
 <a href="https://mp.weixin.qq.com/s/0QPrmVE7unxoVDSqkm8e_g" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">软件目录</a>
 <a href="https://www.xuges.com/wuxia/gulong/index.htm" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gu Long</a>
 <a href="http://t.icesmall.cn/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ming Zhu</a>
-</p>
+</div>
 
 
 ### GAMES
 
-<p mark="linkMe">
+<div class="grid grid-4">
 <a href="https://docs.qq.com/sheet/DUGNXSUZSY05LdHZK?tab=BB08J2" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">games</a>
-</p>
+</div>
 
 
 
