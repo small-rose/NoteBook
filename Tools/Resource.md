@@ -198,6 +198,9 @@ GitHub加速下载
 <a href="https://nav.rdonly.com/laboratory/bgimage/backimage.html" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">BgImage</a>
 
 <a href="https://www.aigei.com/bgremover/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">BgRemover</a>
+<a href="https://tool.lu/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">tool</a>
+<a href="https://nsfw.abskoop.com/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">abskoop</a>
+
 
 </div>
 
