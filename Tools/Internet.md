@@ -63,6 +63,7 @@ These are some guidelines for surfing the Internet to help us quickly search for
 
 ### Search Online
 
+ - [x] [https://www.btsearch.love/zh](https://www.btsearch.love/zh)
  - [x] [https://alternativeto.net](https://alternativeto.net)  
  - [x] [https://adzhp.cn](https://adzhp.cn)  
  - [x] [https://fxsh.com/](https://fxsh.com) 

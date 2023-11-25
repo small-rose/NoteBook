@@ -137,6 +137,7 @@ GitHub加速下载
 <a href="https://www.futurepedia.io" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">AI工具</a>
 <a href="https://x.magiconch.com/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">表情包</a>
 <a href="https://lab.magiconch.com/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">奇奇怪怪</a>
+<a href="https://nav.iowen.cn/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">一为</a>
 
 
 </div>
