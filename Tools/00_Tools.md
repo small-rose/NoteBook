@@ -104,15 +104,15 @@ GitHub加速下载
 
 <div class="grid grid-4">
 
-[MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[MarkDown在线2](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[MarkDown在线3](https://www.zybuluo.com/mdeditor){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[MarkDown在线4](http://mahua.jser.me/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+<a href="https://markdown.com.cn" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MarkDown官方1</a>
+<a href="http://editor.md.ipandao.com/examples/full.html" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MarkDown官方2</a>
+<a href="https://www.zybuluo.com/mdeditor" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MarkDown官方3</a>
+<a href="http://mahua.jser.me/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MarkDown官方4</a>
 
-[😂 Emoji在线1](http://getemoji.com/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[😄 Emoji在线2](https://www.emojidaquan.com/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[😁 Emoji在线3](https://www.emojiall.com/zh-hans){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
-[😆 Emoji在线4](https://emojipedia.org/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+<a href="http://getemoji.com" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">😂 Emoji在线1</a>
+<a href="https://www.emojidaquan.com" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">😂 Emoji在线2</a>
+<a href="https://www.emojiall.com/zh-hans" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">😂 Emoji在线3</a>
+<a href="https://emojipedia.org" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">😂 Emoji在线4</a>
 
 </div>
   
