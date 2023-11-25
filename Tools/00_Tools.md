@@ -8,6 +8,10 @@ nav_order: 99
 .grid {
   display: grid;
 }
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px; /* 可选，用于设置项目之间的间隔 */
+}
 .grid-3 {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px; /* 可选，用于设置项目之间的间隔 */
@@ -24,6 +28,10 @@ nav_order: 99
   /* 这里可以添加其他样式，例如背景色、文字居中等 */
   display: block;
   text-align: center;
+}
+.grid a:hover {
+  background-color: #7253ed; /* 鼠标悬停时的背景色 */
+  color: #fff; /* 鼠标悬停时的文本颜色 */
 }
 </style>
 
@@ -137,7 +145,7 @@ GitHub加速下载
 
 ### Inter Tool
 
-<div class="grid grid-5">
+<div class="grid grid-3">
 <a href="https://dnschecker.org" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Dns Checker</a>
 <a href="https://ipaddress.com" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">IP ADDRESS</a>
 <a href="https://www.kuaidaili.com/free/inha/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">国内代理</a>
@@ -146,7 +154,7 @@ GitHub加速下载
 
 ### Mock Tool
 
-<div class="grid grid-5">
+<div class="grid grid-3">
 
 <a href="https://github.com/wiremock/wiremock" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">WireMock</a>
 <a href="https://github.com/mock-server/mockserver" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">Mock-Server</a>
@@ -158,7 +166,7 @@ GitHub加速下载
 
 ### Tools Online
 
-<div class="grid grid-5">
+<div class="grid grid-3">
 
 <a href="https://my-mind.github.io/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">My-Mind</a>
 <a href="https://c.runoob.com/front-end/710/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">XML在线格式化</a>
@@ -172,7 +180,7 @@ GitHub加速下载
 
 <br/>
 
-<div class="grid grid-5">
+<div class="grid grid-3">
 
 <a href="http://linux.51yip.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Linux 命令手册</a>
 <a href="http://cron.ciding.cc/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Cron在线表达式</a>
@@ -194,7 +202,7 @@ GitHub加速下载
 
 ### system of Software 
 
-<div class="grid grid-4">
+<div class="grid grid-3">
 <a href="https://developers.redhat.com/products/rhel/download" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">RHEL</a>
 <a href="https://www.centos.org/centos-stream/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">CentOS-Stream</a>
 <a href="https://mirrors.tuna.tsinghua.edu.cn/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">mirrors.TUNA</a>
@@ -208,7 +216,7 @@ GitHub加速下载
 
 ### Tools of Software 
 
-<div class="grid grid-4">
+<div class="grid grid-3">
 
 <a href="https://alternativeto.net/" target="_blank" class="btn btn-outline  fs-5 mb-4 mb-md-0 mr-2">替代软件</a>
 
@@ -225,7 +233,6 @@ GitHub加速下载
 <a href="https://kanboard.org/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">kanboard</a>
 <a href="https://github.com/wekan/wekan" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">wekan</a>
 <a href="https://github.com/RocketChat/Rocket.Chat" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Rocket.Chat</a>
-
 
 </div>
 
