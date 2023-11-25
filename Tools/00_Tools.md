@@ -255,11 +255,13 @@ GitHub加速下载
 
 <div class="grid grid-4">
 
-<a href="https://www.foxcup.cc" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">狐茶杯</a>
-<a href="https://www.nen9.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">青柠</a>
+
+<a href="https://vip.bljiex.com/?ref=nav.sbkko.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">VIP解析</a>
+<a href="https://www.fqdm1.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">番茄动漫</a>
+<a href="https://www.dianyi.ng/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">电影</a>
+<a href="https://rebozj.pro/type/4.html" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">电影</a>
 <a href="https://www.dianyinggou.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">电影狗</a>
-<a href="http://www.breakfan.com" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">breakfan</a>
-<a href="http://tkys.vip/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">sky</a>
+<a href="https://www.breakvip.club/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">breakfan</a>
 <a href="https://www.mvcat.com/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MV CAT</a>
 <a href="https://ddrk.me/" titel="" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">DDRK.ME</a>
 <a href="https://www.novipnoad.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">NO VIP NO AD</a>
@@ -269,16 +271,11 @@ GitHub加速下载
 <a href="http://gaoqing.la/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gao Qing</a>
 <a href="https://www.hebeilaibang.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Mi Gu</a>
 <a href="https://klyingshi.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Ke Le</a>
-<a href="https://www.jpys.me/"  titel="热门影视与动漫" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">jpys VIP</a>
 <a href="https://www.libvio.me/" titel="热门电影和海外剧" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Lib Online</a>
-<a href="https://yanetflix.com/" titel="奈飞" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">4K YA</a>
 <a href="https://loli.magedn.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">MaGeDN YA</a>
 <a href="https://555dy1.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">555DY YA</a>
 <a href="https://nav.sbkko.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">SB KKO</a>
-<a href="https://www.huohuo99.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">huohuo99</a>
 <a href="https://cokemv.me/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">cokemv</a>
-<a href="https://196y.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">196y</a>
-<a href="http://wap.vipz8.com/" titel="影视与动漫综艺记录" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">vipz8</a>
 
 </div>
 
