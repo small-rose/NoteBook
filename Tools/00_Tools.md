@@ -73,14 +73,17 @@ GitHub加速下载
 
 直接通过输入下载地址加速下载
 
-- [Gitclone](https://gitclone.com/)	
-- [下载 (serctl.com)](https://d.serctl.com/)
-- [GitHub Proxy 代理加速](https://ghproxy.com/)
-- [GitHub 文件加速](https://gh.api.99988866.xyz/)
-- [GitHub加速链接生成工具](https://github.zhlh6.cn/)
-- [socialify](https://socialify.git.ci/)
-- [https://ghproxy.com/](https://ghproxy.com/)
+<div class="grid grid-4">
+<a href="https://gitclone.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">Gitclone</a>
+<a href="https://d.serctl.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">serctl.com</a>
+<a href="https://ghproxy.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">GitHub Proxy 代理加速</a>
+<a href="https://gh.api.99988866.xyz" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">GitHub文件加速</a>
+<a href="https://github.zhlh6.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">GitHub加速链接生成工具</a>
+<a href="https://socialify.git.ci/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">socialify</a>
+<a href="https://ghproxy.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">ghproxy</a>
 
+</div>
+ 
 其他
 
 [Trending repositories on GitHub today（GitHub热门项目）](https://github.com/trending)
@@ -99,6 +102,8 @@ GitHub加速下载
 ---
 ### Markdown Online
 
+<div class="grid grid-4">
+
 [MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [MarkDown在线2](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [MarkDown在线3](https://www.zybuluo.com/mdeditor){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
@@ -108,6 +113,8 @@ GitHub加速下载
 [😄 Emoji在线2](https://www.emojidaquan.com/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [😁 Emoji在线3](https://www.emojiall.com/zh-hans){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [😆 Emoji在线4](https://emojipedia.org/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
+
+</div>
   
 ### MixResource
 
