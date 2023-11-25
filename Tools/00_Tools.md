@@ -5,13 +5,13 @@ has_children: true
 nav_order: 99
 ---
 <style type="text/css">
-.linkMe {
+.grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px; /* 可选，用于设置项目之间的间隔 */
 }
 
-.linkMe a {
+.grid a {
   /* 这里可以添加其他样式，例如背景色、文字居中等 */
   display: block;
   text-align: center;
@@ -82,7 +82,16 @@ GitHub加速下载
 ---
 ### Markdown Online
 
- 
+<ul class="list">
+    <li>111</li>
+    <li>112</li>
+    <li>111333</li>
+    <li>111444444</li>
+        <li>111</li>
+        <li>112</li>
+        <li>111333</li>
+        <li>111444444</li>
+</ul>
 [MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [MarkDown在线2](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [MarkDown在线3](https://www.zybuluo.com/mdeditor){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
@@ -95,7 +104,7 @@ GitHub加速下载
   
 ### MixResource
 
-<p mark="linkMe">
+<div mark="linkMe" class="grid">
 
 <a href="http://www.ziyuandi.cn/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">资源帝</a>
 <a href="https://docs.qq.com/sheet/DRU5MWHZCTHFGQnhM" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">课程知识库</a>
@@ -114,7 +123,7 @@ GitHub加速下载
 <a href="https://lab.magiconch.com/" target="_blank" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">奇奇怪怪</a>
 
 
-</p>
+</div>
   
 ### Tool
 
