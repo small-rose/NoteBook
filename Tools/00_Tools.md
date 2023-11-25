@@ -5,16 +5,19 @@ has_children: true
 nav_order: 99
 ---
 <style type="text/css">
-.list {
-  display: flex;
-  list-style: none;
-  padding: 0;
+.linkMe {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px; /* 可选，用于设置项目之间的间隔 */
 }
 
-.list li {
-  flex: 1;
+.linkMe a {
+  /* 这里可以添加其他样式，例如背景色、文字居中等 */
+  display: block;
+  text-align: center;
 }
 </style>
+
 # Tools
 {: .no_toc }
 
@@ -79,16 +82,7 @@ GitHub加速下载
 ---
 ### Markdown Online
 
-<ul class="list">
-    <li>111</li>
-    <li>112</li>
-    <li>111333</li>
-    <li>111444444</li>
-        <li>111</li>
-        <li>112</li>
-        <li>111333</li>
-        <li>111444444</li>
-</ul>
+ 
 [MarkDown官方1](https://markdown.com.cn/){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [MarkDown在线2](http://editor.md.ipandao.com/examples/full.html){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
 [MarkDown在线3](https://www.zybuluo.com/mdeditor){: .btn .btn-outline .d-inline-block fs-5 mb-4 mb-md-0 mr-2 }
