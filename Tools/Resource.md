@@ -86,7 +86,7 @@ GitHub加速下载
 
 </div>
  
-### github 项目收集
+### Github 项目收集
 
 <div class="grid grid-4">
 
@@ -108,8 +108,8 @@ GitHub加速下载
 <a href="https://github.com/apache/shardingsphere-elasticjob" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">elasticjob</a>
 <a href="https://github.com/baomidou/jobs" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">jobs</a>
 <a href="https://github.com/YunaiV/SpringBoot-Labs" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">SpringBoot-Labs</a>
-<a href="https://github.com/softwarevax/springcloud" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">springcloud</a>
-<a href="https://github.com/ityouknow/awesome-spring-cloud" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">awesomeSpringCloud</a>
+<a href="https://github.com/softwarevax/springcloud" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">SpringCloud1</a>
+<a href="https://github.com/ityouknow/awesome-spring-cloud" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">SpringCloud2</a>
 <a href="https://github.com/doocs/technical-books" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">technical-books</a>
 <a href="https://github.com/AutomaApp/automa" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">Automa</a>
 <a href="https://github.com/jgraph/drawio-desktop" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">drawio-desktop</a>
@@ -225,7 +225,7 @@ GitHub加速下载
 </div>
 
 
-### system of Software 
+### System of Software 
 
 <div class="grid grid-4">
 <a href="https://developers.redhat.com/products/rhel/download" target="_blank" class="btn btn-outline  fs-3 mb-4 mb-md-0 mr-2">RHEL</a>
