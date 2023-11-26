@@ -79,9 +79,4 @@ Github
 - https://hub.fastgit.xyz （支持git）
 
 
-## github 项目
-
-- [x] [https://github.com/syhyz1990/baiduyun](https://github.com/syhyz1990/baiduyun)
-- [x] [https://github.com/wuxs231/romantic](https://github.com/wuxs231/romantic)
-
 
