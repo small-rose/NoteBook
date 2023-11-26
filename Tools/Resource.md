@@ -223,6 +223,8 @@ GitHub加速下载
 
 <div class="grid grid-3">
 
+<a href="https://www.qbittorrent.org" target="_blank" class="btn btn-outline  fs-3 mb-4 mb-md-0 mr-2">qbittorrent</a>
+<a href="https://motrix.app/" target="_blank" class="btn btn-outline  fs-3 mb-4 mb-md-0 mr-2">Motrix</a>
 <a href="https://alternativeto.net/" target="_blank" class="btn btn-outline  fs-3 mb-4 mb-md-0 mr-2">替代软件</a>
 
 <a href="https://obsidian.md" target="_blank" class="btn btn-outline  fs-3 mb-4 mb-md-0 mr-2">知识库管理工具</a>
