@@ -6,7 +6,6 @@ parent: Tools
 ---
 
 # Develop Links
-{: .no_toc }
 
 These are some guidelines for develop links to help us quickly search for what we want , use search tools or search engines to search the resources we need
 {: .fs-6 .fw-300 }
