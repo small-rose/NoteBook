@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Resource
-nav_order: 0
+nav_order: 1
 parent: Tools
 ---
 
