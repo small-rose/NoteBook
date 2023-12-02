@@ -16,17 +16,6 @@ nav_order: 2
 
 ---
 
-# Git Theory
-{: .no_toc }
-
-## Table of contents
-{: .no_toc .text-delta }
-
-1. TOC
-{:toc}
-
----
-
 Git 操作大全
 -----------------------------
 
