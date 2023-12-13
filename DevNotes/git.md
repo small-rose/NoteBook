@@ -94,3 +94,86 @@ https://emojixd.com/
 | :egg: (彩蛋)                             | `:egg:`                       | 添加一个复活节彩蛋。         |
 | :see_no_evil: (蒙眼猴子)                 | `:see_no_evil:`               | 添加或更新.gitignore文件。   |
 | :camera_flash: (照相机)                  | `:camera_flash:`              | 添加或更新快照。             |
+
+
+
+## 常用命令
+
+```bash
+#初始化本地仓库，生成一个 .git 文件夹
+git init
+
+#查看当前仓库地址，origin为远程仓库地址别名
+git remote show origin
+ or
+git remote -v
+ 
+#添加远程仓库地址
+git remote add <name> <url>
+
+#修改远程仓库地址别名
+git remote rename <old> <new>
+
+#将远程仓库的内容合并到本地仓库（首先，同步仓库）
+git pull [--rebase] <remote> <branch>
+
+-----------------------提交代码到远程仓库，三步走-----------------------------------------
+#查看文件状态
+git status
+
+#添加一个或多个文件到暂存区
+git add [file1] [file2] ...
+git add .
+
+#提交暂存区到本地仓库中，并添加注释
+git commit -m [message]
+
+#将本地仓库的文件推送到已经建立关联的远程仓库master分支中
+git push -u origin master
+
+-----------------------分支操作命令----------------------------------------------------
+#列出所有本地分支
+git branch
+
+#列出所有远程分支
+git branch -r
+
+#切换到指定分支
+git checkout [branch-name]
+
+#新建一个分支，但依然停留在当前分支
+git branch [branch-name]
+
+#新建一个分支，并切换到该分支
+git checkout -b [branch-name]
+
+#提交新建分支到远程仓库
+git push origin [branch-name]
+
+#合并指定分支到当前分支
+git merge [branch-name]
+
+#删除本地分支
+git branch -d [branch-name]
+
+#删除远程分支
+git push origin -d [branch-name]
+
+-------------------------------------------------------------------------------------
+#查看提交历史信息
+git log
+
+#修改注释，第一行就是最后一次commit的注释信息，按i键进行编辑状态，按Esc后再按:wq保存并退出
+git commit --amend
+
+#将文件从暂存区和工作区中删除
+git rm <file>
+
+#递归删除整个目录中的所有子目录和文件，提交
+git rm -r <文件夹>
+git commit -m "删除"
+git push
+
+#初次拉取工程(克隆)
+git clone <远程仓库地址>
+```
