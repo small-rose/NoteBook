@@ -156,6 +156,12 @@ ORDER BY T.TABLE_NAME, T.INDEX_NAME ;
 ```
 
 
+### 查带有自增分区的表
+
+```sql
+SELECT * FROM DBA_PART_TABLES T WHERE T.OWNER='AMS' AND T.INTERVAL IS NOT NULL ;
+```
+
 ### 查存储
 
 
