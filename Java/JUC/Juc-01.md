@@ -3,7 +3,7 @@ layout: default
 title: Java Concurrent 
 parent: Java
 has_children: true
-nav_order: 50
+nav_order: 20
 ---
 
 

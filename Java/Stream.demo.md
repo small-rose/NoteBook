@@ -2,7 +2,7 @@
 layout: default
 title: Java Stream API
 parent: Java
-nav_order: 12
+nav_order: 90
 ---
 
 
