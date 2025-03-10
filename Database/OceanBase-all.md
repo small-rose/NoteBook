@@ -30,9 +30,9 @@ parent: Database
 
 (2）导出包体脚本后可执行批量替换。
 
-1、SqI-20221208-01-AMS_BASE_DB_ACCT_PKG
+1、Sql-20221208-01-AMS_BASE_DB_ACCT_PKG
 
-for i in 1 .. C_BASE_DB_ACCT_DEL.countO loop
+for i in 1 .. C_BASE_DB_ACCT_DEL.count() loop
 
 去掉count后面去掉()改为for i in 1 .. C_BASE_DB_ACCT_DEL.count loop
 
@@ -295,7 +295,11 @@ PLAN_TYPE 执行计划类型：
 [gv$sql_audit视图字段说明](https://www.oceanbase.com/docs/enterprise-oceanbase-database-cn-10000000000356239)
 
 
+## 查数据库最大连接数
 
+在oceanbase 库 用sys 用户  show  proxyconfig 或者在ocp上能看到 ,
+
+obproxy 最大连接数一般是 8000  - 16000 。
 
 ## 快速生成DDL
 
@@ -327,3 +331,105 @@ FROM DBA_TAB_COLUMNS T INNER JOIN DBA_COL_COMMENTS C ON T.TABLE_NAME = C.TABLE_N
 
 ## OB常见兼容问题
 
+## OB 临时表问题与应对方案
+
+一、存在的问题
+
+1、临时表在存过中响应时间缓慢。
+
+问题原因：
+
+（1）临时表是会话级别的。当会话结束时，或者定义为 ON COMMIT DELETE ROWS 的临时表在执行 COMMIT 时，会对临时表进行数据清理操作。数据清理默认一次最多删除 1000 行，使用循环删除的方式直至临时表中所有数据被清空。如果临时表中的数据量很大，则清理临时表的耗时会比较久。
+（2）由于不同session对临时表访问无法共享计划，如果全局临时表存在在PL对象中，每个session都需要编译一次这个PL可能导致性能和稳定性问题。
+（3）临时表在程序中使用随着临时表的数据量增多，会导致响应时间变慢。
+
+2、临时表引起登录时间变慢甚至夯住问题。
+
+问题现象:
+
+集群中存在业务租大量使用临时表（CGTT）的情况，业务租户登录很慢，甚至无法登录，OBProxy 日志中 COM_LOGIN 耗时很久或报 -4152 错误。
+
+问题原因：
+
+临时表中的数据只对本 session 可见，其生命周期随着 session 断开而终止。在 OceanBase 数据库 V3.2.4 BP5（oceanbase-3.2.4.5-105000012023081513）之前，由于 session id 可能存在复用的情况，会在登陆时对当前 session id 的数据进行检查，如果存在则需要额外进行一次清理。当同样的 session id 曾经执行过大量的临时表时，清理动作耗时较久，会导致登录缓慢甚至无法登录的问题。
+
+2、临时表数据无法清理。
+
+问题原因：
+
+全局临时表在PL业务块中穿插自治事务时，自治事务内部的提交改变了一个控制临时是否提交清理的标记，最终导致临时表数据无法清理。
+
+3、分区临时表 频繁 truncate 分区表不回收。
+
+现象：DSG同步巨大延迟，DML/DDL执行变慢
+
+问题原因：
+
+truncate 分区动作不会触发schema回收，频繁执行后，刷新schema会越来越慢。
+
+schema历史保留七天，每次ddl都会产生一个或多个schema变更，ddl较多时schema也会变多，OB处理ddl数据时构造指定版本schema时需要回溯的数据也会变多，耗时就会变长，schema回收可以减少历史schema的数量，schema保留时间时间会影响我们回溯schema过程的效率，但也不能太短，如果链路延迟时间超过了schema保留时间，就有可能会导致链路中断且无法恢复。
+
+目前大部分环境schema保留时间为7天。
+
+
+二、应对方案：
+
+1、临时表数据量比较大引起的变慢
+
+应对方案：建议如果临时表据量比较大，建议换成实体表，通过 truncate 来进行数据清理。
+
+已知影响版本:   V2.2.x、V3.1.x、V3.2.x、V4.0.x、V4.1.x、V4.2.x
+
+2、临时表引起登录时间变慢甚至夯住问题
+
+应对方案：尽量避免使用临时表，建议改造成普通表后新增唯一标识字段来实现session之间隔离的功能。
+
+解决方法: 升级到 OceanBase 数据库 V3.2.4 BP5（oceanbase-3.2.4.5-105000012023081513）。
+
+在 OceanBase 数据库 V3.2.4 BP5（oceanbase-3.2.4.5-105000012023081513）之前，尽量避免使用临时表，使用普通表来代替。
+
+影响版本: OceanBase 数据库 V3.2.4 BP5（oceanbase-3.2.4.5-105000012023081513）之前的版本 
+
+
+3、临时表数据无法清理。
+
+应对方案：在自治事务后面，执行一次临时表DML动作（可以是无意义动作）。
+
+发现问题版本  V3.2.3.3 bp8
+
+4、分区临时表频繁truncate 分区问题
+
+应对方案：需要定时对该表进行整体truncate的操作以触发schema回收，可以减少历史schema的数量。
+
+发现问题版本  V3.2.3.3 bp10
+
+
+## OB 超时参数
+
+```sql
+--查超时 相关参数
+show global variables Like'%timeout%';
+
+--查 连接 相关参数
+show global variables Like'%connections%';
+
+--查 undo 参数
+show global variables Like'%undo%';
+```
+```
+VARIABLE_NAME       VALUE
+connect_timeout     10
+interactive_timeout 28800
+net_read_timeout    30
+net_write_timeout   60
+ob_pl_block_timeout 3216672000000000
+ob_query_timeout    21600000000
+ob_trx_idle_timeout 21600000000
+ob_trx_lock_timeout 6000000
+ob_trx_timeout      21600000000
+wait_timeout        86400
+
+
+-- 历史版本保留1小时
+undo_retention      3600 
+```
