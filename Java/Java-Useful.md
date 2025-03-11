@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Java
-has_children: true
+has_children: false
 nav_order: 70
 ---
 
