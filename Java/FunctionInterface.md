@@ -112,3 +112,6 @@ public class TestIMyInterface {
     }
 }
 ``` 
+
+## 函数式接口应用
+
