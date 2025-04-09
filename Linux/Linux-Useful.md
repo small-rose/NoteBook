@@ -21,6 +21,14 @@ nav_order: 2
 
 Linux 环境相关
 
+## lscpu
+
+查看CPU架构信息的标准工具，包括CPU型号
+
+```bash
+lscpu
+```
+
 ## grep
 
 参数：
