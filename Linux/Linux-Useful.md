@@ -75,6 +75,94 @@ cat /home/test/app/logs/paystationlog/paystation.log | grep -B 10 -A 10  17ACIC0
 cat /home/test/app/logs/paystationlog/paystation.log | grep -C 10  17ACIC01220000000002871371146E
 ```
 
+##  ll ls
+
+列出文件 按文件时间先后排序显示
+```bash
+# 列出文件 按文件时间先后排序显示
+ll -lrt
+```
+
+列出符合文件关键字的文件 按时间先后排序显示
+```bash
+# 列出符合文件关键字的文件 按时间先后排序显示
+ll P_AMS*.txt  -lrt
+```
+
+统计kjhs*.txt文件个数
+```bash
+# 统计kjhs*.txt文件个数
+ls kjhs*.txt | wc -l
+```
+统计使用 find（更可靠，支持递归）​​
+
+```bash
+# 统计当前目录下的 .txt 文件数量：
+find . -maxdepth 1 -type f -name "*.txt" | wc -l
+```
+    -maxdepth 1：仅当前目录（不包括子目录）
+    -type f：只统计文件（排除目录）
+    -name "*.txt"：匹配 .txt 后缀的文件
+
+
+
+获取目录中符合关键字文件的最大的文件
+```bash
+ls -S | head -1
+
+# 获取所有 kjhs开头的 txt 文件， 按文件大小倒排序，取前3
+ll -h kjhs*.txt -S | head -3
+```
+
+获取目录中符合关键字文件的最新的文件
+
+```bash
+# 如果文件名包含日期（如 log_2023-10-01.txt, log_2023-10-02.txt），可以按日期排序：
+ls log_*.txt | sort -t '_' -k 2 | tail -1
+```
+    -t '_'：以 _ 分隔
+    -k 2：按第 2 列（日期部分）排序
+    tail -1：取最新的文件
+
+ls 可能会遇到文件名包含空格或特殊字符的问题，更安全的方式是 find + sort：
+```
+find . -maxdepth 1 -type f -name "kjhs_*.txt" | sort -t '_' -k 2 -n | tail -1
+```
+    -maxdepth 1：只在当前目录查找
+    -type f：只匹配文件（排除目录）
+    -name "file_*.txt"：匹配文件名模式
+
+
+计算文件大小
+```bash
+find . -maxdepth 1 -type f -name "*.txt" -exec du -cb {} + | grep total | awk '{print $1}'
+```
+    -exec du -cb {} +：计算所有匹配文件的总大小
+    grep total：提取 du 输出的 total 行
+    awk '{print $1}'：仅显示总字节数
+
+
+**计算文件大小**
+```bash
+find . -maxdepth 1 -type f -name "*.txt" -printf "%s\n" | awk '{sum += $1} END {print "文件数:", NR, "总大小:", sum, "字节"}'
+```
+
+    -printf "%s\n"：输出每个文件的大小（字节）
+    awk 计算总和：
+        sum += $1：累加文件大小
+        NR：文件数量（行数）
+        END：最终输出结果
+        
+
+统计 .txt 文件的总大小（人类可读格式）​​
+```bash
+du -ch *.txt | grep total
+```
+    du -ch：计算总大小并显示 total
+    grep total：提取总大小行
+        
+
+
 
 ## curl
 
