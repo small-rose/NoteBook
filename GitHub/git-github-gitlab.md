@@ -82,7 +82,9 @@ Github
 
 ## github push 问题
 
+{: .tips }
 > 确认网络无问题，代理无问题。 tracert github.com
+>
 > 确认配置无问题（用户名，邮箱） git config list
 
 1.尝试切换 Git 的 SSL 后端为 OpenSSL​​ 
