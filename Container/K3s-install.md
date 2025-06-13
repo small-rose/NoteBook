@@ -28,11 +28,17 @@ k3s v1.25.3+k3s1 集群安装
 k3s是经过CNCF认证的由Rancher公司开发维护的一个轻量级的 Kubernetes 发行版，内核机制还是和 k8s 一样，但是剔除了很多外部依赖以及 K8s 的 alpha、beta 特性，同时改变了部署方式和运行方式，目的是轻量化 K8s，简单来说，K3s 就是阉割版 K8s，消耗资源极少。它主要用于边缘计算、物联网等场景。K3s 具有以下特点：
 
 1）安装简单，占用资源少，只需要512M内存就可以运行起来；
+
 2）apiserver 、schedule 等组件全部简化，并以进程的形式运行在节点上，把程序都打包为单个二进制文件，每个程序只需要占用100M内存；
+
 3）使用基于sqlite3的轻量级存储后端作为默认存储机制。同时支持使用etcd3、MySQL 和PostgreSQL作为存储机制；
+
 4）默认使用 local-path-provisioner 提供本地存储卷；
+
 5）默认安装了Helm controller 和 Traefik Ingress controller；
+
 6）所有 Kubernetes control-plane 组件的操作都封装在单个二进制文件和进程中，使 K3s 具有自动化和管理包括证书分发在内的复杂集群操作的能力。
+
 7）减少外部依赖，操作系统只需要安装较新的内核（centos7.6就可以，不需要升级内核）以及支持cgroup即可，k3s安装包已经包含了containerd、Flannel、CoreDNS，非常方便地一键式安装，不需要额外安装Docker、Flannel等组件。
 
 
