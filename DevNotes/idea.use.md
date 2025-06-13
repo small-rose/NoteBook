@@ -93,7 +93,7 @@ RGB颜色红：199，绿：237，蓝：204；
 
 手动设置护眼绿的RGB颜色
 
-路径：File->Settings->Editor->Color Scheme->General
+路径：File->Settings->Editor->Color Scheme->General (右侧- Text - Default text) 
 
  **idea项目区** 
 
@@ -102,7 +102,10 @@ File ->Settings -> Appearance & Behavior  -> File Colors  ，
 
 选择+号 选择Project  file
 
+console背景修改
 
+  编辑代码区的BGC:setting-->editor-->color Scheme -->console Colors-->右侧Console-->background
+  
 ## Idea字符集乱码
 
 VM Options :  -Dfile.encoding=URF-8
