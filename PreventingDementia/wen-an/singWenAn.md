@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 歌曲文案
-parent: Classical Chinese
+parent: Wen An
 has_children: false
 nav_order: 20250805
 ---

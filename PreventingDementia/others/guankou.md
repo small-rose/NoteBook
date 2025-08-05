@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 贯口 01
-parent: Classical Chinese
+parent: Others Classical
 has_children: false
 nav_order: 20250805
 ---
