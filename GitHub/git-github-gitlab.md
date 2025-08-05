@@ -80,3 +80,49 @@ Github
 
 
 
+## github push 问题
+
+{: .tips }
+> 确认网络无问题，代理无问题。 tracert github.com
+>
+> 确认配置无问题（用户名，邮箱） git config list
+
+1.尝试 把 github.com IP 配置到 hosts
+
+```
+ping github.com
+```
+
+host 末尾追加
+```
+20.205.243.166 github.com
+```
+
+2.尝试切换 Git 的 SSL 后端为 OpenSSL​​ 
+Windows 默认的 Schannel 库对 TLS 关闭握手要求严格，而 OpenSSL 兼容性更好：
+
+```
+# 设置 Git 使用 OpenSSL 替代 Schannel
+git config --global http.sslBackend openssl
+# 验证配置
+git config --global http.sslBackend
+```
+
+3.尝试增大 POST 缓冲区​​ 
+推送大文件时默认缓冲区（1MB）不足会触发连接重置：
+
+```
+git config --global http.postBuffer 524288000  # 500MB
+# 验证配置
+git config --global http.postBuffer
+```
+
+4.尝试降级 HTTP 协议版本​​ （不建议）
+HTTP/2 在某些网络环境下不稳定，切换为 HTTP/1.1 可提升可靠性：
+
+```
+git config --global http.version HTTP/1.1
+​​验证​​：
+
+git config --global http.version
+```

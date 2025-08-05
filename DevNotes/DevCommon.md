@@ -331,6 +331,23 @@ repositories {
 
 ```
 
+
+IDEA 依赖追踪
+---------------------
+
+例如查询 `commons-beanutils` 组件的依赖：
+
+maven版本
+```
+mvn dependency:tree -Dincludes=commons-beanutils:commons-beanutils
+```
+
+gradle 版本:
+
+```
+gradle dependencyInsight --dependency commons-beanutils --configuration compileClasspath
+```
+
 IDEA 试用
 -------------------------
 有时因为一段时间没有打开IDEA， eval reset插件没有自动重置试用日期，后面就会出现因过期无法进入界面的情况，

@@ -138,6 +138,7 @@ java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./heapdump.hprof -jar app.
 运行以下命令查看所有 JVM 参数及其默认值：
 ```
 java -XX:+PrintFlagsFinal -version
+java -XX:+PrintFlagsFinal -version | grep "G1"
 ```
 
 列出所有支持的 JVM 参数：
@@ -311,3 +312,93 @@ nohup  java  -Xms512m -Xmx1024m -jar -Dfile.encoding=UTF-8 demo.jar --spring.pro
   --spring.profiles.active=pro 指定运行的配置文件、环境，用法：--spring.profiles.active=prod
 
 
+
+## 3、内存大小
+
+查默认垃圾回收器
+
+```
+# openJdk 查看GC参数
+java -XX:+PrintFlagsFinal -version | grep "Use.*GC"
+
+# 查看GC日志确认压缩行为
+java -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseMaximumCompactionOnSystemGC -version
+```
+
+
+## 4、 GC分析
+
+Full GC是JVM垃圾回收中最重要的事件之一，分析Full GC日志可以帮助识别内存问题、性能瓶颈和优化机会。以下是分析Full GC日志的详细方法：
+
+### 4.1. Full GC日志的基本结构
+
+典型的Full GC日志示例（G1 GC为例）：
+
+``
+[Full GC (Allocation Failure) 
+[PSYoungGen: 1024K->0K(2048K)] 
+[ParOldGen: 4096K->4096K(8192K)] 
+5120K->4096K(10240K), 
+[Metaspace: 2560K->2560K(1056768K)], 
+  0.123456 secs]
+``
+
+2. 关键信息解析
+
+2.1 触发原因
+
+ - ​​Allocation Failure​​：年轻代空间不足
+ - ​​Metadata GC Threshold​​：元空间不足
+ - ​​System.gc()​​：显式调用
+ - ​​Ergonomics​​：JVM自适应机制触发
+
+2.2 各区域内存变化
+
+```
+[PSYoungGen: 1024K->0K(2048K)]  # 年轻代: 回收前->回收后(总容量)
+[ParOldGen: 4096K->4096K(8192K)] # 老年代: 回收前->回收后(总容量)
+5120K->4096K(10240K)            # 堆总量: 回收前->回收后(总容量)
+[Metaspace: 2560K->2560K(1056768K)] # 元空间
+```
+
+2.3 时间信息
+
+0.123456 secs：暂停时间（秒）
+
+3. 重点分析指标
+
+3.1 回收效率
+
+- 老年代回收量​​：ParOldGen: 4096K->4096K表示没有回收任何对象
+- 堆总量变化​​：5120K->4096K表示回收了1024K
+
+3.2 内存使用率
+
+- 回收后老年代使用率：4096K/8192K = 50%
+- 元空间使用率：2560K/1056768K ≈ 0.24%
+
+3.3 时间消耗
+
+Full GC时间超过1秒通常需要关注。
+
+频繁Full GC（如每分钟多次）是严重问题。
+
+4. 常见问题诊断
+
+4.1 内存泄漏迹象
+
+- 老年代使用量持续增长
+- 每次Full GC后老年代回收量很少
+- 最终导致OutOfMemoryError
+
+4.2 配置不当
+
+- 年轻代过小导致过早晋升
+- 堆总量不足
+- 元空间未设置上限
+
+4.3 性能问题
+
+- Full GC频率过高
+- 单次Full GC时间过长
+- 系统吞吐量下降
