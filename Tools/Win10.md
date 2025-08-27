@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Windows
+title: Windows 10
 nav_order: 4
 parent: Tools
 ---
