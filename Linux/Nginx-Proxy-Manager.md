@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Nginx Proxy Manager
-nav_order: 2
+nav_order: 11
 parent: Linux
 ---
 

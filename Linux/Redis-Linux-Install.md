@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Redis Linux Install
-nav_order: 2
+nav_order: 30
 parent: Linux
 ---
 

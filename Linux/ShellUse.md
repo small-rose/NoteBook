@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Shell Linux
-nav_order: 2
+title:  Linux Shell
+nav_order: 40
 parent: Linux
 ---
 

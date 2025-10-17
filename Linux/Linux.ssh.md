@@ -3,7 +3,7 @@ layout: default
 title: Linux ssh
 has_children: false
 parent: Linux
-nav_order: 2
+nav_order: 3
 ---
 
 

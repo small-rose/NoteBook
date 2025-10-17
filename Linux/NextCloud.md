@@ -1,7 +1,7 @@
 ---
 layout: default
 title: NextCloud Install
-nav_order: 30
+nav_order: 50
 parent: Linux
 ---
 
