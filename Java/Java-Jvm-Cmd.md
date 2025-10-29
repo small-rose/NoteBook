@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Java jvm 
+parent: Java
 has_children: false
 nav_order: 100
 ---
