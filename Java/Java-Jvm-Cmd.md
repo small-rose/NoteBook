@@ -78,10 +78,13 @@ jstat [options] <vmid> [interval[s|ms] [count>]
   -  ‌-compiler‌：显示JIT编译器的状态信息。
   -  ‌-printcompilation‌：显示JVM编译方法的统计信息。
 
+
+### 2.2  jstat -gc 
+
 如：
 
 ```
-jstat -gcutil <pid> [间隔时间] [统计次数]
+jstat -gc <pid> [间隔时间] [统计次数]
 ```
 
 ```bash
@@ -121,12 +124,14 @@ jvm大小为 = 年轻代 + 老年代 = Ec + S0c + S1c + Oc
 默认情况下：年轻代 1/3 ，老年代 2/3 .
 若 -Xmx=4g ,则 年轻代 4096/3 = 1563.3 老年代： 4096/3*2 =2731
 
+### 2.3  jstat -gcutil 
 
-**使用率百分比 gcutil**
+使用率百分比 gcutil
 
 ```bash
 jstat -gcutil pid  3000 5
 ```
+
 每隔3000毫秒获取一次结果，累计获取5次，内存各个区域使用率。
 
 执行结果：
@@ -140,7 +145,9 @@ jstat -gcutil pid  3000 5
   0.00  99.95  49.83  11.30  94.71  92.69      9    0.052     3    0.132    0.184
 ```
 
-**GC原因 gccause‌**
+### 2.4  jstat -gccause‌ 
+
+实时查上次GC原因 gccause‌
 
 ```bash
 jstat -gccause‌ pid  3000 5
@@ -157,7 +164,9 @@ jstat -gccause‌ pid  3000 5
 
 ```
 
-**元空间使用情况**
+### 2.4  jstat -gcmetacapacity
+
+**查元空间使用情况**
 
 ```
 jstat -gcmetacapacity <pid>
@@ -178,7 +187,7 @@ jstat -gcmetacapacity <pid>
  - CCSC​​ : Compressed class space capacity 压缩类空间当前。
 
 
-## 2、GC参数 jmap
+## 3、GC参数 jmap
 
 jmap把进程内存使用情况dump到文件中
 
