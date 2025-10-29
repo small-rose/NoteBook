@@ -17,30 +17,32 @@ nav_order: 100
 
 ## 1、基础命令 jps
 
-**查看java程的pid及基本信息**
+查看java程的pid及基本信息
 
 ```
 jps -l
 ```
 
-
-**查看进程pid及main方法参数**
+查看进程pid及main方法参数
 
 ```
 jps -m
 ```
 
-执行结果：
-```
-15332 sun.tools.jps.Jps -m -l
-16628 com.small.rose.demo.DbDemoApplication
-12748 org.jetbrains.idea.maven.server.RemoteMavenServer36
-```
 
-**查看pid及JVM参数**
+查看pid及JVM参数
 
 ```
 jps -v
+```
+
+
+执行结果：
+```
+[root@small-rose]$ jps  -m -l
+15332 sun.tools.jps.Jps -m -l
+16628 com.small.rose.demo.DbDemoApplication
+12748 org.jetbrains.idea.maven.server.RemoteMavenServer36
 ```
 
 
@@ -141,13 +143,12 @@ jstat -gccause‌ pid  3000 5
 
 执行结果：
 ```
-[root@small-rose]$ jstat -gcutil 16628  3000 5
-  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT
-  0.00  99.95  48.95  11.30  94.71  92.69      9    0.052     3    0.132    0.184
-  0.00  99.95  49.39  11.30  94.71  92.69      9    0.052     3    0.132    0.184
-  0.00  99.95  49.39  11.30  94.71  92.69      9    0.052     3    0.132    0.184
-  0.00  99.95  49.39  11.30  94.71  92.69      9    0.052     3    0.132    0.184
-  0.00  99.95  49.83  11.30  94.71  92.69      9    0.052     3    0.132    0.184
+[root@small-rose]$ jstat -gccause 16628 3000 3
+  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT    LGCC                 GCC
+ 95.31   0.00  41.88  11.30  94.92  92.69     10    0.059     3    0.132    0.191 Allocation Failure   No GC
+ 95.31   0.00  41.88  11.30  94.92  92.69     10    0.059     3    0.132    0.191 Allocation Failure   No GC
+ 95.31   0.00  42.85  11.30  94.92  92.69     10    0.059     3    0.132    0.191 Allocation Failure   No GC
+
 ```
 
 **元空间使用情况**
