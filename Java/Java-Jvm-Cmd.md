@@ -793,7 +793,7 @@ Options:
 - `-l long listings`，会打印出额外的锁信息，在发生死锁时可以用 `jstack -l pid来`观察锁持有情况
 - `-m mixed mode`，不仅会输出Java堆栈信息，还会输出C/C++堆栈信息（比如Native方法）
 
-### 4、1 jstack 定位线程慢的原因
+### 4.1 jstack 定位线程慢的原因
 
 (1) 找出应用进程pid，如jps -l 没有就使用ps -ef | grep java。
 
@@ -822,7 +822,7 @@ Full GC是JVM垃圾回收中最重要的事件之一，分析Full GC日志可以
 ​​堆外内存不足​​ |Direct Buffer或Native内存耗尽 |jcmd <pid> VM.native_memory | Native内存使用量 |
 
 
-### 5.1. Full GC日志的基本结构
+### 5.1 Full GC日志的基本结构
 
 典型的Full GC日志示例（G1 GC为例）：
 
@@ -875,29 +875,29 @@ Full GC时间超过1秒通常需要关注。
 
 频繁Full GC（如每分钟多次）是严重问题。
 
-### 6. 常见问题诊断
+### 5.2 常见问题诊断
 
-6.1 内存泄漏迹象
+5.2.1 内存泄漏迹象
 
 - 老年代使用量持续增长
 - 每次Full GC后老年代回收量很少
 - 最终导致OutOfMemoryError
 
-6.2 配置不当
+5.2.2 配置不当
 
 - 年轻代过小导致过早晋升
 - 堆总量不足
 - 元空间未设置上限
 
-6.3 性能问题
+5.2.3 性能问题
 
 - Full GC频率过高
 - 单次Full GC时间过长
 - 系统吞吐量下降
 
-### 7 开启GC日志
+### 5.3 开启GC日志
 
-#### 7。1 添加JVM参数获取完整GC日志
+#### 5.3.1 添加JVM参数获取完整GC日志
 
 ```
 -XX:+PrintGCDetails 
@@ -906,7 +906,7 @@ Full GC时间超过1秒通常需要关注。
 -Xloggc:/path/to/gc.log
 ```
 
-#### 7。2 使用工具分析
+#### 5.3.2 使用工具分析
 
 
 ```bash
