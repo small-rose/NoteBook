@@ -7,10 +7,17 @@ nav_order: 99
 ---
 
 
- Here are commonly used Java examples .
-{: .fs-6 .fw-300 }
 
+# Java -jar params
+{: .no_toc }
 
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 
 # jar包启动命令与参数
