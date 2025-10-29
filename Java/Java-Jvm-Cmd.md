@@ -164,7 +164,7 @@ jstat -gccause‌ pid  3000 5
 
 ```
 
-### 2.4  jstat -gcmetacapacity
+### 2.5 jstat -gcmetacapacity
 
 **查元空间使用情况**
 
@@ -189,7 +189,54 @@ jstat -gcmetacapacity <pid>
 
 ## 3、GC参数 jmap
 
-jmap把进程内存使用情况dump到文件中
+
+jmap（JVM Memory Map）：一方面是获取dump文件（堆转储快照文件，二进制文件），还可以获取目标Java进程的内存相关信息，包括Java堆各区域的使用情况、堆中对象的统计信息、类加载信息等。
+
+可以在控制台中输入命令“jmap -help”查阅jmap的具体使用方式和一些标准选项命令参数。
+
+查看命令帮助:
+
+```bash
+jmap -h
+```
+
+执行结果
+
+```
+Usage:
+    jmap [option] <pid>
+        (to connect to running process)
+    jmap [option] <executable <core>
+        (to connect to a core file)
+    jmap [option] [server_id@]<remote server IP or hostname>
+        (to connect to remote debug server)
+
+where <option> is one of:
+    <none>               to print same info as Solaris pmap
+    -heap                to print java heap summary
+    -histo[:live]        to print histogram of java object heap; if the "live"
+                         suboption is specified, only count live objects
+    -clstats             to print class loader statistics
+    -finalizerinfo       to print information on objects awaiting finalization
+    -dump:<dump-options> to dump java heap in hprof binary format
+                         dump-options:
+                           live         dump only live objects; if not specified,
+                                        all objects in the heap are dumped.
+                           format=b     binary format
+                           file=<file>  dump heap to <file>
+                         Example: jmap -dump:live,format=b,file=heap.bin <pid>
+    -F                   force. Use with -dump:<dump-options> <pid> or -histo
+                         to force a heap dump or histogram when <pid> does not
+                         respond. The "live" suboption is not supported
+                         in this mode.
+    -h | -help           to print this help message
+    -J<flag>             to pass <flag> directly to the runtime system
+```
+
+### 3.1 jmap -dump
+
+
+jmap把进程内存使用情况dump到文件中,
 
 ```bash
 jmap -dump:format=b,file=dumpFileName.hrof pid
@@ -198,6 +245,7 @@ jmap -dump:format=b,file=dumpFileName.hrof pid
 jmap -dump:live,format=b,file=/applog/dump.hrof pid 
 ```
 
+### 3.2 jmap -heap
   
 jmap 查询试试内存情况： 
 
