@@ -795,7 +795,7 @@ Options:
 
 ### 4.1 jstack 定位线程慢的原因
 
-(1) 找出应用进程pid，如jps -l 没有就使用ps -ef | grep java。
+(1) 找出应用进程pid，如jps -l 没有就使用`ps -ef | grep java`。
 
 (2) 找出pid进程内最耗费CPU的线程，可以使用`ps -Lfp pid`或者`ps -mp pid -o THREAD, tid, time`或者`top -Hp pid` .
 
@@ -803,7 +803,7 @@ Options:
 
 (4) 将对于线程ID转换为 16进制
 
-(5) 使用jstack定位线程和原因  jstack 21711 | grep 0xB3D
+(5) 使用jstack定位线程和原因  `jstack 21711 | grep 0xB3D`
 
 
 
