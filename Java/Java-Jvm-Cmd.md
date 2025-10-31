@@ -65,7 +65,7 @@ jstat [options] <vmid> [interval[s|ms] [count>]
 参数说明：
 - options‌：指定你想要查看的统计信息类型。
 - ‌vmid‌：虚拟机的唯一标识，可以是本地或远程虚拟机的进程ID或全局唯一标识符（例如，在Solaris上可以使用lsof -a -p <pid>来找到JVM进程的标识符）。
-- ‌interval[s|ms]‌：两次统计之间的间隔时间，可选。
+- `‌interval[s|ms]`‌：两次统计之间的间隔时间，可选。
 - ‌count‌：你想要获取统计的次数，可选。
 
 常用选项[options‌]
