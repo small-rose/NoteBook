@@ -434,6 +434,11 @@ wait_timeout        86400
 undo_retention      3600 
 ```
 
+## OB 查默认事务
+
+show variables '%transaction%';
+
+
 
 ## OB PL
 
