@@ -17,6 +17,8 @@ parent: Database
 
 ## ob环境导入导出使用
 
+> [数据文件导入 OceanBase 最佳实践](https://www.oceanbase.com/docs/common-best-practices-1000000001489662)
+
 ### obclient和 obloader安装
 
 #### 1、上传安装包
