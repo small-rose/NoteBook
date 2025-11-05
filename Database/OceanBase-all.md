@@ -341,6 +341,7 @@ ALTER TABLE fbs5 TABLEGROUP = tg_1;--分区键名称不一样，结构不一样�
 ```sql
 show global variables like '%timeout%'
 ```
+
 |variable_name|value|
 |-------------|-----|
 |connect_timeout  | 10 |
