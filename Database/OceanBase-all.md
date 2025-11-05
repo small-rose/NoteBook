@@ -607,7 +607,7 @@ transaction_read_only    OFF
 
 一次性获取函数索引
 
-```SQL
+```sql
 -- 将索引表达式转成字符串
 CREATE OR REPLACE FUNCTION  INDEX_COLUMN_EXPRESSION(
     IN_TABLE_NAME VARCHAR2,
@@ -631,7 +631,7 @@ END;
 
 带上OWNER账户查询
 
-```SQL
+```sql
 -- 将索引表达式转成字符串
 CREATE OR REPLACE FUNCTION  INDEX_COLUMN_EXPRESSION(
     IN_TABLE_OWNER VARCHAR2,
@@ -657,7 +657,7 @@ END;
 
 LONG_TO_CHAR 视图数据类型转换
 
-```SQL
+```sql
 -- ORACLE LONG 转 CHAR 函数
 CREATE OR REPLACE FUNCTION LONG_TO_CHAR(
     IN_COLUMN_NAME VARCHAR2,
