@@ -125,7 +125,27 @@ begin
 end  ;
 ```
 
- 
+### 取常用日期
+
+```SQL
+--本月初-日期
+SELECT TRUNC(SYSDATE,'MM')  AS FIRST_DAY_OF_MONTH FROM DUAL;
+--本月末-日期
+SELECT TRUNC(LAST_DAY(SYSDATE)) AS LAST_DAY_OF_MONTH FROM DUAL;
+--上月初-日期
+SELECT TRUNC(TRUNC(SYSDATE,'MM')-1, 'MM')  AS FIRST_DAY_OF_LAST_MONTH FROM DUAL;
+--上月末-日期
+SELECT LAST_DAY(TRUNC(SYSDATE,'MM')- 1) AS LAST_DAY_OF_LAST_MONTH FROM DUAL;
+--上年初-日期
+SELECT TRUNC(ADD_MONTHS(SYSDATE,-12),'YYYY') AS FIRST_DAY_OF_LAST_YEAR FROM DUAL;
+--上年末-日期
+SELECT LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE,'YEAR'), -1)) AS LAST_DAY_OF_LAST_YEAR FROM DUAL;
+
+--前年初-日期
+SELECT TRUNC(ADD_MONTHS(TRUNC(SYSDATE, 'YEAR'), -24), 'YEAR') AS FIRST_DAY_OF_TWO_YEARS_AGO FROM DUAL;
+--前年末-日期
+SELECT LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE, 'YEAR'), -13)) AS LAST_DAY_OF_TWO_YEARS_AGO FROM DUAL;
+``` 
 
 
 ### oralce 获取异常的栈信息
@@ -150,6 +170,71 @@ END;
 
 
 ## 存储过程案例
+
+
+
+### FOR UPDATE NOWAIT
+
+```SQL
+-- 缴费计划补分期
+CREATE OR REPLACE PROCEDURE DO_ex_MODIFY_BYPLAN(IN_SUBCOMPANY IN AMS_MIRROR_DETAIL_TD.SUBCOMPANY%TYPE,
+                                                start_key IN number,
+                                                end_key IN number) IS
+    cursor v_plan_modify(in_subcompany varchar2,start_key number,end_key number) is
+        select id, subcompany, policyno, endorseno, currencycode, businessattr
+        from ams_plan_modify_td t 
+        where t.status = '0'
+          and t.subcompany = in_subcompany
+          and t.id between start_key and end_key 
+          for update nowait;  
+BEGIN
+    v_index := 0; v_count := 0; v_sumcount := 0;
+    for P_REC in v_plan_modify(in_subcompany, start_key, end_key)
+        loop
+            BEGIN
+                -- DO SOME ELSE
+                
+                UPDATE AMS_PLAN_MODIFY_TD T
+                SET T.STATUS           = '2',
+                    T.LASTOPDATE       = SYSDATE,
+                    T.HIBERNATEVERSION = T.HIBERNATEVERSION + 1
+                WHERE current of v_plan_modify;
+            EXCEPTION
+                WHEN OTHERS THEN ROLLBACK;
+            END;
+        END LOOP;
+    commit;
+EXCEPTION
+    WHEN OTHERS THEN ROLLBACK;
+    AMS_ERRORLOG_PKG.LOG_ERROR();
+END;
+``` 
+
+### 缓存集合 bull buckt
+
+> 数据量比较小的可以这样缓存，减少反复查询。
+
+（1）基于 `TYPE` 使用  `TABLE OF ... INDEX` 模式的Map, 索引 key 和 值 value 绑定。
+
+```sql
+-- 索引key模式
+DECLARE
+  TYPE NAME_MAP IS TABLE OF VARCHAR2(100) INDEX BY VARCHAR2(10);
+  NAMECACHE NAME_MAP;
+  CODE VARCHAR2(10);
+  NAME VARCHAR2(100);
+BEGIN
+  -- 查询表并缓存到关联数组中
+  FOR REC IN (SELECT  T.UNITCODE,  T.UNITNAME  FROM  T_UNIT_TC T ) LOOP
+    NAMECACHE(REC.UNITCODE) := REC.UNITNAME;
+  END LOOP;
+
+  -- 根据 CODE 直接获取缓存中的 NAME
+  CODE := '001';
+  NAME := NAMECACHE(CODE);
+  DBMS_OUTPUT.PUT_LINE('名称: ' || NAME);
+END;
+```
 
 
 ### 缓存Map数据
@@ -225,6 +310,94 @@ BEGIN
   DBMS_OUTPUT.PUT_LINE('Age: ' || get('age'));
 END;
 ```
+
+
+### 驼峰转换函数
+
+
+```SQL
+-- 版本一
+CREATE OR REPLACE FUNCTION FN_CAMELCASE(P_FIELD_NAME IN VARCHAR2) RETURN VARCHAR2 IS
+    V_CAMELCASE VARCHAR2(32767);
+    V_NEXT_UPPERCASE BOOLEAN := FALSE;
+BEGIN
+    V_CAMELCASE := LOWER(P_FIELD_NAME);
+
+    FOR I IN 1..LENGTH(V_CAMELCASE) LOOP
+        IF SUBSTR(V_CAMELCASE, I, 1) = '_' THEN
+            V_NEXT_UPPERCASE := TRUE;
+        ELSIF V_NEXT_UPPERCASE THEN
+            V_CAMELCASE := SUBSTR(V_CAMELCASE, 1, I - 2) || INITCAP(SUBSTR(V_CAMELCASE, I, 1)) || SUBSTR(V_CAMELCASE, I + 1);
+            V_NEXT_UPPERCASE := FALSE;
+        END IF;
+    END LOOP;
+
+    RETURN V_CAMELCASE;
+END;
+/
+```
+
+```SQL
+-- 版本2 AI 生成
+CREATE OR REPLACE FUNCTION FN_CAMELCASE_SIMPLE(P_FIELD_NAME IN VARCHAR2) RETURN VARCHAR2 IS
+BEGIN
+    -- 1. 将下划线替换为空格，使每个部分成为独立的“单词”
+    -- 2. 使用INITCAP将每个单词的首字母大写
+    -- 3. 使用REPLACE移除所有空格，将单词连接起来
+    -- 4. 使用LOWER和SUBSTR确保第一个字符为小写（实现小驼峰）
+    RETURN LOWER(SUBSTR(REPLACE(INITCAP(REPLACE(P_FIELD_NAME, '_', ' ')), ' ', ''), 1, 1)) ||
+           SUBSTR(REPLACE(INITCAP(REPLACE(P_FIELD_NAME, '_', ' ')), ' ', ''), 2);
+END;
+```
+
+demo
+
+```SQL
+SELECT FN_CAMELCASE('_hello_word_hi_camel_case') FROM DUAL;
+SELECT FN_CAMELCASE_SIMPLE('_hello_word_hi_camel_case') FROM DUAL;
+```
+
+
+### 生成 JavaBean
+
+```SQL
+SELECT
+    'private ' ||
+    (CASE
+        WHEN DATA_TYPE = 'VARCHAR2' THEN 'String'
+        WHEN DATA_TYPE = 'CHAR' THEN 'String'
+        WHEN DATA_TYPE = 'NUMBER' AND DATA_SCALE > 0 THEN 'Double'
+        WHEN DATA_TYPE = 'NUMBER' THEN 'int'
+        WHEN DATA_TYPE = 'DATE' THEN 'Date'
+        WHEN DATA_TYPE = 'TIMESTAMP' THEN 'Date'
+        -- 可以根据需要添加其他数据类型的映射
+        ELSE 'Object' -- 对于未明确映射的类型，使用Object
+    END) ||
+    ' ' ||
+    LOWER(COLUMN_NAME) ||
+    ';' ||
+    (CASE WHEN COMMENTS IS NOT NULL THEN ' // ' || COMMENTS ELSE '' END) AS java_field
+FROM
+    (SELECT
+        s.COLUMN_NAME,
+        s.DATA_TYPE,
+        s.DATA_SCALE, -- 用于判断NUMBER类型是整数还是小数
+        t.COMMENTS
+    FROM
+        USER_TAB_COLUMNS s
+    INNER JOIN
+        USER_COL_COMMENTS t
+    ON
+        s.TABLE_NAME = t.TABLE_NAME
+        AND s.COLUMN_NAME = t.COLUMN_NAME
+    WHERE
+        s.TABLE_NAME = UPPER('T_FILE_TABLE_MAPPING_TC') -- 请将 your_table_name 替换为您的实际表名
+    ORDER BY
+        s.COLUMN_ID -- 按表中列的顺序输出
+    );
+```
+
+
 
 
 ### 归档案例
