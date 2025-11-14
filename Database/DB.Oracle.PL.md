@@ -331,7 +331,9 @@ END;
 ```
 
 
-（3）基于 `TYPE` 使用  `TABLE OF ... INDEX BY PLS_INTEGER ` 带下标的 List 集合, 索引 index 和 值 对象 绑定，使用 `BULK COLLECT`填充集合。
+### 缓存 List 数据
+
+（1）基于 `TYPE` 使用  `TABLE OF ... INDEX BY PLS_INTEGER ` 带下标的 List 集合, 索引 index 和 值 对象 绑定，使用 `BULK COLLECT`填充集合。
 
 使用场景：适合使用下标, 需要判断集合大小的场景, 一般缓存数据时需要限制大小。
 
@@ -353,6 +355,7 @@ BEGIN
         END LOOP;
 END;
 ```
+
 
 ### 驼峰转换函数
 
