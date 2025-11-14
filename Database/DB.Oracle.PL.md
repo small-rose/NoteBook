@@ -145,7 +145,7 @@ SELECT LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE,'YEAR'), -1)) AS LAST_DAY_OF_LAST_YEAR 
 SELECT TRUNC(ADD_MONTHS(TRUNC(SYSDATE, 'YEAR'), -24), 'YEAR') AS FIRST_DAY_OF_TWO_YEARS_AGO FROM DUAL;
 --前年末-日期
 SELECT LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE, 'YEAR'), -13)) AS LAST_DAY_OF_TWO_YEARS_AGO FROM DUAL;
-``` 
+```
 
 
 ### oralce 获取异常的栈信息
@@ -210,41 +210,21 @@ EXCEPTION
 END;
 ``` 
 
-### 缓存集合 bull buckt
-
-> 数据量比较小的可以这样缓存，减少反复查询。
-
-（1）基于 `TYPE` 使用  `TABLE OF ... INDEX` 模式的Map, 索引 key 和 值 value 绑定。
-
-```sql
--- 索引key模式
-DECLARE
-  TYPE NAME_MAP IS TABLE OF VARCHAR2(100) INDEX BY VARCHAR2(10);
-  NAMECACHE NAME_MAP;
-  CODE VARCHAR2(10);
-  NAME VARCHAR2(100);
-BEGIN
-  -- 查询表并缓存到关联数组中
-  FOR REC IN (SELECT  T.UNITCODE,  T.UNITNAME  FROM  T_UNIT_TC T ) LOOP
-    NAMECACHE(REC.UNITCODE) := REC.UNITNAME;
-  END LOOP;
-
-  -- 根据 CODE 直接获取缓存中的 NAME
-  CODE := '001';
-  NAME := NAMECACHE(CODE);
-  DBMS_OUTPUT.PUT_LINE('名称: ' || NAME);
-END;
-```
-
 
 ### 缓存Map数据
 
 > 数据量比较小的可以这样缓存，减少反复查询。
 
-（1）基于 `TYPE` 使用  `TABLE OF ... INDEX` 模式的Map, 索引 key 和 值 value 绑定。
+（1）基于 `TYPE` 使用  `TABLE OF ... INDEX BY VARCHAR2 ` 模式的Map, 索引 key 和 值 value 绑定。
+
+使用场景：适合类似Java的Map缓存模式, 如果险种/部门类的值需要反复查询时, 缓存可以减少查询次数。
+
+
+
+案例一 
 
 ```sql
--- 索引key模式
+-- 索引key 映射 value
 DECLARE
   TYPE NAME_MAP IS TABLE OF VARCHAR2(100) INDEX BY VARCHAR2(10);
   NAMECACHE NAME_MAP;
@@ -263,8 +243,47 @@ BEGIN
 END;
 ```
 
+案例二
 
-（2）基于 `TYPE` 使用  `RECORD` 行记录模式的Map, 真的是一个Map 的实现。 
+```sql
+-- 索引key 映射对象
+DECLARE
+  TYPE UNIT_MAP IS TABLE OF VARCHAR2(100) INDEX BY VARCHAR2(10);
+  G_UNITNAME_CACHE UNIT_MAP;
+  OUT_UNIT  T_UNIT_TC%ROWTYPE;
+  OUT_NAME VARCHAR2(100);
+
+  -- 不需要每次都查询
+  PROCEDURE GET_UNIT_NAME_CACHE(V_CODE VARCHAR2, OUT_UNIT VARCHAR2) IS
+  BEGIN
+        if G_UNITNAME_CACHE.EXISTS(V_CODE) then
+            OUT_UNIT := G_UNITNAME_CACHE(V_CODE);
+        ELSE
+            BEGIN
+                SELECT * INTO G_UNITNAME_CACHE(V_CODE)
+                FROM T_UNIT_TC T
+                WHERE T.UNITCODE = V_CODE
+                AND ROWNUM <=1;
+            EXCEPTION WHEN OTHERS THEN
+                RAISE_APPLICATION_ERROR('-20999', V_CODE||'找不到部门名称');
+            end;
+            OUT_UNIT := G_UNITNAME_CACHE(V_CODE);
+        END IF;
+  END;
+BEGIN
+  -- 查询表并缓存到关联数组中
+  FOR REC IN (SELECT  T.UNITCODE,  T.USERNAME  FROM  T_USER_TC T ) LOOP
+    -- 根据 unitcode 获取 unit 对象
+    GET_UNIT_NAME_CACHE(REC.UNITCODE, OUT_UNIT);
+    DBMS_OUTPUT.PUT_LINE('unit名称: ' || OUT_UNIT.UNITNAME);
+  END LOOP;
+END;
+```
+
+
+（2）基于 `TYPE` 使用  `RECORD` 缓存行记录模式的Map, 真的是一个Map 的实现，使用自定义的PUT 和 GET 填充集合。 
+
+使用场景：适合类似Java的Map缓存模式, 如果险种/部门类的值需要反复查询时, 缓存可以减少查询次数。
 
 ```sql
 DECLARE
@@ -311,6 +330,29 @@ BEGIN
 END;
 ```
 
+
+（3）基于 `TYPE` 使用  `TABLE OF ... INDEX BY PLS_INTEGER ` 带下标的 List 集合, 索引 index 和 值 对象 绑定，使用 BULK COLLECT 填充集合。
+
+使用场景：适合使用下标, 需要判断集合大小的场景, 一般缓存数据时需要限制大小。
+
+```sql
+DECLARE
+    TYPE DAILYAUDITNO_TYPE IS TABLE OF AMS_DAILYNUM_TD%ROWTYPE INDEX BY PLS_INTEGER;
+    V_DAILYAUDITNO_LIST DAILYAUDITNO_TYPE;
+BEGIN
+    SELECT * BULK COLLECT
+    INTO V_DAILYAUDITNO_LIST
+    FROM AMS_DAILYNUM_TD T
+    WHERE ROWNUM <= 10;
+
+    dbms_output.put_line('count ' || V_DAILYAUDITNO_LIST.COUNT);
+    FOR i IN 1..V_DAILYAUDITNO_LIST.COUNT
+        LOOP
+            dbms_output.put_line('i ' || i || ', element.subcompany ' || V_DAILYAUDITNO_LIST(i).subcompany);
+            dbms_output.put_line('i ' || i || ', element.dailyauditno ' || V_DAILYAUDITNO_LIST(i).dailyauditno);
+        END LOOP;
+END;
+```
 
 ### 驼峰转换函数
 
