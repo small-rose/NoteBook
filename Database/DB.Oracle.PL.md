@@ -127,7 +127,7 @@ end  ;
 
 ### 取常用日期
 
-```SQL
+```sql
 --本月初-日期
 SELECT TRUNC(SYSDATE,'MM')  AS FIRST_DAY_OF_MONTH FROM DUAL;
 --本月末-日期
@@ -175,7 +175,7 @@ END;
 
 ### FOR UPDATE NOWAIT
 
-```SQL
+```sql
 -- 缴费计划补分期
 CREATE OR REPLACE PROCEDURE DO_ex_MODIFY_BYPLAN(IN_SUBCOMPANY IN AMS_MIRROR_DETAIL_TD.SUBCOMPANY%TYPE,
                                                 start_key IN number,
@@ -357,7 +357,7 @@ END;
 ### 驼峰转换函数
 
 
-```SQL
+```sql
 -- 版本一
 CREATE OR REPLACE FUNCTION FN_CAMELCASE(P_FIELD_NAME IN VARCHAR2) RETURN VARCHAR2 IS
     V_CAMELCASE VARCHAR2(32767);
@@ -379,7 +379,7 @@ END;
 /
 ```
 
-```SQL
+```sql
 -- 版本2 AI 生成
 CREATE OR REPLACE FUNCTION FN_CAMELCASE_SIMPLE(P_FIELD_NAME IN VARCHAR2) RETURN VARCHAR2 IS
 BEGIN
@@ -394,7 +394,7 @@ END;
 
 demo
 
-```SQL
+```sql
 SELECT FN_CAMELCASE('_hello_word_hi_camel_case') FROM DUAL;
 SELECT FN_CAMELCASE_SIMPLE('_hello_word_hi_camel_case') FROM DUAL;
 ```
@@ -402,7 +402,7 @@ SELECT FN_CAMELCASE_SIMPLE('_hello_word_hi_camel_case') FROM DUAL;
 
 ### 生成 JavaBean
 
-```SQL
+```sql
 SELECT
     'private ' ||
     (CASE
