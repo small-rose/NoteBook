@@ -248,35 +248,41 @@ END;
 ```sql
 -- 索引key 映射对象
 DECLARE
-  TYPE UNIT_MAP IS TABLE OF VARCHAR2(100) INDEX BY VARCHAR2(10);
-  G_UNITNAME_CACHE UNIT_MAP;
-  OUT_UNIT  T_UNIT_TC%ROWTYPE;
-  OUT_NAME VARCHAR2(100);
+    TYPE UNIT_MAP IS TABLE OF VARCHAR2(100) INDEX BY VARCHAR2(10);
+    G_UNITNAME_CACHE UNIT_MAP;
+    OUT_UNIT         T_UNIT_TC%ROWTYPE;
+    OUT_NAME         VARCHAR2(100);
 
-  -- 不需要每次都查询
-  PROCEDURE GET_UNIT_NAME_CACHE(V_CODE VARCHAR2, OUT_UNIT VARCHAR2) IS
-  BEGIN
-        if G_UNITNAME_CACHE.EXISTS(V_CODE) then
-            OUT_UNIT := G_UNITNAME_CACHE(V_CODE);
+    -- 不需要每次都查询
+    PROCEDURE GET_UNIT_NAME_CACHE(V_CODE VARCHAR2, OUT_UNIT VARCHAR2) IS
+        V_TMP_CODE varchar2(20);
+    BEGIN
+        V_TMP_CODE := nvl(V_CODE, '空')
+        if G_UNITNAME_CACHE.EXISTS(V_TMP_CODE) then
+            OUT_UNIT := G_UNITNAME_CACHE(V_TMP_CODE);
         ELSE
             BEGIN
-                SELECT * INTO G_UNITNAME_CACHE(V_CODE)
+                SELECT *
+                INTO G_UNITNAME_CACHE(V_TMP_CODE)
                 FROM T_UNIT_TC T
-                WHERE T.UNITCODE = V_CODE
-                AND ROWNUM <=1;
-            EXCEPTION WHEN OTHERS THEN
-                RAISE_APPLICATION_ERROR('-20999', V_CODE||'找不到部门名称');
+                WHERE T.UNITCODE = V_TMP_CODE
+                  AND ROWNUM <= 1;
+            EXCEPTION
+                WHEN OTHERS THEN
+                    G_UNITNAME_CACHE(V_TMP_CODE) := V_TMP_CODE
+                --RAISE_APPLICATION_ERROR('-20999', V_CODE||'找不到部门名称');
             end;
-            OUT_UNIT := G_UNITNAME_CACHE(V_CODE);
+            OUT_UNIT := G_UNITNAME_CACHE(V_TMP_CODE);
         END IF;
-  END;
+    END;
 BEGIN
-  -- 查询表并缓存到关联数组中
-  FOR REC IN (SELECT  T.UNITCODE,  T.USERNAME  FROM  T_USER_TC T ) LOOP
-    -- 根据 unitcode 获取 unit 对象
-    GET_UNIT_NAME_CACHE(REC.UNITCODE, OUT_UNIT);
-    DBMS_OUTPUT.PUT_LINE('unit名称: ' || OUT_UNIT.UNITNAME);
-  END LOOP;
+    -- 查询表并缓存到关联数组中
+    FOR REC IN (SELECT T.UNITCODE, T.USERNAME FROM T_USER_TC T )
+        LOOP
+            -- 根据 unitcode 获取 unit 对象
+            GET_UNIT_NAME_CACHE(REC.UNITCODE, OUT_UNIT);
+            DBMS_OUTPUT.PUT_LINE('unit名称: ' || OUT_UNIT.UNITNAME);
+        END LOOP;
 END;
 ```
 
