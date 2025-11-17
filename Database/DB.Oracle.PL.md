@@ -562,4 +562,26 @@ END AMS_DATA_ARCHIVE_PKG;
 ```
 
 
-### 归档案例
+### 统计PL耗时
+
+```sql
+DECLARE
+    V_START_TIME TIMESTAMP;
+    V_END_TIME TIMESTAMP;
+    V_ELAPSED_MS NUMBER;
+BEGIN
+    -- 第一次执行（冷启动）
+    V_START_TIME := SYSTIMESTAMP;
+    DBMS_OUTPUT.PUT_LINE('开始性能测试');
+    DBMS_OUTPUT.PUT_LINE('========================================');
+
+    -- DO YOUR BUSS
+    AMS_PM_TRANSFER_PKG.GET_DEPARTMENTNAME(P_DEPT_CODE, V_RESULT);
+
+    V_END_TIME := SYSTIMESTAMP;
+    V_ELAPSED_MS := (V_END_TIME - V_START_TIME) * 24 * 60 * 60 * 1000;
+
+    DBMS_OUTPUT.PUT_LINE('耗时: ' || ROUND(V_ELAPSED_MS, 3) || ' 毫秒');
+    DBMS_OUTPUT.PUT_LINE('========================================');
+END;
+```
