@@ -815,7 +815,7 @@ or instr(t.author_nickname_py,'canyang')>0;
 使用阿里镜像
 
 ```bash
-docker pull  docker pull registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
+docker pull registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
 ```
 使用 `docker images` 查看镜像
 

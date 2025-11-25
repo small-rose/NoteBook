@@ -207,3 +207,10 @@ ENV PATH $JAVA_HOME/bin:$JRE_HOME/bin:$PATH
 #容器启动时需要执行的命令
 #CMD ["java","-version"]
 ```
+
+
+拉取镜像报错：
+
+```
+[DEPRECATION NOTICE] Docker Image Format v1 and Docker Image manifest version 2, schema 1 support is disabled by default and will be removed in an upcoming release. Suggest the author of registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g:latest to upgrade the image to the OCI Format or Docker Image manifest v2, schema 2. More information at https://docs.docker.com/go/deprecated-image-specs/
+```
