@@ -938,7 +938,7 @@ password: Helo$1234
 
 
 创建新的数据库
-````sql
+```sql
 -- 建一个新的表空间（目录要自己建）
 CREATE TABLESPACE TBS_BP_DEMO
 DATAFILE '/home/oracle/app/oracle/oradata/bpdemo/TBS_BP_DEMO.dbf'
