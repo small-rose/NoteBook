@@ -371,6 +371,90 @@ IDEA配置Gradle
 全局配置Gradle仓库：File --> New Projects Settings --> Settings for New Projects
 
 
+IDEA 依赖模块 总是自动变为jdk1.5
+-------------------------
+
+> 在idea中使用maven项目时，每次更新或重新载入maven项目后，项目或模块依赖的JDK都会重新变成JDK1.5，就算手动设置maven项目或者模块为JDK1.8，刷新后还是会变为JDK1.5。具体表现为：编译项目的时候会出现警告："Warning:java: 源值1.5已过时, 将在未来所有发行版中删除"，并且无法编译jdk1.5以上的代码。这是由于创建项目时没有指定jdk版本，而maven的默认jdk版本为1.5导致的。
+
+1、maven的JDK配置
+
+设置 maven 全局JDK版本, 使用此maven 均使用全局设置的JDK版本
+
+1.1 针对idea配置的本地maven，在目录下conf文件夹内的setting.xml配置文件中加入以下配置：
+
+```xml
+<profile>     
+    <id>jdk-1.8</id>   
+    <activation>        
+          <activeByDefault>true</activeByDefault>    
+          <jdk>1.8</jdk>      
+     </activation>  
+     <properties>  
+          <maven.compiler.source>1.8</maven.compiler.source> 
+          <maven.compiler.target>1.8</maven.compiler.target> 
+          <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>   
+     </properties>
+</profile>
+```
+1.2 在maven项目的pom文件中指定JDK版本(项目配置)
+
+在当前maven项目pom文件中指定编译的jdk版本，只针对当前项目有效：
+
+```xml
+<properties>
+	<maven.compiler.source>1.8</maven.compiler.source>
+	<maven.compiler.target>1.8</maven.compiler.target>
+</properties>
+```
+1.3、在maven编译插件中指定当前JDK版本(项目配置)
+
+在当前maven项目pom文件中，maven-compiler-plugin插件中指定当前项目编译的jdk版本，只针对当前项目有效。
+```xml
+<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+</build>
+```
+
+1.4、SpringBoot项目，只需指定java.version
+
+```xml
+<properties>
+	<java.version>1.8</java.version>
+</properties>
+```
+2 IDEA的JDK配置
+
+2.1 File -> Settings 中设置jdk版本
+
+打开菜单File -> Settings, 找到 Build, Execution, Deployment -> Compiler -> Java Compiler 标签，设置项目/模块的jdk版本，保存。
+
+2.2 File -> Project Structure 中设置jdk版本
+
+打开菜单File -> Project Structure, 设置Project SDK版本，Project language level，以及各module的Language level。
+
+2.2.1 设置Project SDK版本
+
+点击Project Settings -> Project 标签，设置Project SDK版本，保存。
+
+2.2.2 设置Project language level版本
+
+点击Project Settings -> Project 标签，设置Project language level，保存。
+
+2.2.3 设置各module的Language level版本
+
+点击Project Settings -> Modules 标签，依次选择各个module -> Sources，设置Language level，保存。
+
 
 
 hosts
