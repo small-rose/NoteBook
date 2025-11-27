@@ -267,6 +267,7 @@ create table ams_backup_td
     idxtable         varchar2(40),
     idxcolumns       varchar2(40),
     backuptable      varchar2(100)                       not null,
+    backupdesc       varchar2(500)             ,
     condition1       varchar2(4000)                      not null,
     bakcolumn        varchar2(30),
     subcompany       varchar2(400),
@@ -290,6 +291,7 @@ comment on column ams_backup_td.originaltable is '原始表';
 comment on column ams_backup_td.idxtable is '备份索引表';
 comment on column ams_backup_td.idxcolumns is '备份索引列,一般是主键，多个以逗号分割';
 comment on column ams_backup_td.backuptable is '备份表';
+comment on column ams_backup_td.backupdesc is '备份说明';
 comment on column ams_backup_td.condition1 is '检查最小可备份数据';
 comment on column ams_backup_td.bakcolumn is '检查最小可备份数据使用的列,一般是备份维度,当按单表或分公司归档时，是时间字段createtime,opdate之类, 按批次归档时是关联批次字段batchno,matchid之类';
 comment on column ams_backup_td.subcompany is '分公司集合多个以英文逗号连接如1010100,2010100';
@@ -304,9 +306,33 @@ comment on column ams_backup_td.createtime is '创建时间';
 comment on column ams_backup_td.lasopdate is '最后执行时间';
 comment on column ams_backup_td.modifydesc is '修改说明';
 comment on column ams_backup_td.hibernateversion is '版本号';
+
 ```
 
-备份
+备份 存储过程包
+
+包头
+
+```sql
+create or replace package ams_backup_pkg is
+    /**
+      * @author
+      * @date 2025.11.26
+     */
+    -- 备份表删除
+    procedure do_backup_delete(v_back_up ams_backup_td%rowtype);
+    -- 按单表备份
+    procedure do_backup_sigle(v_back_up ams_backup_td%rowtype);
+    -- 按关联表备份
+    procedure do_backup_mutil(v_back_up ams_backup_td%rowtype);
+    -- 按分公司分区备份
+    procedure do_backup_subcomany(v_subcompany varchar2, v_back_up ams_backup_td%rowtype);
+    -- 备份入口
+    procedure do_backup;
+end ams_backup_pkg;
+```
+
+包体
 
 ```sql
 create or replace package body ams_backup_pkg is
@@ -351,8 +377,7 @@ create or replace package body ams_backup_pkg is
     begin
 
         --取可归档区间的最小日期
-        v_sub_sql := 'select min( ' || v_back_up.bakcolumn || ') from ' || v_back_up.originaltable ||
-                     v_back_up.condition1;
+        v_sub_sql := 'select min( ' || v_back_up.bakcolumn || ') from ' || v_back_up.originaltable || v_back_up.condition1;
         --取可归档区间最小日期 获取最小opdate
         --dbms_output.put_line('v_sql : ' || v_sql );
         execute immediate v_sub_sql into v_opdate;
@@ -362,6 +387,7 @@ create or replace package body ams_backup_pkg is
         --归档基本条件［数据状态 status 或其他条件都可以写在 condition1 里面 ］
         v_cond := v_back_up.condition1 || 'and ' || v_back_up.bakcolumn || 'between :v_opdate and :v_opdate + 1 ';
         v_count_sql := ' select count(1) from ' || v_back_up.originaltable || ' ' || v_cond;
+        dbms_output.put_line('v_count_sql : ' || v_count_sql );
         execute immediate v_count_sql into v_archive_count using v_opdate, v_opdate;
         --获取最小opdate +分公司+数据状态 的数据量
         if v_archive_count = 0 then
@@ -395,13 +421,13 @@ create or replace package body ams_backup_pkg is
 
                 v_tmp_sql := 'insert into ' || v_back_up.backuptable || ' select * from ' || v_back_up.originaltable
                     || ' where (' || v_back_up.idxcolumns || ') in (select ' || v_back_up.idxcolumns || ' from ' ||
-                             v_back_up.idxtable;
+                             v_back_up.idxtable || ')';
                 --插入bak 归档表
                 --dbms_output.put_line('v_tmp_sql : ' || v_tmp_sql);
                 execute immediate v_tmp_sql;
 
                 v_tmp_sql := 'delete from ' || v_back_up.originaltable || ' where (' || v_back_up.idxcolumns ||
-                             ') in (select ' || v_back_up.idxcolumns || ' from ' || v_back_up.idxtable;
+                             ') in (select ' || v_back_up.idxcolumns || ' from ' || v_back_up.idxtable || ')';
                 --根据索引表 删除原表数据
                 --dbms_output.put_line('v_tmp_sql : ' || v_tmp_sql);
                 execute immediate v_tmp_sql;
@@ -421,6 +447,7 @@ create or replace package body ams_backup_pkg is
                                       keyword3_in => 'backup id = ' || v_back_up.id || ',opdate =' ||
                                                      to_char(v_opdate, 'yyyy-mm-dd'),
                                       info_in => substr(sqlerrm, 1, 2000));
+            raise_application_error(-20023, '单表备份执行错误'||substr(sqlerrm, 1, 1800));
 
 
     end do_backup_sigle;
@@ -485,9 +512,9 @@ create or replace package body ams_backup_pkg is
                                            ' where ' || v_back_up.bakcolumn || ' = :batchno ';
                             execute immediate v_batch_sql using v_batchno_list(v_do_count);
                         end loop;
-                    for j in 1..v_org_table.count
+                    for k in 1..v_org_table.count
                         loop
-                            v_batch_sql := 'delete from ' || v_org_table(j) || ' where ' || v_back_up.bakcolumn ||
+                            v_batch_sql := 'delete from ' || v_org_table(k) || ' where ' || v_back_up.bakcolumn ||
                                            ' = :batchno ';
                             execute immediate v_batch_sql using v_batchno_list(v_do_count);
                         end loop;
@@ -500,18 +527,9 @@ create or replace package body ams_backup_pkg is
                                                   keyword1_in => 'do_backup_mutil',
                                                   keyword3_in => 'opdate =' || to_char(v_opdate, 'yyyy-mm-dd'),
                                                   info_in => substr(sqlerrm, 1, 2000));
-                        exit;
+                        raise_application_error(-20023, '多表关联Loop备份执行错误'||substr(sqlerrm, 1, 1800));
                 end;
             end loop;
-
-    exception
-        when others then
-            rollback;
-            mm_errorlog_pkg.log_error(procname_in => 'ams_backup_pkg',
-                                      keyword1_in => 'do_backup_mutil',
-                                      keyword3_in => 'backup id = ' || v_back_up.id || ',opdate =' ||
-                                                     to_char(v_opdate, 'yyyy-mm-dd'),
-                                      info_in => substr(sqlerrm, 1, 2000));
     end do_backup_mutil;
     -- 按分公司备份
     procedure do_backup_subcomany(v_subcompany varchar2, v_back_up ams_backup_td%rowtype) is
@@ -602,11 +620,11 @@ create or replace package body ams_backup_pkg is
                         rollback to t_point_page;
 
                         mm_errorlog_pkg.log_error(procname_in => 'ams_backup_pkg',
-                                                  keyword1_in => 'do_backup_sigle',
+                                                  keyword1_in => 'do_backup_subcomany',
                                                   keyword3_in => 'v_subcompany=' || v_subcompany || ',opdate =' ||
                                                                  to_char(v_opdate, 'yyyy-mm-dd'),
                                                   info_in => substr(sqlerrm, 1, 2000));
-                        exit;
+                        raise_application_error(-20023, '按分公司分区备份执行错误'||substr(sqlerrm, 1, 1800));
                 end;
             end loop;
     end do_backup_subcomany;
@@ -637,6 +655,7 @@ create or replace package body ams_backup_pkg is
     procedure do_backup is
         v_back_up_list    back_up_type ;
         v_subcompany_list varchar2_list := varchar2_list();
+        v_error   varchar2(2000);
     begin
         select * bulk collect
         into v_back_up_list
@@ -648,8 +667,8 @@ create or replace package body ams_backup_pkg is
               order by t.lasopdate)
         where rownum <= 10;
         dbms_output.put_line('v_back_up_list.count : ' || v_back_up_list.count );
-        for i in 1..v_back_up_list.count
-            loop
+        for i in 1..v_back_up_list.count loop
+            begin
                 -- 支持并发
                 update ams_backup_td t
                 set t.status   = '2',
@@ -662,12 +681,16 @@ create or replace package body ams_backup_pkg is
                 commit;
 
                 if v_back_up_list(i).backtype = 0 then
+                    -- 删除
                     do_backup_delete(v_back_up_list(i));
                 elsif v_back_up_list(i).backtype = 1 then
+                    -- 单表备份
                     do_backup_sigle(v_back_up_list(i));
                 elsif v_back_up_list(i).backtype = 2 then
+                    -- 多表关联批次号备份
                     do_backup_mutil(v_back_up_list(i));
                 elsif v_back_up_list(i).backtype = 3 then
+                    -- 按分公司的单表备份
                     v_subcompany_list := split_string(v_back_up_list(i).subcompany, ',');
                     if v_subcompany_list.count = 0 then
                         continue ;
@@ -678,9 +701,18 @@ create or replace package body ams_backup_pkg is
                             do_backup_subcomany(v_subcompany_list(s), v_back_up_list(i));
                         end loop;
                 end if;
-
+                -- 处理结束
                 do_backup_over(v_back_up_list(i));
-            end loop;
+            exception when others then
+                v_error := substr(sqlerrm, 1, 2000);
+                update ams_backup_td t
+                set t.status   = '4', t.hibernateversion = t.hibernateversion + 1,
+                    t.errormsg = v_error
+                where t.status = '2'
+                  and t.id = v_back_up_list(i).id;
+                commit;
+            end;
+        end loop;
     exception
         when others then
             mm_errorlog_pkg.log_error(procname_in => 'ams_backup_pkg',
@@ -690,6 +722,7 @@ create or replace package body ams_backup_pkg is
     end do_backup;
 
 end ams_backup_pkg;
+
 ```
  
 测试建表
@@ -764,19 +797,28 @@ select count(1),max(id) from t_test_td;
 
 ```sql
 -- 备份历史数据
-select * from t_test_td where  createtime < add_months(trunc(sysdate-7),-1);
-
+select count(1) from t_test_td where  createtime < add_months(trunc(sysdate-7),-36);
 -- 配置
-insert into ams_backup_td (id, backtype, originaltable, idxtable, idxcolumns, backuptable, condition1, bakcolumn, subcompany, exenexttime)
-values (1, 1, 't_test_td', 't_test_td_idx','id','t_test_td_bak','where createtime < add_months(trunc(sysdate-7),-1) ', 'createtime', null,'sysdate+10/24/60');
+
+insert into ams_backup_td (id, backtype, originaltable, idxtable, idxcolumns, backuptable, backupdesc, condition1, bakcolumn, subcompany, exenexttime)
+values (1, 1, 't_test_td', 't_test_td_idx','id','t_test_td_bak','备份t_test_td表三年前数据','where createtime < add_months(trunc(sysdate-7),-36) ', 'createtime', null,'sysdate+10/24/60');
 ```
 
 
-测试
+测试场景一
 
 ```sql
 begin 
     ams_backup_pkg.do_backup;
 end;
 ```
+
+检查结果
+
+```sql
+select 't_test_td' as tt, count(1) from t_test_td
+union all
+select 't_test_td_bak' as tt, count(1) from t_test_td_bak;
+```
+
 
