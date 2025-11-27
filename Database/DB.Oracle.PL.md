@@ -22,6 +22,66 @@ Oracle 在线学习：https://livesql.oracle.com
 
 ## PL/SQL 相关
 
+
+### 配置
+
+(1) 解压安装PL/SQL到目录，如： `D:\dev-tools\PLSQL Developer 14`
+
+> PL/SQL 下载地址 https://www.allroundautomations.com/registered-plsqldev/
+
+(2) 解压到安装目录，如： `D:\dev-tools\instantclient_19_10`
+
+> instant-client 下载地址 https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html
+
+```
+instantclient-basic-nt-12.2.0.1.0.zip
+instantclient-jdbc-nt-12.2.0.1.0.zip
+instantclient-sqlplus-nt-12.2.0.1.0.zip
+instantclient-tools-nt-12.2.0.1.0.zip
+```
+
+(3) 不登陆情况开启plsql  -  工具 - 首选项：
+
+Oracle client 安装的主目录 填写 instantclient_19_10 解压安装目录 所在路径 `D:\dev-tools\instantclient_19_10`
+
+Oracle client 的oci.dll文件 填写 instantclient_19_10 下的 oci.dll 文件 所在路径后面加：`D:\dev-tools\instantclient_19_10\oci.dll`
+
+(4) 配置 tnsnames (可选)
+
+在 `D:\dev-tools\instantclient_19_10` 目录下创建 `NETWORK\ADMIN`目录，并创建 tnsnames.ora 文件。
+
+最终文件路径如下： `D:\dev-tools\instantclient_19_10\NETWORK\ADMIN\tnsnames.ora`
+
+tnsnames.ora 的文件内容：
+
+```
+BPJYDATA =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.10.118 )(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = BPJYDATA)
+    )
+  )
+```
+
+然后配置windows环境变量添加两组系统变量
+
+```
+# 变量值是  instantclient 安装目录
+变量名：ORACLE_HOME 
+变量值：D:\dev-tools\instantclient_19_10
+
+
+# 变量值是  tnsnames.ora 文件所在目录
+变量名：TNS_ADMIN
+变量值： D:\instantclient_19_10\NETWORK\ADMIN
+
+# 设置字符集的
+设置变量名：NLS_LANG
+变量值：SIMPLIFIED CHINESE_CHINA.AL32UTF8
+```
+
 ### PLSQL Developer解决中文乱码问题
 
 1.查服务端字符集编码
@@ -362,6 +422,20 @@ BEGIN
 END;
 ```
 
+动态SQL搭配 EXECUTE IMMEDIATE 也可以使用
+
+```sql
+DECLARE
+    type varchar2_list is table of varchar2(1000); 
+    V_BATCHNO_LIST varchar2_list;
+    v_sql VARCHAR2(1000);
+begin 
+    v_sql := 'select email from HR.EMPLOYEES ';
+    EXECUTE IMMEDIATE V_SQL   bulk collect INTO  V_BATCHNO_LIST ;
+    DBMS_OUTPUT.PUT_LINE('V_BATCHNO_LIST : ' || V_BATCHNO_LIST.COUNT );
+
+end ;
+```
 
 ### 驼峰转换函数
 
@@ -561,6 +635,127 @@ CREATE OR REPLACE PACKAGE BODY AMS_DATA_ARCHIVE_PKG IS
 END AMS_DATA_ARCHIVE_PKG;
 ```
 
+### 错误日志表
+
+错误日志表:
+
+```sql
+-- 错误日志记录
+create table AMS_ERROR_LOG
+(
+    OWNER    VARCHAR2(30)                                          not null,
+    INFO     VARCHAR2(4000),
+    SQLCODE  NUMBER,
+    SQLERRM  VARCHAR2(4000),
+    TRACE    VARCHAR2(4000),
+    LOGDATE  DATE                                                  not null,
+    PROCNAME VARCHAR2(100)                                         not null,
+    KEYWORD1 VARCHAR2(300),
+    KEYWORD2 VARCHAR2(300),
+    KEYWORD3 VARCHAR2(300),
+    KEYWORD4 VARCHAR2(300),
+    createtime date default sysdate,
+    lastopdate date default sysdate,
+    hibernateversion VARCHAR2(300),
+    ERRORID  NUMBER default "BPJYDATA"."SEQ_ERRORPOLICY"."NEXTVAL" not null,
+    constraint PK_ERRORID primary key (ERRORID)
+);
+comment on table AMS_ERROR_LOG is '错误日志表';
+comment on column AMS_ERROR_LOG.OWNER is '所有者';
+comment on column AMS_ERROR_LOG.INFO is 'some error information';
+comment on column AMS_ERROR_LOG.SQLCODE is 'sql error code';
+comment on column AMS_ERROR_LOG.SQLERRM is 'sql error message';
+comment on column AMS_ERROR_LOG.TRACE is 'some error trace';
+comment on column AMS_ERROR_LOG.LOGDATE is '错误日志写表时间';
+comment on column AMS_ERROR_LOG.PROCNAME is '过程名';
+comment on column AMS_ERROR_LOG.KEYWORD1 is '关键字1,记录业务表的主键，放表定位错误';
+comment on column AMS_ERROR_LOG.KEYWORD2 is '关键字2,同上';
+comment on column AMS_ERROR_LOG.KEYWORD3 is '关键字3,同上';
+comment on column AMS_ERROR_LOG.KEYWORD4 is '关键字4,同上';
+comment on column AMS_ERROR_LOG.createtime is '创建时间';
+comment on column AMS_ERROR_LOG.lastopdate is '更新时间';
+comment on column AMS_ERROR_LOG.hibernateversion is '版本号';
+comment on column AMS_ERROR_LOG.ERRORID is '主键id';
+
+create index IDX_ERRORLOG1 on AMS_ERROR_LOG (LOGDATE, PROCNAME);
+```
+
+错误日志存过包:
+```sql
+create or replace package ams_errorlog_pkg is
+  /*
+  * 自定义全局异常号
+  */
+  e_null_value constant binary_integer := -20001; /*空值*/
+  null_value exception;
+  pragma exception_init(null_value, -20001);
+  e_invalid_value constant binary_integer := -20002; /*无效值*/
+  invalid_value exception;
+  pragma exception_init(invalid_value, -20002);
+  e_invalid_rowcnt constant binary_integer := -20003; /*错误行数*/
+  invalid_rowcnt exception;
+  pragma exception_init(invalid_rowcnt, -20003);
+  e_invalid_rule constant binary_integer := -20004; /*校验规则失败*/
+  invalid_rule exception;
+  pragma exception_init(invalid_rule, -20004);
+  e_split_error constant binary_integer := -20005; /*拆分错误*/
+  split_error exception;
+  pragma exception_init(split_error, -20005);
+  e_update_error constant binary_integer := -20006; /*更新失败*/
+  update_error exception;
+  pragma exception_init(update_error, -20006);
+  e_system_error constant binary_integer := -20007; /*无法处理的错误*/
+  system_error exception;
+  pragma exception_init(system_error, -20007);
+  e_no_data_found constant binary_integer := -20100; /*获取不到值,*/
+  no_data_found exception;
+  pragma exception_init(no_data_found, -20100);
+
+  bulk_errors exception;
+  pragma exception_init(bulk_errors, -24381); /*传输数据块错误*/
+  /*
+   * text="错误日志,dbms_utility.format_error_backtrace适用于oracle10g"
+   */
+  procedure log_error(procname_in in mm_error_log.procname%type,
+                      keyword1_in in mm_error_log.keyword1%type default null,
+                      keyword2_in in mm_error_log.keyword2%type default null,
+                      keyword3_in in mm_error_log.keyword3%type default null,
+                      keyword4_in in mm_error_log.keyword4%type default null,
+                      info_in     in mm_error_log.info%type default null,
+                      sqlcode_in  in mm_error_log.sqlcode%type default sqlcode,
+                      sqlerrm_in  in mm_error_log.sqlerrm%type default sqlerrm,
+                      trace_in    in mm_error_log.trace%type default dbms_utility.format_error_backtrace);
+
+end ams_errorlog_pkg;
+/
+
+create or replace package body ams_errorlog_pkg is
+  -- purpose : 记录错误日志
+  procedure log_error(procname_in in mm_error_log.procname%type,
+                      keyword1_in in mm_error_log.keyword1%type default null,
+                      keyword2_in in mm_error_log.keyword2%type default null,
+                      keyword3_in in mm_error_log.keyword3%type default null,
+                      keyword4_in in mm_error_log.keyword4%type default null,
+                      info_in     in mm_error_log.info%type default null,
+                      sqlcode_in  in mm_error_log.sqlcode%type default sqlcode,
+                      sqlerrm_in  in mm_error_log.sqlerrm%type default sqlerrm,
+                      trace_in    in mm_error_log.trace%type default dbms_utility.format_error_backtrace) is
+    pragma autonomous_transaction; /*自治事务*/
+  begin
+    insert into mm_error_log(owner, info, sqlcode, sqlerrm, trace, logdate, procname, keyword1, keyword2, keyword3, keyword4)
+    values
+      (user, info_in, sqlcode_in, sqlerrm_in, trace_in,
+       sysdate, upper(procname_in),
+       keyword1_in, keyword2_in, keyword3_in, keyword4_in, seq_errorpolicy.nextval);
+    commit;
+  exception
+    when others then
+      rollback;
+  end;
+
+end ams_errorlog_pkg;
+/
+```
 
 ### 统计PL耗时
 
