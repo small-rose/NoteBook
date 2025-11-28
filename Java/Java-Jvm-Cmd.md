@@ -70,13 +70,13 @@ jstat [options] <vmid> [interval[s|ms] [count>]
 
 常用选项[options‌]
 
-  -  ‌-class‌：显示类加载、卸载数量以及总空间等信息。
-  -  ‌-gc‌：显示与GC相关的堆行为统计数据，包括年轻代、老年代、永久代（或元空间）的大小和使用情况。
-  -  ‌-gccapacity‌：显示各代的容量（年轻代、老年代、永久代或元空间）以及使用情况。
-  -  ‌-gcutil‌：显示GC已使用空间占当前空间量的百分比，以及各代的内存使用情况。
-  -  ‌-gccause‌：显示上一次或当前GC事件的原因。
-  -  ‌-compiler‌：显示JIT编译器的状态信息。
-  -  ‌-printcompilation‌：显示JVM编译方法的统计信息。
+  -  -class‌：显示类加载、卸载数量以及总空间等信息。
+  -  -gc‌：显示与GC相关的堆行为统计数据，包括年轻代、老年代、永久代（或元空间）的大小和使用情况。
+  -  -gccapacity‌：显示各代的容量（年轻代、老年代、永久代或元空间）以及使用情况。
+  -  -gcutil‌：显示GC已使用空间占当前空间量的百分比，以及各代的内存使用情况。
+  -  -gccause‌：显示上一次或当前GC事件的原因。
+  -  -compiler‌：显示JIT编译器的状态信息。
+  -  -printcompilation‌：显示JVM编译方法的统计信息。
 
 
 ### 2.2  jstat -gc 
@@ -145,12 +145,12 @@ jstat -gcutil pid  3000 5
   0.00  99.95  49.83  11.30  94.71  92.69      9    0.052     3    0.132    0.184
 ```
 
-### 2.4  jstat -gccause‌ 
+### 2.4  jstat -gccause 
 
-实时查上次GC原因 gccause‌
+实时查上次GC原因 gccause
 
 ```bash
-jstat -gccause‌ pid  3000 5
+jstat -gccause pid  3000 5
 ```
 每隔3000毫秒获取一次结果，累计获取5次，内存各个区域使用率。
 
@@ -180,11 +180,11 @@ jstat -gcmetacapacity <pid>
 
 ```
 单位默认是KB:
- - MCMN​​ : Min metaspace capacity 最小容量（通常为0）。
- - MCMX :​​ Max metaspace capacity  1116160/1024 = 1090M 。
- - ​​MC​​ : Current metaspace capacity 当前使用量 76632/1024 = 74M。
- - CCSMX​​ Compressed class space max 压缩类空间最大。
- - CCSC​​ : Compressed class space capacity 压缩类空间当前。
+ - MCMN : Min metaspace capacity 最小容量（通常为0）。
+ - MCMX : Max metaspace capacity  1116160/1024 = 1090M 。
+ - MC : Current metaspace capacity 当前使用量 76632/1024 = 74M。
+ - CCSMX Compressed class space max 压缩类空间最大。
+ - CCSC : Compressed class space capacity 压缩类空间当前。
 
 
 ## 3、GC参数 jmap
@@ -811,15 +811,15 @@ Options:
 
 Full GC是JVM垃圾回收中最重要的事件之一，分析Full GC日志可以帮助识别内存问题、性能瓶颈和优化机会。以下是分析Full GC日志的详细方法：
 
-**Full GC常见原因及诊断方法​​**
+**Full GC常见原因及诊断方法**
 
 |原因分类| 具体场景 | 诊断方法 | 关键指标 |
 |-----|--------|--------|-------|
-|老年代空间不足​​ | 大对象直接分配/对象晋升过快 | jmap -histo:live <pid> | O列接近100% |
-|​​Metaspace耗尽​​ | 动态类加载过多 | jstat -gcmetacapacity <pid> | M列接近100% |
-| ​​System.gc()调用​​ |代码或三方库触发 | jcmd <pid> VM.log what=gc | 查看GC原因字段 |
-​​分配失败担保​​ |Young GC后Survivor放不下 | -XX:+PrintTenuringDistribution | 晋升年龄异常 |
-​​堆外内存不足​​ |Direct Buffer或Native内存耗尽 |jcmd <pid> VM.native_memory | Native内存使用量 |
+|老年代空间不足 | 大对象直接分配/对象晋升过快 | jmap -histo:live <pid> | O列接近100% |
+|Metaspace耗尽 | 动态类加载过多 | jstat -gcmetacapacity <pid> | M列接近100% |
+| System.gc()调用 |代码或三方库触发 | jcmd <pid> VM.log what=gc | 查看GC原因字段 |
+分配失败担保 |Young GC后Survivor放不下 | -XX:+PrintTenuringDistribution | 晋升年龄异常 |
+堆外内存不足 |Direct Buffer或Native内存耗尽 |jcmd <pid> VM.native_memory | Native内存使用量 |
 
 
 ### 5.1 Full GC日志的基本结构
@@ -839,10 +839,10 @@ Full GC是JVM垃圾回收中最重要的事件之一，分析Full GC日志可以
 
 5.1.1 触发原因
 
- - ​​Allocation Failure​​：年轻代空间不足
- - ​​Metadata GC Threshold​​：元空间不足
- - ​​System.gc()​​：显式调用
- - ​​Ergonomics​​：JVM自适应机制触发
+ - Allocation Failure：年轻代空间不足
+ - Metadata GC Threshold：元空间不足
+ - System.gc()：显式调用
+ - Ergonomics：JVM自适应机制触发
  
 5.1.2 各区域内存变化
 
@@ -861,8 +861,8 @@ Full GC是JVM垃圾回收中最重要的事件之一，分析Full GC日志可以
 
 5.2.1 回收效率
 
-- 老年代回收量​​：ParOldGen: 4096K->4096K表示没有回收任何对象
-- 堆总量变化​​：5120K->4096K表示回收了1024K
+- 老年代回收量：ParOldGen: 4096K->4096K表示没有回收任何对象
+- 堆总量变化：5120K->4096K表示回收了1024K
 
 5.2.2 内存使用率
 

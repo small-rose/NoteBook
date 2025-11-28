@@ -102,7 +102,7 @@ ll P_AMS*.txt  -lrt
 # 统计kjhs*.txt文件个数
 ls kjhs*.txt | wc -l
 ```
-统计使用 find（更可靠，支持递归）​​
+统计使用 find（更可靠，支持递归）
 
 ```bash
 # 统计当前目录下的 .txt 文件数量：
@@ -162,7 +162,7 @@ find . -maxdepth 1 -type f -name "*.txt" -printf "%s\n" | awk '{sum += $1} END {
         END：最终输出结果
         
 
-统计 .txt 文件的总大小（人类可读格式）​​
+统计 .txt 文件的总大小（人类可读格式）
 ```bash
 du -ch *.txt | grep total
 ```
