@@ -18,7 +18,7 @@ parent: Database
 
 ## oracle PL 专栏
 
-Oracle 在线学习：https://livesql.oracle.com
+Oracle 在线数据库：[https://freesql.com/worksheet?tutorial=creating-tables-databases-for-developers-SQru0F#module4](https://freesql.com/worksheet?tutorial=creating-tables-databases-for-developers-SQru0F#module4)
 
 ## PL/SQL 相关
 
@@ -134,7 +134,7 @@ END AMS_DATA_ARCHIVE_PKG;
 
 ### 通用的归档案例
 
-错误日志表:
+#### 错误日志表:
 
 ```sql
 -- 错误日志记录
@@ -177,7 +177,7 @@ comment on column AMS_ERROR_LOG.ERRORID is '主键id';
 create index IDX_ERRORLOG1 on AMS_ERROR_LOG (LOGDATE, PROCNAME);
 ```
 
-错误日志存过包:
+####  错误日志存过包:
 ```sql
 create or replace package ams_errorlog_pkg is
   /*
@@ -254,7 +254,7 @@ end ams_errorlog_pkg;
 /
 ```
 
-设计归档表
+####  设计归档表
 
 ```sql
 
@@ -309,7 +309,7 @@ comment on column ams_backup_td.hibernateversion is '版本号';
 
 ```
 
-备份 存储过程包
+####  备份 存储过程包
 
 包头
 
@@ -724,10 +724,123 @@ create or replace package body ams_backup_pkg is
 end ams_backup_pkg;
 
 ```
- 
-测试建表
 
-```sql
+####  测试案例
+
+
+#### 案例1，单表备份
+
+```
+
+-------------------单表备份
+
+-- 源表
+create table t_test_sigle_td
+(
+    id number default zzy_test_01.nextval not null,
+    name varchar2(200) default 'test',
+    createtime date default sysdate,
+    lastopdate date default sysdate,
+    constraint pk_sigle_id primary key (id)
+);
+create index idx_sigle_createtime on t_test_sigle_td(createtime);
+
+--备份表
+create table t_test_sigle_td_bak
+(
+    id number default zzy_test_01.nextval not null,
+    name varchar2(200) default 'test',
+    createtime date default sysdate,
+    lastopdate date default sysdate,
+    constraint pk_sigle_bak_id primary key (id)
+);
+create index idx_sigle_createtime_bak on t_test_sigle_td_bak(createtime);
+
+--索引表
+create table t_test_sigle_td_idx(
+    id number not null primary key
+);
+
+```
+
+
+
+模拟数据
+
+```
+begin
+    delete from t_test_sigle_td where 1=1 ;
+    for i in 1..200000 loop
+        insert into t_test_sigle_td(id, name, createtime, lastopdate)
+        values (i, i||'test', sysdate-(i/365), sysdate-(i/365));
+        commit ;
+    end loop;
+end;
+```
+
+
+```
+
+-- 加配置
+
+
+select count(1) from t_test_sigle_td where  createtime < add_months(trunc(sysdate-7),-6);
+select min(trunc(createtime)), count(1) from t_test_sigle_td where  createtime < add_months(trunc(sysdate-7),-6);
+
+--单表备份案例
+insert into ams_backup_td (id, backtype, originaltable, idxtable, idxcolumns, backuptable, backupdesc, condition1, bakcolumn, subcompany, exenexttime)
+values (1, 1, 't_test_sigle_td', 't_test_sigle_td_idx','id','t_test_sigle_td_bak','单表备份t_test_sigle_td表半年前数据','where createtime < add_months(trunc(sysdate-7),-6) ', 'createtime', null,'sysdate+1/24/60');
+
+
+select * from ams_backup_td ;
+```
+
+
+执行测试
+
+```
+begin
+    -- 测试修正状态 1 ，直接更新可执行
+    update ams_backup_td t set t.status='1', t.exestarttime = sysdate-1/24/60 where id =1;
+    ams_backup_pkg.do_backup;
+end;
+
+```
+
+
+排错
+
+```
+SELECT * FROM MM_ERROR_LOG T ORDER BY T.LOGDATE DESC ;
+select t.errormsg, t.* from ams_backup_td t;
+```
+
+
+检查结果
+
+```
+
+/*
+可进行多轮测试，检查是否按日备份
+t_test_sigle_td,199511
+t_test_sigle_td_bak,489
+
+t_test_sigle_td,199146
+t_test_sigle_td_bak,854
+*/
+
+select 't_test_sigle_td' as tt, count(1) from t_test_sigle_td
+union all
+select 't_test_sigle_td_bak' as tt, count(1) from t_test_sigle_td_bak
+union all
+select 't_test_sigle_td_idx' as tt, count(1) from t_test_sigle_td_idx ;
+```
+
+
+#### 案例2  关联表备份
+
+```
+------------------ 关联式备份
 create sequence zzy_test_01 minvalue 1000 maxvalue 99999999999999 start with 1000 ;
 
 create table t_test_td
@@ -739,7 +852,6 @@ create table t_test_td
     constraint pk_id primary key (id)
 );
 create index idx_createtime on t_test_td(createtime);
-
 create table t_test_td_bak
 (
     id number not null,
@@ -772,53 +884,250 @@ create table t_test_detail_td_bak
 );
 create index idx_mainid_test_bak on t_test_detail_td_bak(mainid);
 
-create table t_test_td_idx(
-    id number not null
-);
-
---造数据
-declare
 begin
-    for i in 1..10000 loop
+    delete from t_test_detail_td ;
+    delete from t_test_td ;
+    for i in 1001..10000 loop
         for x in 1..100 loop
         insert into t_test_detail_td(mainid, name, createtime, lastopdate)
         values (i, i||'test'||x, sysdate-i, sysdate-1);
         end loop ;
         insert into t_test_td(id, name, createtime, lastopdate)
-        values (i, i||'test', sysdate-i, sysdate-1);
+        values (i, i||'test', sysdate-(i/365), sysdate-(i/365));
         commit ;
     end loop;
 end;
 
--- 检查数据量
-select count(1) from t_test_detail_td ;
-select count(1),max(id) from t_test_td;
-``` 
-
-```sql
--- 备份历史数据
-select count(1) from t_test_td where  createtime < add_months(trunc(sysdate-7),-36);
--- 配置
-
-insert into ams_backup_td (id, backtype, originaltable, idxtable, idxcolumns, backuptable, backupdesc, condition1, bakcolumn, subcompany, exenexttime)
-values (1, 1, 't_test_td', 't_test_td_idx','id','t_test_td_bak','备份t_test_td表三年前数据','where createtime < add_months(trunc(sysdate-7),-36) ', 'createtime', null,'sysdate+10/24/60');
 ```
 
 
-测试场景一
+模拟数据
 
-```sql
-begin 
+```
+begin
+    delete from t_test_detail_td ;
+    delete from t_test_td ;
+    for i in 1001..10000 loop
+        for x in 1..100 loop
+        insert into t_test_detail_td(mainid, name, createtime, lastopdate)
+        values (i, i||'test'||x, sysdate-i, sysdate-1);
+        end loop ;
+        insert into t_test_td(id, name, createtime, lastopdate)
+        values (i, i||'test', sysdate-(i/365), sysdate-(i/365));
+        commit ;
+    end loop;
+end;
+```
+
+
+加配置
+
+```
+
+select trunc( createtime), count(1) from t_test_td where createtime < trunc(sysdate-7)
+group by trunc( createtime) ;
+
+select count(1) from t_test_td where createtime < trunc(sysdate-7) and createtime between date'2025-11-13'  and date'2025-11-13'+1  and rownum <= 10 ;
+ 
+
+-- 关联表备份案例
+insert into ams_backup_td (id, backtype, originaltable, idxtable, idxcolumns, backuptable, backupdesc, condition1, bakcolumn, batchcolumn, subcompany, exenexttime)
+values (2, 2, 't_test_td,t_test_detail_td', '','','t_test_td_bak,t_test_detail_td_bak','关联表备份7天前数据','where createtime < trunc(sysdate-7) ', 'createtime', 'id,mainid',null,'sysdate+10/24/60');
+
+select * from ams_backup_td ;
+```
+
+执行测试
+
+```
+begin
+    -- 测试修正状态 1 ，直接更新可执行
+    update ams_backup_td t set t.status='1', t.exestarttime = sysdate-1/24/60 where id =2;
+    ams_backup_pkg.do_backup;
+end;
+
+```
+
+排错
+
+```
+SELECT * FROM MM_ERROR_LOG T ORDER BY T.LOGDATE DESC ;
+select t.errormsg, t.* from ams_backup_td t;
+```
+
+
+检查结果
+
+```
+/*
+t_test_td,8341
+t_test_td_bak,659
+t_test_detail_td,834100
+t_test_detail_td_bak,65900
+
+t_test_td,7976
+t_test_td_bak,1024
+t_test_detail_td,797600
+t_test_detail_td_bak,102400
+
+*/
+select 't_test_td' as tt, count(1) from t_test_td
+union all
+select 't_test_td_bak' as tt, count(1) from t_test_td_bak
+union all
+select 't_test_detail_td' as tt, count(1) from t_test_detail_td
+union all
+select 't_test_detail_td_bak' as tt, count(1) from t_test_detail_td_bak;
+```
+
+
+#### 案例3  分区表备份
+
+建表
+
+```
+
+create sequence seq_t_sub_test_td_id minvalue 1000 maxvalue 99999999999999 start with 1000 ;
+drop table t_sub_test_td ;
+
+create table t_sub_test_td (
+    id number  not null,
+    subcompany varchar2(10) not null,
+    name varchar2(100) default 'test',
+    createtime date default sysdate,
+    lastopdate date default sysdate,
+    constraint pk_id_sub_test_id primary key (id,subcompany)
+) partition by list ( subcompany ) (
+  partition subcompany_1010100 values ('1010100'),
+  partition subcompany_1020100 values ('1020100'),
+  partition subcompany_2010100 values ('2010100'),
+  partition subcompany_2020100 values ('2020100'),
+  partition subcompany_3020100 values ('3020100'),
+  partition subcompany_3040100 values ('3040100'),
+  partition subcompany_4010100 values ('4010100'),
+  partition subcompany_4020100 values ('4020100'),
+  partition subcompany_5010100 values ('5010100'),
+  partition subcompany_5020100 values ('5020100'),
+  partition subcompany_6010100 values ('6010100'),
+  partition subcompany_6020100 values ('6020100')
+);
+
+-- 索引表
+create table t_sub_test_td_idx
+(
+    id number  not null,
+    subcompany number not null,
+    guid number not null,
+    constraint pk_t_sub_test_td_idx primary key(id,subcompany)
+);
+-- 备份表
+create table t_sub_test_td_bak(
+    id number  not null,
+    subcompany number not null,
+    name varchar2(100) default 'test',
+    createtime date default sysdate,
+    lastopdate date default sysdate,
+    constraint pk_id_sub_test_bak primary key (id,subcompany)
+) partition by list ( subcompany ) (
+  partition subcompany_1010100 values ('1010100'),
+  partition subcompany_1020100 values ('1020100'),
+  partition subcompany_2010100 values ('2010100'),
+  partition subcompany_2020100 values ('2020100'),
+  partition subcompany_3020100 values ('3020100'),
+  partition subcompany_3040100 values ('3040100'),
+  partition subcompany_4010100 values ('4010100'),
+  partition subcompany_4020100 values ('4020100'),
+  partition subcompany_5010100 values ('5010100'),
+  partition subcompany_5020100 values ('5020100'),
+  partition subcompany_6010100 values ('6010100'),
+  partition subcompany_6020100 values ('6020100')
+);
+
+```
+
+
+模拟数据
+
+
+```
+begin
+    for rec in (select PARTITION_NAME from USER_TAB_PARTITIONS where TABLE_NAME = 'T_SUB_TEST_TD' ) loop
+        for i in 1..50000 loop
+        insert into t_sub_test_td (id,subcompany,name, createtime)
+        values (seq_t_sub_test_td_id.nextval, substr(rec.PARTITION_NAME, 12), rec.PARTITION_NAME, sysdate - (i/365));
+        end loop;
+        commit ;
+    end loop;
+end;
+
+select subcompany, count(*) from t_sub_test_td group by subcompany;
+```
+
+
+加配置
+
+```
+select min(createtime), count(*) from t_sub_test_td where subcompany = :subcompany and createtime < add_months(trunc(sysdate-7),-2);
+
+
+-- 分区表备份案例
+insert into ams_backup_td (id, backtype, originaltable, idxtable, idxcolumns, backuptable, backupdesc, condition1, bakcolumn, batchcolumn, subcompany, exenexttime)
+values (3, 3, 't_sub_test_td', 't_sub_test_td_idx','id, subcompany','t_sub_test_td_bak','分区表备份三年前数据','where subcompany = :subcompany and createtime < add_months(trunc(sysdate-7),-2) ', 'createtime', '','1010100,1020100,2010100,2020100', 'sysdate+10/24/60');
+insert into ams_backup_td (id, backtype, originaltable, idxtable, idxcolumns, backuptable, backupdesc, condition1, bakcolumn, batchcolumn, subcompany, exenexttime)
+values (4, 3, 't_sub_test_td', 't_sub_test_td_idx','id, subcompany','t_sub_test_td_bak','分区表备份三年前数据','where subcompany = :subcompany and createtime < add_months(trunc(sysdate-7),-2) ', 'createtime', '','3020100,3040100,4010100,4020100', 'sysdate+10/24/60');
+insert into ams_backup_td (id, backtype, originaltable, idxtable, idxcolumns, backuptable, backupdesc, condition1, bakcolumn, batchcolumn, subcompany, exenexttime)
+values (5, 3, 't_sub_test_td', 't_sub_test_td_idx','id, subcompany','t_sub_test_td_bak','分区表备份三年前数据','where subcompany = :subcompany and createtime < add_months(trunc(sysdate-7),-2) ', 'createtime', '','5010100,5020100,6010100,6020100', 'sysdate+10/24/60');
+
+
+```
+
+
+执行测试
+
+```
+begin
+    -- 测试修正状态 1 ，直接更新可执行
+    --update ams_backup_td t set t.status='1', t.exestarttime = sysdate + 1/24 where id in (1,2);
+    update ams_backup_td t set t.status='1', t.exestarttime = sysdate - 1/24 where id in (3,4,5);
     ams_backup_pkg.do_backup;
 end;
 ```
 
-检查结果
 
-```sql
-select 't_test_td' as tt, count(1) from t_test_td
+排错
+
+```
+SELECT * FROM MM_ERROR_LOG T ORDER BY T.LOGDATE DESC ;
+select t.errormsg, t.* from ams_backup_td t;
+```
+
+执行结果
+
+
+```
+
+/*
+t_sub_test_td,600000
+t_sub_test_td_bak,0
+
+t_sub_test_td,595608
+t_sub_test_td_bak,4392
+
+--看看分公司
+t_sub_test_td,2010100,49634
+t_sub_test_td,3020100,49634
+
+t_sub_test_td_bak,1010100,366
+t_sub_test_td_bak,2010100,366
+
+*/
+select 't_sub_test_td' as tt, count(1) from t_sub_test_td
 union all
-select 't_test_td_bak' as tt, count(1) from t_test_td_bak;
+select 't_sub_test_td_bak' as tt, count(1) from t_sub_test_td_bak ;
+
+(select 't_sub_test_td' as tt, subcompany, count(1) from t_sub_test_td group by subcompany)
+union all
+(select 't_sub_test_td_bak' as tt, subcompany, count(1) from t_sub_test_td_bak group by subcompany);
 ```
 
 
