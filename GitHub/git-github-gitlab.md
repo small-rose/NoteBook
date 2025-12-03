@@ -98,7 +98,7 @@ host 末尾追加
 20.205.243.166 github.com
 ```
 
-2.尝试切换 Git 的 SSL 后端为 OpenSSL​​ 
+2.尝试切换 Git 的 SSL 后端为 OpenSSL 
 Windows 默认的 Schannel 库对 TLS 关闭握手要求严格，而 OpenSSL 兼容性更好：
 
 ```
@@ -108,7 +108,7 @@ git config --global http.sslBackend openssl
 git config --global http.sslBackend
 ```
 
-3.尝试增大 POST 缓冲区​​ 
+3.尝试增大 POST 缓冲区 
 推送大文件时默认缓冲区（1MB）不足会触发连接重置：
 
 ```
@@ -117,12 +117,40 @@ git config --global http.postBuffer 524288000  # 500MB
 git config --global http.postBuffer
 ```
 
-4.尝试降级 HTTP 协议版本​​ （不建议）
+4.尝试降级 HTTP 协议版本 （不建议）
 HTTP/2 在某些网络环境下不稳定，切换为 HTTP/1.1 可提升可靠性：
 
 ```
 git config --global http.version HTTP/1.1
-​​验证​​：
+验证：
 
 git config --global http.version
 ```
+
+
+##  Git 代理配置
+
+
+```
+# 查看当前 Git 代理配置
+git config --global --get http.proxy
+git config --global --get https.proxy
+
+# 如果已设置代理，尝试取消
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
+# 或者明确设置代理（根据你的实际代理端口）
+git config --global http.proxy http://127.0.0.1:你的端口
+git config --global https.proxy https://127.0.0.1:你的端口
+
+```
+
+##  Idea 代理配置
+
+IDEA 也尝试配置代理
+
+> File | Settings | Appearance & Behavior | System Settings | HTTP Proxy
+
+配置好之后点击测试
+
