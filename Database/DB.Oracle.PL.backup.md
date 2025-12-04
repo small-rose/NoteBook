@@ -329,7 +329,10 @@ create or replace package ams_backup_pkg is
     procedure do_backup_subcompany(v_subcompany varchar2, v_back_up ams_backup_td%rowtype);
     -- 备份入口
     procedure do_backup;
+    -- 备份入口 java 调用
+    procedure do_backup_java(v_id ams_backup_td.id%type);
 end ams_backup_pkg;
+/
 ```
 
 包体
@@ -623,7 +626,7 @@ create or replace package body ams_backup_pkg is
                         rollback to t_point_page;
 
                         mm_errorlog_pkg.log_error(procname_in => 'ams_backup_pkg',
-                                                  keyword1_in => 'do_backup_subcomany',
+                                                  keyword1_in => 'do_backup_subcompany',
                                                   keyword3_in => 'v_subcompany=' || v_subcompany || ',opdate =' ||
                                                                  to_char(v_opdate, 'yyyy-mm-dd'),
                                                   info_in => substr(sqlerrm, 1, 2000));
@@ -726,6 +729,55 @@ create or replace package body ams_backup_pkg is
                                       info_in => substr(sqlerrm, 1, 2000));
     end do_backup;
 
+    -- 备份入口 java 调用
+    procedure do_backup_java(v_id ams_backup_td.id%type) is
+        v_back_up   ams_backup_td%rowtype ;
+        v_subcompany_list varchar2_list := varchar2_list();
+    begin
+
+        -- 防止并发
+        update ams_backup_td t
+        set t.status   = '2',
+            t.errormsg ='running'
+        where t.status = '1'
+          and t.id = v_id;
+        if sql%rowcount = 0 then
+            return ;
+        end if;
+        commit;
+
+        select * into v_back_up from ams_backup_td t where t.id = v_id;
+        if v_back_up.backtype = 0 then
+            -- 删除
+            do_backup_delete(v_back_up);
+        elsif v_back_up.backtype = 1 then
+            -- 单表备份
+            do_backup_sigle(v_back_up);
+        elsif v_back_up.backtype = 2 then
+            -- 多表关联批次号备份
+            do_backup_mutil(v_back_up);
+        elsif v_back_up.backtype = 3 then
+            -- 按分公司的单表备份
+            v_subcompany_list := split_string(v_back_up.subcompany, ',');
+            if v_subcompany_list.count = 0 then
+                raise_application_error(-20023, '按分公司分区备份执行缺少分公司配置ams_backup_td.subcompany') ;
+            end if;
+            for s in 1..v_subcompany_list.count
+            loop
+                -- 按处理分公司
+                dbms_output.put_line('s_subcompany : ' || v_subcompany_list(s));
+                do_backup_subcompany(v_subcompany_list(s), v_back_up);
+            end loop;
+        end if;
+        -- 处理结束
+        do_backup_over(v_back_up);
+    exception
+        when others then
+            mm_errorlog_pkg.log_error(procname_in => 'ams_backup_pkg',
+                                      keyword1_in => 'do_backup_java',
+                                      keyword3_in => 'do_backup_java occurred error',
+                                      info_in => substr(sqlerrm, 1, 2000));
+    end do_backup_java;
 end ams_backup_pkg;
 
 ```
