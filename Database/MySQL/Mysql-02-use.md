@@ -117,6 +117,13 @@ GRANT privileges ON your_schema_name.* TO 'user_name'@'host';
 GRANT ALL PRIVILEGES ON bp_demo.* TO 'bp_user'@'localhost';
 ```
 
+> All或者All privileges代表权限列表中除Grant option权限之外的所有权限
+
+```sql
+show privileges ;
+```
+
+
 ### 刷新权限
 
 授予或撤销权限后，需要刷新权限使更改生效：
@@ -125,6 +132,22 @@ GRANT ALL PRIVILEGES ON bp_demo.* TO 'bp_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
+看看  ALL PRIVILEGES 有哪些：
+```sql
+show privileges ;
+```
+
+更细化的授权：
+
+```sql
+GRANT  Alter routine, Execute,
+SELECT, INSERT, UPDATE, delete, Alter,
+create, -- To create new databases and tables
+Create routine, -- To use CREATE FUNCTION/PROCEDURE
+Create temporary tables  -- To use CREATE TEMPORARY TABLE
+ON bp_demo.* TO 'bp_demo_user'@'%' IDENTIFIED BY 'small.rose@2025' 
+       -- with grant option ;
+```
 
 ### 查看用户权限
 
@@ -139,6 +162,9 @@ SHOW GRANTS FOR 'username'@'host';
 SHOW GRANTS FOR 'bp_user'@'localhost';
 ```
 
+
+
+
 ### 撤销权限
 
 要撤销用户的权限，使用 REVOKE 命令：
@@ -152,6 +178,25 @@ REVOKE privileges ON database_name.* FROM 'username'@'host';
 ```sql
 REVOKE ALL PRIVILEGES ON bp_demo.* FROM 'bp_user'@'localhost';
 ```
+
+```sql
+     
+-- 撤销用户授予其他用户的特定权限的GRANT OPTION
+REVOKE GRANT OPTION ON bp_demo.* FROM 'username'@'host';
+
+--撤销用户username将任何权限授予其他用户的GRANT OPTION 权限
+REVOKE GRANT OPTION ON bp_demo.table FROM 'username'@'host';
+
+-- 移除用户授予其他用户的所有权限的GRANT OPTION
+REVOKE ALL PRIVILEGES ON *.* FROM 'username'@'host' WITH GRANT OPTION;
+
+-- 移除GRANT OPTION
+REVOKE GRANT OPTION ON *.* FROM 'username'@'host';
+
+-- 重新授予其他需要的权限（如果需要）
+GRANT SELECT, INSERT ON database.table TO 'username'@'host';
+```
+
 
 
 ### 删除用户
