@@ -6,6 +6,14 @@ grand_parent: Database
 nav_order: 81
 ---
 
+# MySQL Install
+{: .no_toc }
+
+MySQL 相关的文档
+{: .fs-6 .fw-300 }
+
+
+
 ## MySQL 在线安装与卸载 <!-- {docsify-ignore} -->
 
 ### MySQL 在线安装

@@ -93,7 +93,7 @@ flush privileges;
 
 （2）修改密码
 
-``` SQL
+```sql
 set password for 'root'@'localhost' = password('123456');
 ## -------------------------------------------------------
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
@@ -112,14 +112,14 @@ flush privileges;
 
 （2）修改密码
 
-```SQL
-use mysql; 
+```sql
+use mysql; 
 
 --将字段置为空
 update user set authentication_string='' where user='root';
 
 --修改密码为root
-ALTER user 'root'@'localhost' IDENTIFIED BY 'root';
+ALTER user 'root'@'localhost' IDENTIFIED BY 'root';
 -- 刷新权限
 flush privileges;
 ```
