@@ -787,7 +787,7 @@ end ams_backup_pkg;
 
 #### 案例1，单表备份
 
-```
+```sql
 
 -------------------单表备份
 
@@ -824,7 +824,7 @@ create table t_test_sigle_td_idx(
 
 模拟数据
 
-```
+```sql
 begin
     delete from t_test_sigle_td where 1=1 ;
     for i in 1..200000 loop
@@ -836,7 +836,7 @@ end;
 ```
 
 
-```
+```sql
 
 -- 加配置
 
@@ -855,7 +855,7 @@ select * from ams_backup_td ;
 
 执行测试
 
-```
+```sql
 begin
     -- 测试修正状态 1 ，直接更新可执行
     update ams_backup_td t set t.status='1', t.exestarttime = sysdate-1/24/60 where id =1;
@@ -867,7 +867,7 @@ end;
 
 排错
 
-```
+```sql
 SELECT * FROM MM_ERROR_LOG T ORDER BY T.LOGDATE DESC ;
 select t.errormsg, t.* from ams_backup_td t;
 ```
@@ -875,7 +875,7 @@ select t.errormsg, t.* from ams_backup_td t;
 
 检查结果
 
-```
+```sql
 
 /*
 可进行多轮测试，检查是否按日备份
@@ -896,7 +896,7 @@ select 't_test_sigle_td_idx' as tt, count(1) from t_test_sigle_td_idx ;
 
 #### 案例2  关联表备份
 
-```
+```sql
 ------------------ 关联式备份
 create sequence zzy_test_01 minvalue 1000 maxvalue 99999999999999 start with 1000 ;
 
@@ -960,7 +960,7 @@ end;
 
 模拟数据
 
-```
+```sql
 begin
     delete from t_test_detail_td ;
     delete from t_test_td ;
@@ -979,7 +979,7 @@ end;
 
 加配置
 
-```
+```sql
 
 select trunc( createtime), count(1) from t_test_td where createtime < trunc(sysdate-7)
 group by trunc( createtime) ;
@@ -996,7 +996,7 @@ select * from ams_backup_td ;
 
 执行测试
 
-```
+```sql
 begin
     -- 测试修正状态 1 ，直接更新可执行
     update ams_backup_td t set t.status='1', t.exestarttime = sysdate-1/24/60 where id =2;
@@ -1007,7 +1007,7 @@ end;
 
 排错
 
-```
+```sql
 SELECT * FROM MM_ERROR_LOG T ORDER BY T.LOGDATE DESC ;
 select t.errormsg, t.* from ams_backup_td t;
 ```
@@ -1015,7 +1015,7 @@ select t.errormsg, t.* from ams_backup_td t;
 
 检查结果
 
-```
+```sql
 /*
 t_test_td,8341
 t_test_td_bak,659
@@ -1042,8 +1042,7 @@ select 't_test_detail_td_bak' as tt, count(1) from t_test_detail_td_bak;
 
 建表
 
-```
-
+```sql
 create sequence seq_t_sub_test_td_id minvalue 1000 maxvalue 99999999999999 start with 1000 ;
 drop table t_sub_test_td ;
 
@@ -1106,7 +1105,7 @@ create table t_sub_test_td_bak(
 模拟数据
 
 
-```
+```sql
 begin
     for rec in (select PARTITION_NAME from USER_TAB_PARTITIONS where TABLE_NAME = 'T_SUB_TEST_TD' ) loop
         for i in 1..50000 loop
@@ -1123,7 +1122,7 @@ select subcompany, count(*) from t_sub_test_td group by subcompany;
 
 加配置
 
-```
+```sql
 select min(createtime), count(*) from t_sub_test_td where subcompany = :subcompany and createtime < add_months(trunc(sysdate-7),-2);
 
 
@@ -1141,7 +1140,7 @@ values (5, 3, 't_sub_test_td', 't_sub_test_td_idx','id, subcompany','t_sub_test_
 
 执行测试
 
-```
+```sql
 begin
     -- 测试修正状态 1 ，直接更新可执行
     --update ams_backup_td t set t.status='1', t.exestarttime = sysdate + 1/24 where id in (1,2);
@@ -1153,7 +1152,7 @@ end;
 
 排错
 
-```
+```sql
 SELECT * FROM MM_ERROR_LOG T ORDER BY T.LOGDATE DESC ;
 select t.errormsg, t.* from ams_backup_td t;
 ```
@@ -1161,7 +1160,7 @@ select t.errormsg, t.* from ams_backup_td t;
 执行结果
 
 
-```
+```sql
 
 /*
 t_sub_test_td,600000
