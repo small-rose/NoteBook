@@ -223,6 +223,33 @@ app.use(ElementPlus)
 app.mount('#app')
 ```
 
+{ .tip}
+> 此处是完整引入,也可以按需引入。
+> 
+> 按需安装 npm install -D unplugin-vue-components unplugin-auto-import
+
+按需引入时则在  vite.config.js 中配置：
+```js
+import { defineConfig } from 'vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
+export default defineConfig({
+  // ...
+  plugins: [
+    // ...
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
+  ],
+})
+```
+
+
 在 app.vue 添加 element plus 的组件元素看看是否生效
 
 ```vue
@@ -545,4 +572,54 @@ app.mount('#app')
       </div>
    </div>
 </template>
+```
+
+
+### 9、 sm-crypto 加密
+
+```bash
+npm install --save sm-crypto
+```
+
+```js
+//使用
+import {sm2,sm3,sm4} from 'sm-crypto'
+
+// ----------- sm2 --------------------
+//获取密钥对
+let keypair = sm2.generateKeyPairHex()
+
+publicKey = keypair.publicKey // 公钥
+privateKey = keypair.privateKey // 私钥
+
+// 默认生成公钥 130 位太长，可以压缩公钥到 66 位
+const compressedPublicKey = sm2.compressPublicKeyHex(publicKey) // compressedPublicKey 和 publicKey 等价
+sm2.comparePublicKeyHex(publicKey, compressedPublicKey) // 判断公钥是否等价
+
+//加解密
+const cipherMode = 1 // 1 - C1C3C2，0 - C1C2C3，默认为1
+
+let encryptData = sm2.doEncrypt(msgString, publicKey, cipherMode) // 加密结果
+let decryptData = sm2.doDecrypt(encryptData, privateKey, cipherMode) // 解密结果
+
+encryptData = sm2.doEncrypt(msgArray, publicKey, cipherMode) // 加密结果，输入数组
+decryptData = sm2.doDecrypt(encryptData, privateKey, cipherMode, {output: 'array'}) // 解密结果，输出数组
+
+
+// ----------- sm3 --------------------
+let hashData = sm3('abc') // 杂凑
+
+// hmac
+hashData = sm3('abc', {
+    key: 'daac25c1512fe50f79b0e4526b93f5c0e1460cef40b6dd44af13caec62e8c60e0d885f3c6d6fb51e530889e6fd4ac743a6d332e68a0f2a3923f42585dceb93e9', // 要求为 16 进制串或字节数组
+})
+
+// ----------- sm4 --------------------
+const msg = 'hello world! 我是 juneandgreen.' // 可以为 utf8 串或字节数组
+const key = '0123456789abcdeffedcba9876543210' // 可以为 16 进制串或字节数组，要求为 128 比特
+ // 加密，默认输出 16 进制字符串，默认使用 pkcs#7 填充（传 pkcs#5 也会走 pkcs#7 填充）
+let encryptData = sm4.encrypt(msg, key)
+
+// 解密
+let decryptData = sm4.decrypt(encryptData, key) // 默认使用 pkcs#7 填充（传 pkcs#5 也会走 pkcs#7 填充）
 ```
