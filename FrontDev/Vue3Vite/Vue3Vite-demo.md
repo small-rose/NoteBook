@@ -19,10 +19,10 @@ This is the steps for Vite to create or init template vue  。
    {:toc}
 
 
-# 使用 Vite 创建 vue 3 的项目
+## 使用 Vite 创建 vue 3 的项目
 
 
-## 1、环境检查
+### 1、环境检查
 
 
 ### 基础环境
@@ -39,7 +39,7 @@ This is the steps for Vite to create or init template vue  。
 - vue3-snippets 语法高亮，代码格式化
 - WindiCSS IntelliSense
 
-## 2、检查镜像
+### 2、检查镜像
 
 检查当前npm镜像源
 
@@ -58,7 +58,7 @@ npm config set registry=https://mirrors.huaweicloud.com/repository/npm/
 npm config set registry https://registry.npmmirror.com
 ```
 
-# create vue by vite
+## create vue by vite
 
 
 
@@ -109,7 +109,7 @@ D:\dev-tools-JetBrains\front-web>npm view create-vite versions
 ]
 ```
 
-## 1、创建项目
+### 1、创建项目
 
 ```bash
 npm create vite@latest vue3-vite-element-plus-demo --template vue
@@ -150,7 +150,7 @@ o  Scaffolding project in D:\dev-tools-JetBrains\front-web\vue3-vite-element-plu
 ```
 
 
-## 2、安装依赖启动
+### 2、安装依赖启动
 
 ```bash
 cd  vue3-vite-element-plus-demo
@@ -199,7 +199,7 @@ vue3-vite-element-plus-demo
 ```
 
 
-## 3、安装 element-plus
+### 3、安装 element-plus
 
 [element-plus 官网](https://element-plus.org/zh-CN/guide/design)
 
@@ -250,7 +250,7 @@ app.mount('#app')
 ```
 
 
-## 4、安装 windi css
+### 4、安装 windi css
 
 [官方网站](https://cn.windicss.org/)
 
@@ -285,7 +285,7 @@ import 'virtual:windi.css'
 再安装一下 windi css 的插件 ： WindiCSS IntelliSense
 
 
-## 5、安装 vue Router
+### 5、安装 vue Router
 
 Vue.js 的官方路由。
 
@@ -335,7 +335,7 @@ app.mount('#app')
 
 ```
 
-## 6、 给 src 添加别名
+### 6、 给 src 添加别名
 
 导入 path, 使用 path.resolve 配置别名
 
@@ -360,7 +360,7 @@ export default defineConfig({
 
 ```
 
-## 7、 添加后台首页
+### 7、 添加后台首页
 
 在 src 下面创建pages/index.vue
 
@@ -407,7 +407,7 @@ export default router
 
 可参考类似步骤添加其他页面。
 
-## 8、 添加图标库
+### 8、 添加图标库
 
 ```bash
 npm install @element-plus/icons-vue
