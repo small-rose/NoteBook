@@ -575,7 +575,110 @@ app.mount('#app')
 ```
 
 
-### 9、 sm-crypto 加密
+### 9、安装 axios 
+
+axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和 node.js 中。
+
+[官网文档](http://axios-js.com/)
+
+```bash
+npm install axios
+```
+
+vue-axios
+
+```bash
+npm install --save axios vue-axios
+```
+
+在 src 新建 axios.js 文件
+
+```js
+import axios from 'axios'
+
+const instance = axios.create({
+    baseURL: 'http://localhost:3000',
+    timeout: 5000
+})
+
+export default instance
+```
+
+新建一个 src/api/manager.js 文件
+
+```js
+import axios from '~/axios'
+
+export function login(username, password) {
+   
+    return axios.post('/admin/login', {
+        username,
+        password
+    })
+}
+```
+
+在登录页面 import 函数
+
+```vue
+<script setup>
+
+   import { ref, reactive } from 'vue';
+   import { login } from '~/api/manager'
+   import { ElNotification} from 'element-plus';
+
+   const form = reactive({
+      username:"",
+      password:""
+   })
+
+   const ruleFs = reactive({
+      username: [
+         {required: true, message:"用户名不能为空", trigger:'blur'},
+         {min: 1, max: 10, message:"用户名长度1到10个字符", trigger:'blur'},
+      ],
+      password: [
+         {required: true, message:"密码不能为空", trigger:'blur'},
+         {min: 1, message:"密码不能少于6位", trigger:'blur'}
+      ]
+   });
+
+   const formRef = ref(null);
+
+   const obSubmit = ()=>{
+
+      formRef.value.validate(valid=>{
+
+         if(!valid){
+            console.log(' valied failed !')
+         }
+
+         console.log('submit!')
+         login(form.username, form.password)
+                 .then(res=>{
+                    console.log('res', res)
+                    // 提示成功
+                    // 存储用户信息
+                 }).catch(err=>{
+            console.log('err!', err)
+            ElNotification({
+               message: err.message || "请求失败",
+               type: 'error',
+               duration: 3000,
+            })
+         })
+      });
+   }
+</script>
+
+```
+ 
+
+
+
+
+
+### 100、 sm-crypto 加密
 
 ```bash
 npm install --save sm-crypto
