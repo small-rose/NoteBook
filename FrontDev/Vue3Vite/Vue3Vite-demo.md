@@ -16,7 +16,7 @@ This is the steps for Vite to create or init template vue  。
 
 
 1. TOC
-   {:toc}
+{:toc}
 
 
 ## 使用 Vite 创建 vue 3 的项目
