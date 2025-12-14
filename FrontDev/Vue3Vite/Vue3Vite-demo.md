@@ -437,7 +437,7 @@ export default router
 ### 8、 添加图标库
 
 ```bash
-npm install @element-plus/icons-vue
+npm install @element-plus/icons-vue --save
 ```
 
 ```js
@@ -575,14 +575,14 @@ app.mount('#app')
 ```
 
 
-### 9、安装 axios 
+### 9、安装 axios 进行请求交互
 
 axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和 node.js 中。
 
 [官网文档](http://axios-js.com/)
 
 ```bash
-npm install axios
+npm install axios --save
 ```
 
 vue-axios
@@ -597,14 +597,78 @@ npm install --save axios vue-axios
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3000',
+    // http://localhost:3000  使用 /api 代理后端接口
+    baseURL: '/api',
     timeout: 5000
 })
 
 export default instance
 ```
 
+修改 vite.config.js 增加 server下的 proxy 节点配置代理
+
+```js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
+import WindiCSS from 'vite-plugin-windicss'
+import { viteMockServe } from 'vite-plugin-mock';
+
+
+import path from "path"
+
+
+// https://vite.dev/config/
+export default defineConfig({
+  resolve:{
+    alias:{
+      // 将 ~ 给当前目录的src 取个别名
+      "~": path.resolve(__dirname, "src")
+    }
+  },
+  server:{
+    // 允许通过局域网访问
+    cors: true,
+    // 配置代理解决跨域
+    proxy: {
+      '/api':{
+        target: "http://localhost:8080/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/,'')
+      }
+    }
+  },
+  plugins: [
+    vue(), 
+    WindiCSS(),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+      imports: ['vue','@vueuse/core']
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }), 
+    viteMockServe({
+      mockPath: './src/mock', // Mock文件存放目录
+      localEnabled: true, // 开发环境启用
+      prodEnabled: false, // 生产环境禁用
+      watchFiles: true, // 监视文件更改
+      logger: true, // 控制台显示请求日志
+      supportTs: false // 重要：禁用TS支持
+    }),
+  ],
+})
+
+```
+
 新建一个 src/api/manager.js 文件
+
+
 
 ```js
 import axios from '~/axios'
@@ -658,22 +722,674 @@ export function login(username, password) {
                  .then(res=>{
                     console.log('res', res)
                     // 提示成功
+                    ElNotification({
+                       message: "登录成功",
+                       type: 'success',
+                       duration: 3000,
+                    })
                     // 存储用户信息
                  }).catch(err=>{
-            console.log('err!', err)
-            ElNotification({
-               message: err.message || "请求失败",
-               type: 'error',
-               duration: 3000,
-            })
+                     console.log('err!', err)
+                     ElNotification({
+                        message: err.message || "请求失败",
+                        type: 'error',
+                        duration: 3000,
+                     })
          })
       });
    }
 </script>
 
 ```
- 
 
+### 10 mockjs 模拟数据
+
+因为使用 vite-plugin-mock 插件，所以需要 vite-plugin-mock
+
+> 注意 mockjs 和 vite-plugin-mock 是不同的组件
+
+```bash
+npm install vite-plugin-mock 
+```
+>--save-dev代表开发依赖，可简写为 -D
+
+在 src 目录下新建 mock 文件夹，并在其中新建 index.js 文件
+
+```js
+// --- 1. 内部通用的帮助函数 (Utility Function) ---
+
+/**
+ * 创建一个简化的 Mock 方法配置
+ * @param {string} url API 请求路径
+ * @param {string} method HTTP 方法 ('get', 'post', 'put', 'delete')
+ * @param {any|Function} responseData 模拟返回的数据
+ */
+function createMockMethod(url, method, responseData) {
+  return {
+    url,
+    method,
+    // 如果 responseData 是函数，则直接使用它；否则包装成函数返回数据
+    response: typeof responseData === 'function' 
+      ? responseData 
+      : () => responseData,
+  };
+}
+
+
+// --- 2. 模块 A：用户认证模块 (Login Module) ---
+
+// 我们可以定义一个常量数组，专门存放用户相关的 mock
+const loginMocks = [
+  createMockMethod('/api/admin/login', 'post', ({ body }) => {
+    const { username } = body;
+    if (username === 'admin') {
+      return { code: 200, message: '登录成功', data: { token: 'admin-token' } };
+    } else {
+      return { code: 500, message: '用户名或密码错误', data: null };
+    }
+  }),
+  
+  createMockMethod('/api/user/info', 'get', {
+    code: 200, 
+    data: { name: 'Admin', avatar: 'https://example.com/avatar.png' }
+  }),
+];
+
+
+// --- 3. 模块 B：商品管理模块 (Products Module) ---
+
+// 我们可以定义另一个常量数组，专门存放商品相关的 mock
+const productMocks = [
+  createMockMethod('/api/products/list', 'get', {
+    code: 200,
+    data: [
+      { id: 1, name: 'Apple Watch', price: 2999 },
+      { id: 2, name: 'MacBook Pro', price: 12999 },
+    ],
+  }),
+
+  createMockMethod('/api/products/add', 'post', {
+    code: 0,
+    message: 'Product added successfully',
+  }),
+];
+
+
+// --- 4. 最终导出：将所有模块的 Mock 数组合并导出一个大数组 ---
+
+// 使用扩展运算符 (...) 合并所有内部定义的 mock 数组
+export default [
+  loginMocks,
+  productMocks,
+];
+```
+
+
+
+### 11、安装 vueuse 管理登录信息
+
+vueuse 是一个为 Vue.js 3 提供的一组基于 Composition API 实用函数集合。 
+
+[vueuse 官网 https://vueuse.org](https://vueuse.org/guide/#installation))
+
+{ .tips}
+> From v12.0, VueUse no longer supports Vue 2. Please use v11.x for Vue 2 support.
+
+核心软件包的目标是轻量级且无依赖项。而附加组件则将流行的软件包封装到统一的 API 风格中。
+
+- @vueuse/head  头部,vue3的文档管理器，支持服务器渲染
+- @vueuse/core  核心包，包含常用的工具函数
+- @vueuse/integrations  集成包，包含常用的第三方库的封装
+- @vueuse/motion  动画库
+- @vueuse/router  路由库
+- @vueuse/sound  声音库
+- @vueuse/universal  通用库
+- @vueuse/web  网络库
+- @vueuse/compat  兼容库
+- @vueuse/shared  共享库
+- @vueuse/gesture  手势库
+- @vueuse/rxjs RxJS 库
+- @vueuse/firebase Firebase 实时绑定库
+
+安装cookie 状态管理插件 universal-cookie ：
+
+```bash
+npm i  @vueuse/core  --save
+npm install @vueuse/integrations  --save
+
+# 管理cookie 的
+npm i universal-cookie@^7 --save
+
+# @vueuse/integrations 需要用到的依赖，如果没有需要手动安装一下
+npm i change-case@^5  --save
+npm i drauu@^0  --save
+npm i focus-trap@^7  --save  
+npm install fuse.js@^7  --save
+npm install idb-keyval@^6  --save
+npm install jwt-decode@^4  --save
+npm install --save qrcode
+npm install --save sortable
+```
+
+
+### 11、安装 vuex 状态管理模式
+
+Vuex 是一个用于 Vue.js 应用程序的状态管理模式和库 。它为应用程序中的所有组件提供一个集中式的状态存储，并通过规则确保状态只能以可预测的方式进行修改。
+
+[官网 https://vuex.vuejs.org](https://vuex.vuejs.org/installation.html)
+
+```bash
+npm install vuex@next --save
+```
+
+官方demo ：
+
+```js
+import { createApp } from 'vue'
+import { createStore } from 'vuex'
+
+// Create a new store instance.
+const store = createStore({
+  state () {
+    return {
+      count: 0
+    }
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  }
+})
+
+const app = createApp({ /* your root component */ })
+
+// Install the store instance as a plugin
+app.use(store)
+
+```
+新建 src/store/index.js
+
+```js
+import { createStore } from 'vuex'
+
+const store = createStore({
+   state () {
+      return {
+         user: {}
+      }
+   },
+   mutations: {
+      setuserinfo (state, user) {
+         state.user = user;
+      }
+   }
+})
+
+export default store ;
+```
+
+在 main.js 中使用
+
+```js
+
+import store from './store';
+
+// 其他省略
+
+app.use(store);
+
+```
+
+整合登录、退出、获取用户信息后的
+
+```js
+import { createStore } from 'vuex';
+import { login, getinfo, logout } from '../api/manager';
+import { setToken, removeToken } from '../utils/auth';
+
+const store = createStore({
+   state () {
+      return {
+         user: {}
+      }
+   },
+   mutations: {
+      SET_USERINFO(state, user) {
+         state.user = user;
+      }
+   },
+   actions: {
+        // 登录actions
+        login({commit},{username, password}){
+            return new Promise((resolve, reject)=>{
+            login(username, password).then(res=>{
+                setToken(res.token);
+                resolve(res)
+            }).catch(err=>reject(err));
+        })
+        },
+        //登录成功后获取当前用户的登录信息
+        getinfo({commit}){
+            return new Promise((resolve, reject)=>{
+                getinfo().then(res=>{
+                    commit("SET_USERINFO",res);
+                    resolve(res);
+                }).catch(err=>reject(err));
+            });
+        },
+        // 登出 actions
+        logout({commit}){
+            // 移除token
+            removeToken();
+            // 清除当前用户状态
+            commit("SET_USERINFO",{});
+        }
+        
+    },
+});
+
+export default store ;
+```
+
+### 12、全局路由守卫
+
+在 src/permission.js 文件
+
+```js
+import router from "./router";
+
+// 全局守卫
+router.beforeEach((to, from, next)=>{
+    
+    next();
+});
+```
+
+整合了 token 获取和用户信心管理之后的最终效果
+
+```js
+import router from "./router"; 
+import {getToken} from "~/utils/auth";
+import { notice } from '~/utils/notice';
+import store from "./store";
+
+// 全局路由守卫
+router.beforeEach(async (to, from, next)=>{
+
+    const token = getToken();
+
+    // 找不到 token 且不是去登录
+    if(!token && to.path !='/login'){
+        notice("请先登录", "error");
+        // 没有登录强制回到登录页面
+        return next({ path: "/login"});
+    }
+
+    if(token && to.path == "/login"){
+        notice("请勿重复登录", "error");
+        // 没有登录强制回到登录页面
+        return next({ path: "/"});
+    }
+
+    // 如果用户登录了，自动获取用户信息，存储到 vuex 中
+    if(token){
+        await store.dispatch("getinfo");
+    }
+    next();
+});
+```
+
+在 src/main.js 导入引用
+
+```js
+import  '~/permission';
+```
+
+
+### 13 进度条 nprogress
+
+```bash
+mpn install --save nprogress
+```
+
+```js
+
+import 'nprogress/nprogress.css'
+```
+
+在 通知组件中增加管理进度的方法
+
+``js
+import nProgress from "nprogress";
+
+// 开启 loading
+export function showLoading(){
+    nProgress.start();
+}
+
+// 关闭 loading
+export function hideLoading(){
+    nProgress.done();
+}
+```
+
+
+
+### 14 自定义组件
+
+新建组件 src/component/FormDrawer.vue
+
+```vue
+<template>
+<el-drawer v-model="showDrawer"  :title="title" :size="size" :close-on-click-modal="destroyOnClose">
+    <div class="formDrawer">
+        <div class="body">
+            <slot></slot>
+        </div>
+        <div class="actions">
+            <el-button  color="#626aef" class="w-[50px]" type="primary"
+                @click="doSubmit" :loading="loading">{{ confirmText }}</el-button>
+            <el-button class="w-[50px]" type="info"
+                @click="close" >取消</el-button>
+        </div>
+    </div>
+     
+</el-drawer>
+</template>  
+<script setup>
+    import {ref} from 'vue';
+    
+    // 定义抽屉的打开 关闭
+    const showDrawer = ref(false);
+
+    // 对外暴露属性
+    const props = defineProps({
+        title: String,
+        size: {
+            type:String,
+            default:"40%"
+        },
+        destroyOnClose:{
+            type: Boolean,
+            default: false,
+        },
+        confirmText:{
+            type:String,
+            default:'确认'
+        }
+    });
+
+    // open  打开抽屉
+    const open = () => showDrawer.value = true ;
+    // close 关闭抽屉
+    const close = ()=> showDrawer.value = false ;
+
+    // 按钮点击后的loading状态
+    const loading = ref(false);
+    const loadingShow = ()=> loading.value = true ;
+    const loadingHide = ()=> loading.value = false ;
+
+    // 使用编译器宏，暴露自己的属性给父级组件
+    defineExpose({
+        open,
+        close,
+        loadingShow,
+        loadingHide
+    });
+
+    
+    // 使用编译器宏, 传递按钮事件
+    const emit = defineEmits(["submit"]);
+    const doSubmit = ()=> emit("submit");
+
+</script> 
+<style>
+    .formDrawer{
+        height: 100%;
+        width: 100%;
+        position: relative;
+        @apply flex flex-col;
+    } 
+    .formDrawer .body{
+        flex: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 50px;
+        overflow-y: auto;
+    }
+    .formDrawer .actions{
+        height: 50px;
+        @apply mt-auto flex ;
+    }
+</style>
+```
+
+在修改密码的页面使用组件
+
+```vue
+<script setup>
+import { Aim, FullScreen, Unlock } from '@element-plus/icons-vue';
+import { logout } from '~/api/manager';
+import { notice, showConfirm} from '~/utils/notice';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import {useFullscreen } from '@vueuse/core';
+
+import { ref, reactive } from 'vue';
+import { updatePassword } from '~/api/manager';
+import FormDrawer from '~/components/FormDrawer.vue';
+
+const showDrawer = ref(false);
+ const formDrawerRef = ref(null);
+
+const {isFullscreen, // 全屏状态
+     toggle // 切换全屏
+      } = useFullscreen();
+const store = useStore();
+const router = useRouter();
+
+const handleCommand = (c)=>{
+    switch (c){
+        case "logout":
+            handleLogout();
+            break;
+        case "rePassword":
+            //showDrawer.value = true ;
+            // 调用 组件节点的 open方法
+            formDrawerRef.value.open();
+            break;
+        case "profile":
+            console.log('查看信息');
+            break;
+    }
+}
+
+// 刷新
+const handleRefresh = ()=>{
+    location.reload();
+}
+// 修改密码  
+
+    const form = reactive({
+        oldpassword:"",
+        password:"",
+        repassword:""
+    })
+
+    const ruleFs = reactive({
+        oldpassword: [
+            {required: true, message:"旧密码不能为空", trigger:'blur'}
+        ],
+        password: [
+            {required: true, message:"新密码不能为空", trigger:'blur'},
+            {min: 6, message:"新密码不能少于6位", trigger:'blur'}
+        ],
+        repassword: [
+            {required: true, message:"密码不能为空", trigger:'blur'},
+            {min: 6, message:"新密码二次验证失败", trigger:'blur'}
+        ]
+    });
+
+   
+    const formRef = ref(null);
+    // loading 等待
+    const loading = ref(false);
+    const onSubmit = ()=>{
+
+        formRef.value.validate(valid=>{
+
+            if(!valid){
+                console.log(' valied failed !')
+            }
+            formDrawerRef.value.loadingShow()
+            updatePassword(form).then(res=>{
+                console.log(res)
+                if(res.code ==200){    
+                    notice("修改密码成功，请重新登录");
+                    store.dispatch("/logout");
+                    router.push("/login");
+                }else{
+                    notice( res.message||"修改密码失败", 'error');
+                }
+            }).finally(()=>{
+                formDrawerRef.value.loadingHide();
+            })
+        });
+    }
+
+    const obCancel = ()=>{
+        showDrawer.value = false ;
+    }
+</script>
+
+<template>
+<div class="s-header">
+    <span class="s-logo">
+        <el-icon class="mf-1 mr-1"><eleme-filled/></el-icon>
+        个人学习网站
+    </span>
+    <el-tooltip content="收起" effect="dark">
+        <el-icon class="icon-btn"><fold/></el-icon>
+    </el-tooltip>
+    <el-tooltip content="刷新" placement="bottom" effect="dark">
+        <el-icon class="icon-btn" @click="handleRefresh"><refresh/></el-icon>
+    </el-tooltip>
+    <div class="s-header-right">
+        <el-tooltip content="全屏" placement="bottom" effect="dark">
+            <el-icon class="icon-btn" @click="toggle">
+                <FullScreen v-if="!isFullscreen"/><Aim v-else/>
+            </el-icon>
+        </el-tooltip>
+        <el-dropdown @command="handleCommand">
+            <span class="flex items-center text-light-50">
+            <el-avatar class="mr-2" :size="25" :src="$store.state.user.avatar"></el-avatar>
+            {{ $store.state.user.username }}
+            <!-- <el-avatar :size="25" :src="$store.user.avatar"></el-avatar> -->
+            <el-icon class="el-icon--right">
+                <arrow-down />
+            </el-icon>
+            </span>
+            <template #dropdown>
+            <el-dropdown-menu>
+                <el-dropdown-item command="rePassword" >修改密码</el-dropdown-item>
+                <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+                <el-dropdown-item command="profile">个人信息</el-dropdown-item>
+            </el-dropdown-menu>
+            </template>
+        </el-dropdown>
+    </div>
+</div>
+   
+<!-- 原始 抽屉使用 -->   
+<!--
+<el-drawer v-model="showDrawer" header-class="#626aef" title="修改密码" size="35%" :close-on-click-modal="false">
+    <el-form ref="formRef" :rules="ruleFs" :model="form"  class="w-[300px]" size="small">
+            <el-form-item prop="oldpassword" label="当前密码">
+                <el-input v-model="form.oldpassword" placeholder="请输入旧密码" show-password>
+                     <template #prefix>
+                        <el-icon><Unlock/></el-icon>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="password" label="新的密码" >
+                <el-input v-model="form.password" placeholder="请输入新密码" show-password>
+                    <template #prefix>
+                        <el-icon><Lock /></el-icon>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="repassword" label="确认密码" >
+                <el-input v-model="form.repassword" placeholder="请再次输入新密码" show-password>
+                    <template #prefix>
+                        <el-icon><Lock /></el-icon>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button  color="#626aef" class="w-[50px]" type="primary"
+                @click="obSubmit" :loading="loading">确认</el-button>
+
+                 <el-button color="#626aef" class="w-[50px]" type="success"
+                @click="obCancel" >取消</el-button>
+            </el-form-item>
+        </el-form>  
+</el-drawer>
+-->
+
+<!-- 使用自定义组件 打开抽屉-->
+<form-drawer ref="formDrawerRef" title="修改密码" @submit="onSubmit">
+    <el-form ref="formRef" :rules="ruleFs" :model="form"  class="w-[300px]" style="height: 1000px;" size="small">
+            <el-form-item prop="oldpassword" label="当前密码">
+                <el-input v-model="form.oldpassword" placeholder="请输入旧密码" show-password>
+                     <template #prefix>
+                        <el-icon><Unlock/></el-icon>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="password" label="新的密码" >
+                <el-input v-model="form.password" placeholder="请输入新密码" show-password>
+                    <template #prefix>
+                        <el-icon><Lock /></el-icon>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="repassword" label="确认密码" >
+                <el-input v-model="form.repassword" placeholder="请再次输入新密码" show-password>
+                    <template #prefix>
+                        <el-icon><Lock /></el-icon>
+                    </template>
+                </el-input>
+            </el-form-item>
+        </el-form>  
+</form-drawer>
+
+</template>
+<style scoped>
+    .s-header{
+        @apply flex items-center bg-indigo-500 text-light-100 fixed top-0 left-0 right-0;
+        height: 64px;
+    }
+    .s-logo{
+       width: 250px;   
+       @apply flex justify-center items-center font-thin;  
+    }
+    .icon-btn{
+        @apply flex justify-center items-center ;
+        width: 42px;
+        height: 42px;
+        cursor: pointer;
+    }
+    .s-header .s-header-right{
+       @apply ml-auto flex items-center ;
+    }
+    .s-header .dropdown{
+        height: 42ox;
+    }
+</style>
+```
 
 
 
