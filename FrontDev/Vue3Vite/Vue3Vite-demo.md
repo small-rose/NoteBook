@@ -1054,13 +1054,12 @@ mpn install --save nprogress
 ```
 
 ```js
-
 import 'nprogress/nprogress.css'
 ```
 
 在 通知组件中增加管理进度的方法
 
-``js
+```js
 import nProgress from "nprogress";
 
 // 开启 loading
