@@ -1385,13 +1385,22 @@ const handleRefresh = ()=>{
        @apply ml-auto flex items-center ;
     }
     .s-header .dropdown{
-        height: 42ox;
+        height: 42px;
     }
 </style>
 ```
 
+动画
 
+```
+npm i gsap --save
+```
 
+echarts
+
+```bash
+npm install -s echarts
+```
 
 ### 100、 sm-crypto 加密
 
