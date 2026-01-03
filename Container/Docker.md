@@ -3,6 +3,7 @@ layout: default
 title: Docker Install
 parent: Container
 nav_order: 10
+has_toc: true
 ---
 
 # Docker Install
