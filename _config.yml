@@ -1,4 +1,4 @@
-remote_theme: small-rose/just-the-docs
+remote_theme: small-rose/just-the-docs@v0.10.0
 
 title: NoteDocs
 
@@ -35,15 +35,17 @@ plugins:
 
 
 callouts:
-  warning:
-    title: warning
+  highlight:
     color: yellow
-  note:
-    title: note
-    color: blue
   important:
-    title: important
-    color: red
-  tips:
-    title: tips
+    title: Important
+    color: blue
+  new:
+    title: New
     color: green
+  note:
+    title: Note
+    color: purple
+  warning:
+    title: Warning
+    color: red
