@@ -1,4 +1,5 @@
-remote_theme: small-rose/just-the-docs@v0.10.0
+//remote_theme: small-rose/just-the-docs@v0.10.0
+remote_theme: small-rose/just-the-docs@just-the-docsy
 
 title: NoteDocs
 
@@ -41,7 +42,7 @@ callouts:
     title: Important
     color: blue
   new:
-    title: New
+    title: Tips
     color: green
   note:
     title: Note
