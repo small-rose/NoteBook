@@ -13,7 +13,6 @@ has_toc: true
 {: .no_toc .text-delta }
 
 <div class="my-right-toc" markdown="1">
-
 1. TOC
 {:toc}
 </div>
