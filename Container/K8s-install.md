@@ -11,8 +11,10 @@ nav_order: 30
 ## Table of contents
 {: .no_toc .text-delta }
 
+<div class="my-right-toc" markdown="1">
 1. TOC
 {:toc}
+</div>
 
 
 k8s 1.25.x 集群安装

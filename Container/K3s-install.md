@@ -11,9 +11,10 @@ nav_order: 20
 ## Table of contents
 {: .no_toc .text-delta }
 
+<div class="my-right-toc" markdown="1">
 1. TOC
 {:toc}
-
+</div>
 
 k3s v1.25.3+k3s1 集群安装
 --------------------------------------------
