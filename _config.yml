@@ -34,8 +34,6 @@ plugins:
   - jekyll-seo-tag
   - jemoji
 
-# 语法高亮使用 v0.3.3 版本
-color_scheme: legacy_light
 
 callouts:
   highlight:
