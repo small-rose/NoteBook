@@ -14,8 +14,10 @@ These are some guidelines for develop links to help us quickly search for what w
 ## Table of contents
 {: .no_toc .text-delta }
 
+<div class="my-right-toc" markdown="1">
 1. TOC
 {:toc}
+</div>
 
 
 <style type="text/css">
