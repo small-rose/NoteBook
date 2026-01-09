@@ -5,15 +5,12 @@ nav_order: 3
 parent: Tools
 ---
 
-# Excel
+# E-Book
 {: .no_toc }
 
-Record some pl that can be used for development, such as functions.
+Record some e-book resources for read on line  and download to local .
 {: .fs-6 .fw-300 }
 
-
-## Table of contents
-{: .no_toc .text-delta }
 
 1. TOC
 {:toc}

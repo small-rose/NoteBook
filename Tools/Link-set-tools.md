@@ -25,27 +25,39 @@ These are some guidelines for develop links to help us quickly search for what w
 .grid-2 {
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px; /* 可选，用于设置项目之间的间隔 */
+  margin: 1em 0 2em 0;
 }
 .grid-3 {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px; /* 可选，用于设置项目之间的间隔 */
+  margin: 1em 0 2em 0;
 }
-.grid-4 {
+.grid-6 {
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 8px; /* 可选，用于设置项目之间的间隔 */
+  margin: 1em 0 2em 0;
 }
 .grid-5 {
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 5px; /* 可选，用于设置项目之间的间隔 */
+  margin: 1em 0 2em 0;
 }
 .grid-6 {
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 5px; /* 可选，用于设置项目之间的间隔 */
+  margin: 1em 0 2em 0;
+}
+.grid-8 {
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 5px; /* 可选，用于设置项目之间的间隔 */
+  margin: 1em 0 2em 0;
 }
 .grid a {
   /* 这里可以添加其他样式，例如背景色、文字居中等 */
   display: block;
   text-align: center;
+  padding: 1.5em 0;
+  border-radius: 5px;
 }
 .grid a:hover {
   background-color: #7253ed; /* 鼠标悬停时的背景色 */
@@ -55,7 +67,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### API在线
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://tool.oschina.net/apidocs" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">常用API文档索引</a>
 <a href="https://www.matools.com/api/java8" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">Java8 API</a>
@@ -66,7 +78,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 开源网站
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://github.com/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">github网站</a>
 <a href="https://gitee.com/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">码云</a>
@@ -79,7 +91,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 开发相关
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://www.oracle.com/downloads/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">ORICLE官网</a>
 <a href="https://www.oracle.com/java/technologies/javase-downloads.html" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">JAVA官网</a>
@@ -100,7 +112,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 服务相关
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="http://tomcat.apache.org/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">Apache官网</a>
 <a href="http://tomcat.apache.org/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">Tomcat官网</a>
@@ -115,7 +127,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### Linux
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://www.linux.org/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">Linux</a>
 <a href="https://linux.cn" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">Linux开源社区</a>
@@ -126,7 +138,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 数据库相关
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://www.mysql.com/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">Mysql官网</a>
 <a href="https://www.microsoft.com/zh-cn/sql-server/sql-server-downloads" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">SQL SERVER官网</a>
@@ -145,7 +157,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 前端相关
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://www.mysql.com/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">w3school官网</a>
 <a href="https://jquery.com/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">jQuery官网</a>
@@ -165,7 +177,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 远程或传输  	 
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://www.vandyke.com/products/securecrt/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">SecureCRT官网</a>
 <a href="https://xshell.en.softonic.com" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">XSHELL官网</a>
@@ -179,7 +191,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 小工具
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://www.7-zip.org" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">7z官网</a>
 <a href="http://www.winrar.com.cn" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">WINRAR官网</a>
@@ -191,7 +203,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 图片相关
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://cn.bandisoft.com/honeyview/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">honeyview图片查看</a>
 <a href="https://tinypng.com" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">图片压缩TinyPNG</a>
@@ -205,7 +217,7 @@ These are some guidelines for develop links to help us quickly search for what w
    
 #### 图床工具：
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://github.com/Molunerfinn/PicGo" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">PicGo</a>
 <a href="http://mpic.lzhaofu.cn" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">MPic-图床神器</a>
@@ -219,7 +231,7 @@ These are some guidelines for develop links to help us quickly search for what w
 
 #### 其他
 
-<div class="grid grid-4">
+<div class="grid grid-6">
 
 <a href="https://www.iteye.com/blog/user/rednaxelafx" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">Open Jdk相关</a>
 <a href="http://www.castor.org/" target="_blank" class="btn btn-outline fs-3 mb-4 mb-md-0 mr-2">XML与Java互转</a>
