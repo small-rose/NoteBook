@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Develop Links
+title: Link-Sets
 nav_order: 0
 parent: Tools
 ---
 
-# Develop Links
+# Links-Sets
 
 These are some guidelines for develop links to help us quickly search for what we want , use search tools or search engines to search the resources we need
 {: .fs-6 .fw-300 }
@@ -36,6 +36,10 @@ These are some guidelines for develop links to help us quickly search for what w
 }
 .grid-5 {
   grid-template-columns: repeat(5, 1fr);
+  grid-gap: 5px; /* 可选，用于设置项目之间的间隔 */
+}
+.grid-6 {
+  grid-template-columns: repeat(6, 1fr);
   grid-gap: 5px; /* 可选，用于设置项目之间的间隔 */
 }
 .grid a {
