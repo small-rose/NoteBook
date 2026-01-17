@@ -125,3 +125,11 @@ update user set authentication_string=password('new_password') where user='root'
 flush privileges;
 ```
 
+这样就可以密码重置了，然后注释掉 `skip-grant-tables` 重启容器测试连接：
+
+```bash
+docker exec -it eaea /bin/bash
+mysql -uroot -pnew_password
+```
+
+应该就没有问题了。大功告成！^_^
