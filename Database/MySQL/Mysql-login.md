@@ -27,18 +27,18 @@ ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: Y
 
 （2）如果密码正确之后还是不能连接：
 
-​	（a）编辑`/etc/my.cnf`的mysqld下 添加`skip-grant-tables`
+	（a）编辑`/etc/my.cnf`的mysqld下 添加`skip-grant-tables`
 
-​	（b）重启MySQL服务，根据版本选择。
+	（b）重启MySQL服务，根据版本选择。
 
 ```bash
 service mysqld restart
 systemctl restart mysqld.service
 ```
 
-​	（c）直接mysql -uroot 登录
+	（c）直接mysql -uroot 登录
 
-​	（d）修改MySQL密码
+	（d）修改MySQL密码
 
 ```sql
 # 5.7之前
@@ -49,7 +49,7 @@ update user set authentication_string=password('your_password') where user='root
 flush privileges;
 ```
 
-​	（e）注释掉`skip-grant-table`、重启MySQL服务。再次登录验证即可。
+	（e）注释掉`skip-grant-table`、重启MySQL服务。再次登录验证即可。
 
 
 
@@ -69,16 +69,16 @@ mysql access denied for user root@ip useing password
 
 （2）如果密码正确还是不能连接，说明缺少授权。
 
-​	（a）mysql -uroot 在服务端登录
+	（a）mysql -uroot 在服务端登录
 
-​	（b）查询用户登录的授权状态
+	（b）查询用户登录的授权状态
 
 ```sql
 use mysql;
 select host,user from user;
 ```
 
-​	（c）确认用户在指定IP没有授权，就授权
+	（c）确认用户在指定IP没有授权，就授权
 
 ```sql
 -- 适用于开发账户，授权root在任意主机登录，拥有全部schema的全部表的全部权限
@@ -87,6 +87,41 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'your_password' WITH GRA
 FLUSH   PRIVILEGES;
 ```
 
-​	（d）客户端重新连接即可。
+	（d）客户端重新连接即可。
 
 <font color="red" >特别说明：</font>如果对权限管理比较严格，可以按IP授权，也可以按网段授权，可以授权不同的权限级别，可以授权不同操作权限等相关操作，可以参考关于Mysql授权的的内容在《Mysql常用命令》中的授权部分。
+
+
+### 3、用户不能在容器里的mysql登录
+
+
+通过挂载的 my.cnf 重置密码（推荐，如果你有挂载配置）
+
+修改容器映射出来的my.cnf文件
+
+```bash
+vi /opt/docker/mysql/conf/my.cnf
+```
+
+跳过授权
+
+```
+[mysqld]
+skip-grant-tables
+skip-networking
+```
+
+重启mysql重启。
+
+```bash
+docker exec -it eaea /bin/bash
+
+mysql -u root
+
+use mysql
+
+update user set authentication_string=password('new_password') where user='root' and host='localhost';
+
+flush privileges;
+```
+
