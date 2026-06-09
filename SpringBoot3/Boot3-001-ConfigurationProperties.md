@@ -1,11 +1,10 @@
 ---
 layout: default
-title: @EnableConfigurationProperties
+title: SB3-EnableConfigurationProperties
 parent: SpringBoot3
 has_children: false
-nav_order: 81
+nav_order: 1001
 ---
-
 
 Here are webservices of CXF used examples on springboot3 .
 {: .fs-6 .fw-300 }

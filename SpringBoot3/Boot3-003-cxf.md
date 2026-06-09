@@ -1,9 +1,9 @@
 ---
 layout: default
-title: SpringBoot3-CXF
+title: SB3-CXF
 parent: SpringBoot3
 has_children: false
-nav_order: 88
+nav_order: 1003
 ---
 
 

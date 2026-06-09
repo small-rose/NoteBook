@@ -1,9 +1,9 @@
 ---
 layout: default
-title: @EnableConfigurationProperties
+title: SB3-Spring Session
 parent: SpringBoot3
 has_children: false
-nav_order: 82
+nav_order: 1002
 ---
 
 
