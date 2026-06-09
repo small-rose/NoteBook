@@ -2,7 +2,7 @@
 layout: default
 title: SpringBoot3
 has_children: true
-nav_order: 81
+nav_order: 72
 ---
 
 
