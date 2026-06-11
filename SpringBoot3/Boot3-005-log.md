@@ -664,6 +664,7 @@ logging:
 Spring Boot 3 的 **Micrometer Tracing** 会自动将 TraceId / SpanId 注入结构化日志：
 
 ```yaml
+# application.yml
 management:
   tracing:
     sampling:

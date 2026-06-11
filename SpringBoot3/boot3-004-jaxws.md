@@ -14,6 +14,7 @@ Spring Boot 3 WebService 开发指南 - CXF JAX-WS 实战教程 (boot3-004-jaxws
 {: .no_toc .text-delta }
 
 
+
 ## WebService 发展历程
 
 WebService 技术起源于 2000 年初，是 SOAP 协议和 WSDL 标准的推动下发展起来的。早期 WebService 主要用于企业级应用程序之间的系统集成，随着微服务架构的兴起，WebService 逐渐演变为一种标准的服务暴露和调用方式。
