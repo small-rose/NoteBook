@@ -1,9 +1,9 @@
 ---
 layout: default
-title: SB3-Logging（日志体系变更）
+title: SB3-Logging
 parent: SpringBoot3
 has_children: false
-nav_order: 1003
+nav_order: 1004
 last_modified_date: 2026-06-10
 ---
 

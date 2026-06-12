@@ -308,16 +308,14 @@ xmllint --format wsdl文件 | grep -A5 "binding"
 > 3. **难以排查问题**：错误信息不明确，调试困难
 > 4. **生产环境事故**：可能导致系统不可用
 >
-> **正确做法**：当服务端 WSDL 为 rpc/encoded 且无法修改时，**必须使用 wsimport（JDK 自带）**，它支持 rpc/encoded 格式。
+> **正确做法**：当服务端 WSDL 为 rpc/encoded 且无法修改时，**必须联系服务端维护者修改 WSDL**。现代工具（CXF、wsimport 4.x）均不支持 rpc/encoded。
 
-**方案一：使用 wsimport（JDK 自带，兼容性更好）**
+**方案一：联系服务端维护者修改 WSDL（推荐）**
 
 ```bash
-# wsimport 支持 rpc/encoded
+# 请服务端将 use="encoded" 改为 use="literal"
+# 修改后，使用 CXF 或 wsimport 生成客户端代码
 wsimport -keep -verbose http://localhost:8080/services/common?wsdl
-
-# 如果 wsimport 也报错，尝试加上 -Xnocompile 参数
-wsimport -keep -Xnocompile http://localhost:8080/services/common?wsdl
 ```
 
 **方案二：手动修改 WSDL 风格（⚠️ 仅当服务端可修改时使用）**
@@ -372,8 +370,10 @@ wsdl2java -client -d src/main/java src/main/wsdl/commonService.wsdl
 | **Apache CXF** | ❌ | ✅ | ✅ | ✅ |
 | **Axis 1.x** | ✅ | ✅ | ✅ | ❌ |
 | **Axis 2.x** | ❌ | ✅ | ✅ | ✅ |
-| **JAX-WS (wsimport)** | ⚠️ 部分 | ✅ | ✅ | ✅ |
+| **JAX-WS (wsimport 4.x)** | ❌ | ✅ | ✅ | ✅ |
 | **Spring WS** | ❌ | ✅ | ✅ | ✅ |
+
+> ⚠️ **重要**：wsimport 4.x（Jakarta EE 10）已**不支持** rpc/encoded。旧版本（如 2.x）可能支持，但不推荐使用。
 
 #### 2.7 最佳实践建议
 
@@ -382,9 +382,9 @@ wsdl2java -client -d src/main/java src/main/wsdl/commonService.wsdl
 > **如果你无法修改服务端 WSDL（这是大多数情况），请遵循以下规则：**
 >
 > 1. **不要手动修改 WSDL 绑定风格**：这会导致客户端与服务端不兼容
-> 2. **使用 wsimport 生成代码**：wsimport 支持 rpc/encoded，CXF 不支持
-> 3. **下载 WSDL 到本地后不修改**：直接用 wsimport 从本地 WSDL 生成代码
-> 4. **如果 wsimport 也失败**：检查网络连接、WSDL 完整性、或联系服务端维护者
+> 2. **wsimport 和 CXF 都不支持 rpc/encoded**：现代工具已摒弃此过时协议
+> 3. **联系服务端维护者**：让他们将 WSDL 改为 rpc/literal 或 document/literal
+> 4. **如果服务端确实不可改**：考虑使用 Axis 1.x（老旧但唯一支持 rpc/encoded）或手动拼 SOAP 消息
 
 **详细方案：**
 
@@ -392,12 +392,9 @@ wsdl2java -client -d src/main/java src/main/wsdl/commonService.wsdl
 2. **旧系统迁移**：先用 wsimport 生成代码，再逐步迁移到 CXF
 3. **服务端可控**：修改 WSDL 绑定风格为 rpc/literal 或 document/literal
 4. **服务端不可控（最常见情况）**：
-   ```bash
-   # ✅ 正确做法：使用 wsimport（支持 rpc/encoded）
-   wsimport -keep -verbose http://localhost:8080/services/common?wsdl
-   
-   # ❌ 错误做法：手动修改 WSDL 后用 CXF 生成代码
-   # 这会导致客户端与服务端不兼容，调用必然失败
+   ```
+   # ✅ 正确做法：联系服务端维护者修改 WSDL
+   # ❌ 错误做法：wsimport / CXF 都无法处理 rpc/encoded
    ```
 
 #### 2.8 wsimport Gradle 完整配置教程（Java 17+ 环境）
@@ -423,7 +420,7 @@ java {
 }
 
 // ============================================
-// wsimport 任务配置（用于 rpc/encoded WSDL）
+// wsimport 任务配置（用于生成 WebService 客户端代码）
 // ============================================
 
 // 1. 定义 wsimport 工具依赖配置
@@ -452,7 +449,7 @@ sourceSets {
 // 4. wsimport 代码生成任务
 tasks.register('wsimportGenerate', JavaExec) {
     group = 'build'
-    description = '使用 wsimport 根据 WSDL 生成 Java 客户端代码（支持 rpc/encoded）'
+    description = '使用 wsimport 根据 WSDL 生成 Java 客户端代码'
 
     // 使用 jaxws-tools 中的 wsimport
     classpath = configurations.wsimportTools
@@ -564,19 +561,19 @@ mainClass = 'com.sun.tools.ws.WsImport'  // 不是 com.sun.tools.ws.wscompile.Ws
 
 ##### 2.8.5 wsimport vs wsdl2java 对比
 
-| 特性 | wsimport | wsdl2java (CXF) |
-|------|----------|-----------------|
-| **rpc/encoded 支持** | ✅ 支持 | ❌ 不支持 |
-| **rpc/literal 支持** | ✅ 支持 | ✅ 支持 |
-| **document/literal 支持** | ✅ 支持 | ✅ 支持 |
-| **Java 17+ 支持** | ⚠️ 需要 jaxws-tools 库 | ✅ 原生支持 |
-| **Spring Boot 集成** | ⚠️ 需要自定义配置 | ✅ 有官方插件 |
-| **代码质量** | 一般 | 更好 |
-| **维护状态** | 已废弃 | 活跃维护 |
+| 特性 | wsimport (4.x) | wsdl2java (CXF) | Axis 1.x |
+|------|----------------|-----------------|----------|
+| **rpc/encoded 支持** | ❌ 不支持 | ❌ 不支持 | ✅ 支持 |
+| **rpc/literal 支持** | ✅ 支持 | ✅ 支持 | ✅ 支持 |
+| **document/literal 支持** | ✅ 支持 | ✅ 支持 | ✅ 支持 |
+| **Java 17+ 支持** | ⚠️ 需要 jaxws-tools 库 | ✅ 原生支持 | ❌ 可能有问题 |
+| **Spring Boot 3 集成** | ⚠️ 需要自定义配置 | ✅ 有官方插件 | ❌ 不兼容 |
+| **代码质量** | 一般 | 更好 | 较差 |
+| **维护状态** | 已废弃 | 活跃维护 | 已废弃 |
 
 **结论**：
-- 如果 WSDL 是 **rpc/encoded** 格式且服务端不可修改 → 使用 **wsimport**
-- 如果 WSDL 是 **rpc/literal** 或 **document/literal** 格式 → 使用 **wsdl2java (CXF)**
+- **rpc/encoded 格式** → 联系服务端维护者修改 WSDL（现代工具已不支持）
+- **rpc/literal 或 document/literal** → 使用 **wsdl2java (CXF)**
 
 ##### 2.8.6 多个 WSDL 生成多个独立 JAR 的配置
 
