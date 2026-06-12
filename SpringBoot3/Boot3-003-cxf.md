@@ -82,8 +82,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.14'
 	id 'io.spring.dependency-management' version '1.1.7'
-    // 1. 引入专门用于执行 wsdl2java 的 Gradle 插件
-    id 'io.mateo.cxf-codegen' version '2.5.0'
+	// 1. 引入专门用于执行 wsdl2java 的 Gradle 插件
+	id 'io.mateo.cxf-codegen' version '2.5.0'
 }
 
 import io.mateo.cxf.codegen.wsdl2java.Wsdl2Java

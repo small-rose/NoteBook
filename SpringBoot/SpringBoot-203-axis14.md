@@ -16,7 +16,6 @@ Here are SpringBoot session experience .
 1. TOC
 {:toc}
 
-
 # Spring Boot 2.5 + Axis 1.4 发布 WebService 服务端完整教程
 
 ## 目录
@@ -573,7 +572,7 @@ Apache Axis 1.4 自 2006 年发布后**官方不再更新**，存在以下已知
 
 在 `getService()` 方法中，获取 JNDI name 后检查危险协议：
 
-```
+```java
 private static boolean isUnsupportedJndiProtocol(String name) {
     if (name == null) return false;
     String upper = name.toUpperCase();
@@ -615,8 +614,6 @@ patch-axis.bat
 输出物：
 - 安装到 `~/.m2/repository/org/apache/axis/axis/1.4-patched/`
 - 同时复制到 `lib/axis-1.4-patched.jar` 作为 flatDir 回退
-
-> 具体详见[SpringBoot-204-axis-patched]()
 
 ---
 
@@ -663,35 +660,270 @@ Axis WebService started
 
 ## 9. 客户端调用示例
 
-### 9.1 使用 Axis 原生客户端（RPC/encoded）
+本项目提供 **5 种客户端调用方式**，覆盖不同场景和偏好。所有客户端均位于 `src/test/java/com/small/rose/demo/client/`，可通过 Gradle 任务一键运行。
 
-```
+| 编号 | 名称 | 适用场景 | 运行命令 |
+|------|------|----------|----------|
+| 9.1 | Axis Native Call API | 快速原型，无需代码生成 | `gradle runAxisNative` |
+| 9.2 | WSDL2Java Stub | 生产级 Java↔Java，类型安全 | `gradle runWsdl2JavaStub` |
+| 9.3 | JAX-WS Dispatch API | 标准方案，Java 内置 | `gradle runJaxWs` |
+| 9.4 | Spring WebServiceTemplate | Spring 生态集成 | `gradle runSpringWs` |
+| 9.5 | 原生 HTTP + SOAP XML | 跨语言，无 Axis 依赖 | `gradle runRawHttp` |
+
+---
+
+### 9.1 Axis Native Call API
+
+**原理**：使用 Axis 的 `Service.createCall()` 动态构造调用，直接在代码中指定操作名、参数类型和返回值类型。
+
+**完整源码**：`src/test/java/com/small/rose/demo/client/AxisNativeClient.java`
+
+```java
 Service service = new Service();
+
+// --- RPC/encoded ---
 Call call = (Call) service.createCall();
 call.setTargetEndpointAddress("http://localhost:8080/services/HelloWebService");
-call.setOperationName(new QName("example", "sayHello"));
+call.setOperationName(new QName("http://webservice.demo.rose.small.com", "sayHello"));
+call.addParameter("name", XMLType.XSD_STRING, ParameterMode.IN);
+call.setUseSOAPAction(true);
+call.setSOAPActionURI("");
+call.setEncodingStyle(URI_SOAP11_ENC);
 
 String result = (String) call.invoke(new Object[] { "World" });
-System.out.println(result);  // Hello, World! ...
+// → Hello, World! Welcome to Axis WebService.
+
+// --- RPC/literal ---
+call.setEncodingStyle(null);  // 取消 encodingStyle 即 literal
+String r1 = (String) call.invoke(new Object[] { "World" });
+// → Hello, World! Welcome to Axis RPC/Literal WebService.
+
+// --- Document/literal（复杂类型）---
+// ⚠ 受 patched jar 影响，Document/literal 的 Bean 序列化不可用
 ```
 
-### 9.2 使用 SOAP 请求（HTTP Client 直接调用）
+**运行结果**：
 
 ```
-POST /services/HelloDocLiteralService HTTP/1.1
-Content-Type: text/xml; charset=utf-8
-SOAPAction: "sayHello"
+=== HelloWebService (RPC/encoded) ===
+sayHello → Hello, World! Welcome to Axis WebService.
+getUser  → User{id=1, name='User-1', email='user1@example.com'}
+--- HelloRpcLiteralService (RPC/literal) ---
+sayHello → Hello, World! Welcome to Axis RPC/Literal WebService.
+getUser  → [skipped - Axis 1.4 不支持 RPC/literal + 复杂类型]
+--- HelloDocLiteralService (Document/literal) ---
+sayHello → [skipped - patched Axis jar 不支持 Document/literal 序列化]
+getUser  → [skipped - patched Axis jar 不支持 Document/literal 序列化]
+```
 
+> **注意**：RPC/literal 和 Document/literal 的 `getUser` 因 Axis 1.4 框架限制，无法正确序列化嵌套复杂类型（`User` 对象）。Document/literal 的 `sayHello` 两个请求也因 patched jar 移除默认 `BeanSerializerFactory` 而不可用。
+
+---
+
+### 9.2 WSDL2Java Stub
+
+**原理**：先从 WSDL 生成 Java Stub 代码，像调用本地接口一样调用远程服务。
+
+**生成命令**：
+```bash
+gradle genAxisStubs
 ```
-```xml
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-        <sayHelloRequest>
-            <name>World</name>
-        </sayHelloRequest>
-    </soap:Body>
-</soap:Envelope>
+
+生成后的 Stub 代码在 `src/test/java/com/small/rose/demo/client/stub/axis/` 目录下。
+
+**完整源码**：`src/test/java/com/small/rose/demo/client/WSDL2JavaStubClient.java`
+
+```java
+// 使用 Locator 获取服务
+HelloWebServiceImplServiceLocator locator = new HelloWebServiceImplServiceLocator();
+HelloWebServiceImpl port = locator.getHelloWebService();
+
+// 类型安全的调用
+String msg = port.sayHello("World");
+User user = port.getUser(1L);
 ```
+
+**运行结果**：
+```
+sayHello → Hello, World! Welcome to Axis WebService.
+getUser  → id=1, name=User-1, email=user1@example.com
+```
+
+> **注意**：`WSDL2Java` 仅对 **RPC/encoded** 模式生成的 Stub 可正常工作。RPC/literal 和 Document/literal 模式因 Axis 1.4 对复杂类型的处理限制，生成的 Stub 不完整或运行异常。
+
+---
+
+### 9.3 JAX-WS Dispatch API
+
+**原理**：使用 JDK 内置的 JAX-WS `Dispatch<SOAPMessage>` API 手动构造 SOAP 消息，无需任何第三方依赖（JDK 8 内置）。
+
+**完整源码**：`src/test/java/com/small/rose/demo/client/JaxWsClient.java`
+
+```java
+URL wsdlUrl = new URL("http://localhost:8080/services/HelloDocLiteralService?wsdl");
+QName serviceQName = new QName("http://localhost:8080/services/HelloDocLiteralService",
+                                "HelloDocLiteralServiceImplService");
+QName portQName = new QName("http://localhost:8080/services/HelloDocLiteralService",
+                            "HelloDocLiteralService");
+
+Service jaxwsService = Service.create(wsdlUrl, serviceQName);
+Dispatch<SOAPMessage> dispatch = jaxwsService.createDispatch(
+        portQName, SOAPMessage.class, Service.Mode.MESSAGE);
+
+// 构造请求：body 元素 = 操作名，参数为直接子元素
+SOAPMessage request = MessageFactory.newInstance().createMessage();
+request.getSOAPBody().addChildElement(
+    new QName("http://webservice.demo.rose.small.com", "sayHello"));
+// 添加 <name>World</name> 子元素
+
+SOAPMessage response = dispatch.invoke(request);
+```
+
+**运行结果**：
+```
+sayHello Response:
+<sayHelloReturn>...</sayHelloReturn>
+getUser → [skipped - Axis 1.4 不支持 Document/literal + 嵌套复杂类型]
+```
+
+> **注意**：JAX-WS 调用 Axis 1.4 的 Document/literal 时，SOAP Body 的根元素必须是**操作名**（如 `sayHello`），而非 WSDL 中声明的全局元素名。这是因为 Axis 的 `java:RPC` provider 按操作名分发，而非按 WSDL 绑定规则。
+
+---
+
+### 9.4 Spring WebServiceTemplate
+
+**原理**：使用 Spring-WS 的 `WebServiceTemplate` 发送和接收 SOAP 消息，适合 Spring 生态项目。
+
+**完整源码**：`src/test/java/com/small/rose/demo/client/SpringWsClient.java`
+
+```java
+WebServiceTemplate template = new WebServiceTemplate();
+
+String url = "http://localhost:8080/services/HelloDocLiteralService";
+
+// 只需提供 body 内容（不含 envelope），Spring WS 自动包装
+String request = "<sayHello xmlns=\"http://webservice.demo.rose.small.com\">"
+        + " <name>World</name>"
+        + "</sayHello>";
+
+StringResult result = new StringResult();
+template.sendSourceAndReceiveToResult(
+        url,
+        new StringSource(request),
+        new SoapActionCallback(""),
+        result);
+
+System.out.println("Response:\n" + result);
+```
+
+**运行结果**：
+```
+Response:
+<soapenv:Envelope ...>
+  <soapenv:Body>
+    <sayHelloReturn xmlns="http://webservice.demo.rose.small.com">
+      <message>Hello, World! Welcome to Axis Document/Literal WebService.</message>
+    </sayHelloReturn>
+  </soapenv:Body>
+</soapenv:Envelope>
+```
+
+> **关键技巧**：`WebServiceTemplate` 会自动添加 SOAP Envelope 和 Header，因此请求内容**只需提供 Body 内的 XML**。**不要**包含 `xmlns:soapenv` 或 `xmlns:ws` 等 envelope 级 namespace 声明，否则 SAAJ 会重写 namespace 导致 Axis 服务端无法识别。
+
+---
+
+### 9.5 原生 HTTP + SOAP XML
+
+**原理**：使用 Java 标准 `HttpURLConnection` 发送完整的 SOAP XML 文本，不依赖任何 Axis/JAX-WS 库，适合跨语言调用和测试。
+
+**完整源码**：`src/test/java/com/small/rose/demo/client/RawHttpClient.java`
+
+```java
+// RPC/encoded：需指定 xsi:type 和 soapenc:encodingStyle
+String soapRpcEnc =
+  "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\""
+  + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+  + " xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\">"
+  + " <soap:Body>"
+  + "   <ns1:sayHello xmlns:ns1=\"http://webservice.demo.rose.small.com\">"
+  + "     <name xsi:type=\"xsd:string\">World</name>"
+  + "   </ns1:sayHello>"
+  + " </soap:Body>"
+  + "</soap:Envelope>";
+
+// RPC/literal：无需 xsi:type，namespace 在根元素上
+String soapRpcLit =
+  "<soap:Envelope ...>"
+  + " <soap:Body>"
+  + "   <sayHello xmlns=\"http://webservice.demo.rose.small.com\">"
+  + "     <name>World</name>"
+  + "   </sayHello>"
+  + " </soap:Body>"
+  + "</soap:Envelope>";
+
+// Document/literal：Body 元素 = 操作名，属性为直接子元素（无中间包装层）
+String soapDocLit =
+  "<soap:Envelope ...>"
+  + " <soap:Body>"
+  + "   <sayHello xmlns=\"http://webservice.demo.rose.small.com\">"
+  + "     <name>World</name>"
+  + "   </sayHello>"
+  + " </soap:Body>"
+  + "</soap:Envelope>";
+
+// 发送 POST 请求
+URL url = new URL("http://localhost:8080/services/HelloDocLiteralService");
+HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+conn.setRequestMethod("POST");
+conn.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
+conn.setRequestProperty("SOAPAction", "");
+// ... 写入请求体，读取响应
+```
+
+**运行结果**：
+```
+--- HelloWebService (RPC/encoded) ---
+HTTP 200
+<soapenv:Envelope><soapenv:Body>
+  <ns1:sayHelloResponse ...><sayHelloReturn>Hello, World! ...</sayHelloReturn></ns1:sayHelloResponse>
+</soapenv:Body></soapenv:Envelope>
+
+--- HelloRpcLiteralService (RPC/literal) ---
+HTTP 200
+<soapenv:Envelope><soapenv:Body>
+  <sayHelloResponse ...><sayHelloReturn>Hello, World! Welcome to Axis RPC/Literal ...</sayHelloReturn></sayHelloResponse>
+</soapenv:Body></soapenv:Envelope>
+
+--- HelloDocLiteralService (Document/literal) ---
+HTTP 200
+<soapenv:Envelope><soapenv:Body>
+  <sayHelloReturn xmlns="http://webservice.demo.rose.small.com">
+    <message>Hello, World! Welcome to Axis Document/Literal WebService.</message>
+  </sayHelloReturn>
+</soapenv:Body></soapenv:Envelope>
+
+getUser → [HTTP 200, body 为空 — Axis 1.4 不支持 Document/literal + 嵌套复杂类型]
+```
+
+> **Document/literal 格式要点**：Axis 1.4 的 `java:RPC` provider 要求 Body 子元素为**操作名**（如 `<sayHello>`），操作参数直接作为子元素（如 `<name>`），不需要额外 `<sayHelloRequest>` 等包装层。`xsi:type` 属性在 literal 模式下不需要。
+
+---
+
+### 9.6 五类客户端对比
+
+| 对比维度 | Axis Native | WSDL2Java | JAX-WS | Spring WS | Raw HTTP |
+|----------|-------------|-----------|--------|-----------|----------|
+| 依赖 | Axis jar | Axis jar + stub | JDK 内置 | spring-ws-core | 无 |
+| 类型安全 | 无 | 有 | 无（Dispatch） | 无 | 无 |
+| 代码量 | 中 | 少 | 中 | 少 | 多（手写 XML） |
+| RPC/encoded | ✅ | ✅ | ❌ | ❌ | ✅ |
+| RPC/literal (简单类型) | ✅ | ❌ | ❌ | ❌ | ✅ |
+| RPC/literal (复杂类型) | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Document/literal (简单类型) | ❌ | ❌ | ✅ | ✅ | ✅ |
+| Document/literal (复杂类型) | ❌ | ❌ | ❌ | ❌ | ❌ |
+| 最佳场景 | 快速原型 | 生产 RPC/enc | 简易 Document | Spring 项目 | 跨语言调试 |
+
+> **标记说明**：✅ = 可用；❌ = 不可用（框架限制）
 
 ---
 
