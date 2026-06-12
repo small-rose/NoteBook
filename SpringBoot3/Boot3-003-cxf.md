@@ -417,7 +417,7 @@ compileJava.dependsOn compileStubJava
 
 只需要在现有 build.gradle 加一个 Jar 任务，从已编译的类里只提取生成的 stub 目录。
 
-做法:
+最佳实践的做法:
 
 在 build.gradle 已有 generateCommonService 任务之后，加：
 ```
