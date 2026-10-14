@@ -1,11 +1,20 @@
 ---
 layout: default
-title: Spring AI
+title: Spring AI 1.X 理论
 parent: Spring
 grand_parent: Java
 nav_order: 90
 ---
 
+Here are Spring AI 1.X record .
+{: .fs-6 .fw-300 }
+
+
+## Here are Spring AI 1.X tutorial .
+{: .no_toc .text-delta }
+
+TOC
+{:toc}
 
 # 01 · 原理篇：定义特性原理与选型对比
 
