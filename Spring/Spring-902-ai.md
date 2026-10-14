@@ -47,15 +47,6 @@ nav_order: 92
 >
 > 你不需要为 MySQL、MongoDB、Redis 各学一套 API——`JpaRepository` 一个抽象全覆盖；同理，你不需要为 OpenAI、DeepSeek、Ollama 各写一套客户端——`ChatClient` 一个抽象全覆盖，换模型只改配置文件。
 
-### 1.1 它不是什么
-
-| 误区 | 澄清 |
-|------|------|
-| 不是 Python LangChain 的 Java 移植 | 灵感来自 LangChain/LlamaIndex，但 API 完全按 Spring 习惯重新设计 |
-| 不是只能聊天的 SDK | 覆盖对话、嵌入、文生图、语音转写、语音合成、内容审核 6 大模型能力 |
-| 不是训练/微调框架 | 只做**推理接入**与**应用编排**，不负责模型训练 |
-| 不是必须上云 | 可接云端 API（DeepSeek/OpenAI…），也可接本机 Ollama/vLLM 私有部署模型 |
-
 ## 2. 演进历程与版本线
 
 | 时间 | 里程碑 |
@@ -761,25 +752,68 @@ Spring AI
 **基础（定义与特性）**
 
 1. 用一句话说明 Spring AI 解决的核心问题是什么？
+
+   **答**：用统一的 Spring 式抽象（ChatClient/ChatModel/Advisor + Starter 自动配置 + BOM 版本治理）屏蔽各家模型供应商的 API 差异，让「换模型/换供应商」像换数据库驱动一样只动配置、不动代码。
+
 2. Spring AI 之于 Spring Data 的类比关系是什么？
+
+   **答**：Spring Data 用 Repository 抽象统一访问各家数据库（换库只换依赖与方言实现），Spring AI 用 ChatClient/Model 抽象统一访问各家 LLM——各供应商 Starter 相当于「数据库驱动」，自动配置把对应实现注入容器，业务代码零感知。
+
 3. 列出 ChatClient、Advisor、ChatMemory 各自的职责。
+
+   **答**：ChatClient——面向业务的流式 DSL，组装 Prompt（system/user、Advisor 参数、工具）并发起调用；Advisor——请求/响应双向拦截的责任链插件（记忆、RAG、日志、限流都是它）；ChatMemory——会话历史的存取与窗口管理，按 conversationId 分桶隔离多会话。
+
 4. ChatClient 与 ChatModel 的选择标准是什么？
+
+   **答**：业务开发默认用 ChatClient（DSL + Advisor 生态覆盖绝大多数场景）；只有需要操作底层响应（原始 ChatResponse、元数据、多模态细粒度控制）或开发 Advisor/集成层时才直接用 ChatModel。类比：ChatModel 像 JdbcTemplate，ChatClient 像建立其上的现代门面。
 
 **原理**
 
 5. 描述 `chatClient.prompt().user(x).call().content()` 从你的代码到模型服务再返回的完整链路（至少 5 步）。
+
+   **答**：①DSL 组装 Prompt（system/user/参数）→ ②Advisor 链前置处理（记忆 Advisor 拼历史 → RAG Advisor 检索注入片段 → 自定义改写）→ ③ChatModel 用 Options 拼供应商 HTTP 请求（RestClient/WebClient）→ ④TLS 发往模型服务推理 → ⑤响应反序列化为 ChatResponse → ⑥Advisor 后置处理（写回记忆等）→ ⑦`.content()` 返回文本。2.0 补充：工具场景下 ChatModel 只产出原始响应，执行循环由 ToolCallingAdvisor 完成。
+
 6. 同步调用与流式调用在传输层的本质区别是什么？
+
+   **答**：同步是一次性请求-响应（普通 HTTP，整体写回完整 ChatResponse）；流式基于 SSE 长连接（`text/event-stream`），服务端把生成的 token 分块持续推送，框架聚合为 Flux/回调。差别体现在首 token 延迟（TTFT）与交互体验，而非模型能力。
+
 7. 结构化输出为什么不是"模型天然支持"？框架在其中做了哪三件事？
+
+   **答**：模型原生输出的是自然语言文本，不承诺 JSON 结构。框架（`BeanOutputConverter`）做三件事：①生成 Schema 格式指令注入 Prompt（告诉模型按什么结构输出）；②调用后取回 JSON 文本；③Jackson 反序列化为 POJO——2.0 还会在解析失败时把错误回喂模型自动重试自纠。
+
 8. 自定义一个"禁止输出敏感词"的 Advisor，`adviseCall` 中应该在 `chain.nextCall` 的前面还是后面做检查？为什么？
+
+   **答**：放在 `chain.nextCall` **之后**——敏感词检查的对象是模型输出，请求阶段内容尚未生成；拿到 response 后校验，不通过可抛异常或改写。职责区分：`nextCall` 之前只能拦截/改写「输入」，之后才能审计/过滤「输出」；若输入也要审，就前后各放一个检查点。
+
 9. 2.0 把工具执行循环从 ChatModel 移到 ToolCallingAdvisor，带来了哪三点好处？
+
+   **答**：①**关注点分离**：ChatModel 退回「单次模型调用」本职，工具循环成为可插拔的 `ToolCallingAdvisor`；②**可治理**：循环外置后才能统一施加限额（单工具 40 次/轮、单请求 150 次）、全局开关（`tool-calling.enabled`）与审计埋点；③**安全**：默认只执行显式挂载的工具、拒绝未挂载工具的解析回退，落实最小权限，防提示词注入把容器里任意 Bean 变成攻击面。
+
 10. 1.x 项目升级 2.0，配置文件里哪类写法必须最先检查？
+
+**答**：**配置属性写法**——先全局搜 `.chat.options.`：1.x 的 `spring.ai.deepseek.chat.options.model` 在 2.0 必须改为扁平的 `spring.ai.deepseek.chat.model`（全部供应商同理）。其次搜 Java 侧 `.defaultOptions(` → `.options(`。属性扁平化是 2.0 破坏面最广的变更（§14 第 1 条）。
 
 **对比与选型**
 
 11. Spring AI 与 LangChain4j 在设计哲学上的根本差异是什么？
+
+**答**：Spring AI 走 Spring 工程化路线——自动配置、依赖注入，与 Boot/Security/Micrometer 深度协同，抽象全面、面向企业治理；LangChain4j 走开发者直觉路线——`AiServices` 定义接口 + 注解即得实现，轻量、零框架绑定、原型极快。一个是「生态位优先」，一个是「上手速度优先」。
+
 12. 为什么说两者"没有能力代差"？举例说明。
+
+**答**：两者都完整覆盖对话/流式/嵌入/RAG/工具/多模态。例：RAG 两边同构——Spring AI 是 `VectorStore` + `QuestionAnswerAdvisor`，LC4j 是 `EmbeddingStore` + `ContentRetriever`，都是「嵌入 → 向量检索 → 注入上下文」；工具两边都有 @Tool 式注解与自主执行循环。差异只在组合方式：Advisor 纵向叠加 vs AiServices 横向挂载——能力清单几乎一一对应。
+
 13. 什么情况下应该毫不犹豫选 LangChain4j？
+
+**答**：三种场景：①**非 Spring 项目**（纯 Java SE/Quarkus/Micronaut）——Spring AI 的自动配置生态无从发挥；②**要 10 分钟出原型**——AiServices 接口式开发最快；③**团队已深度使用 LC4j** 且无 Spring 治理诉求。反向：Spring Boot 存量项目、要鉴权/审计/可观测协同的，选 Spring AI。
+
 14. Spring AI 的哪些特性对"金融/政企类项目"最有吸引力？（举三个）
+
+**答**：①**私有化与供应链可信**——官方开源、Maven Central 分发、BOM 统一版本治理，适配内网与等保环境；②**与 Spring 安全/可观测体系天然协同**——Spring Security 鉴权、Micrometer 指标与追踪直接接入现有体系；③**数据可控**——本地模型（Ollama/vLLM）接入 + 工具最小权限治理 + RAG 企业知识库，敏感数据不出域。
+
 15. 并排写：分别用两种框架实现"带 system 人设的问答"，并指出心智模型差异。
 
+**答**：正文 §18 已并排给出——Spring AI：注入 `ChatClient.Builder`，`chatClient.prompt().system("人设").user(q).call().content()`；LangChain4j：定义 `interface Assistant { @SystemMessage("人设") String answer(String q); }`，再 `AiServices.builder(Assistant.class).chatModel(model).build()` 拿实现。心智差异：Spring AI 把「一次调用」建模为可拦截的对象流水线（Prompt/Advisor 显式组装，控制粒度细）；LC4j 建模为一个 Java 接口方法（注解即配置，上手极快）——前者利于复杂编排，后者利于快速表达。
+
 ---
+
