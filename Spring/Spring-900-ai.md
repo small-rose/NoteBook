@@ -13,8 +13,10 @@ Here are Spring AI 1.X record .
 ## Here are Spring AI 1.X tutorial .
 {: .no_toc .text-delta }
 
-TOC
+1. TOC
 {:toc}
+
+---
 
 # 01 · 原理篇：定义特性原理与选型对比
 

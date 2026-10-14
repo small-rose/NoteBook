@@ -17,6 +17,8 @@ Here are Spring AI 2.X record .
 TOC
 {:toc}
 
+---
+
 # 01 · 理论篇：定义特性原理与选型对比
 
 > 阶段：入门 → 精通

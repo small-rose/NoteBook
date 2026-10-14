@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Spring AI 2.X 理论
+title: Spring AI 2.X 应用
 parent: Spring
 grand_parent: Java
 nav_order: 93
@@ -14,8 +14,11 @@ Here are Spring AI 2.X record .
 ## Here are Spring AI 2.X tutorial .
 {: .no_toc .text-delta }
 
-TOC
+1. TOC
 {:toc}
+
+---
+
 
 # 02 · 实战篇：场景应用与两大接入案例
 
