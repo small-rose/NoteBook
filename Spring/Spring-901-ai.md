@@ -6,15 +6,16 @@ grand_parent: Java
 nav_order: 91
 ---
 
-Here are Spring AI 1.X record .
-{: .fs-6 .fw-300 }
+# Spring AI 2.X 应用
+{: .no_toc }
 
-
-## Here are Spring AI 1.X tutorial .
+## Table of contents
 {: .no_toc .text-delta }
 
-TOC
+1. TOC
 {:toc}
+
+---
 
 
 # 02 · 实战篇：场景应用与两大接入案例

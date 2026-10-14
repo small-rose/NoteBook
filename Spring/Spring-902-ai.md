@@ -6,15 +6,13 @@ grand_parent: Java
 nav_order: 92
 ---
 
+# Spring AI 2.X 理论
+{: .no_toc }
 
-Here are Spring AI 2.X record .
-{: .fs-6 .fw-300 }
-
-
-## Here are Spring AI 2.X tutorial .
+## Table of contents
 {: .no_toc .text-delta }
 
-TOC
+1. TOC
 {:toc}
 
 ---
