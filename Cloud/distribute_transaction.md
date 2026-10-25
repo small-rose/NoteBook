@@ -2,10 +2,10 @@
 layout: default
 title: 分布式事务
 parent: Cloud
-nav_order: 1
+nav_order: 3
 ---
 
-# Git Theory
+# Distribute Global Transactional
 {: .no_toc }
 
 ## Table of contents
@@ -246,7 +246,7 @@ Seata 设计是对业务无入侵，解决2PC资源锁的问题。
 
 Seata 把一个分布式事务理解成一个包含了多个分支事务的全局事务。全局事务负责协调下面的各个分支事务达成一致，全部成功或出现失败全部回滚。分支事务值关系数据库的本地事务。
 
-![](/images/springcloud/seata-work-02.png)
+![](https://docs.zhangxiaocai.cn/Assets/images/springcloud/seata-work-02.png)
 
 TC（Transaction Coordinator）：事务协调器 是独立的中间件，需要独立部署运行，维护全局事务的运行状态，接收TM指令发起全局事务的提交与回滚，负责与RM通信协调各个分支事务的提交或回滚。
 
@@ -254,7 +254,7 @@ TM（Transaction Manager）：事务管理器，TM需要嵌入应用程序中工
 
 RM（Resource Manager）：资源管理器，控制分支事务，状态汇报，并接收事务协调器TC的指令，驱动分支事务的提交或回滚。
 
-![](/images/springcloud/seata-work-03.png)
+![](https://docs.zhangxiaocai.cn/Assets/images/springcloud/seata-work-03.png)
 
 ```
 分布式事务处理过程：
