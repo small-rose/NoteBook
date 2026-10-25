@@ -12,7 +12,7 @@ nav_order: 2
 {: .no_toc .text-delta }
 
 1. TOC
-   {:toc}
+{:toc}
 
 
 ## 分布式会话解决方案

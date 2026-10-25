@@ -58,7 +58,7 @@ try {
                 "WHERE lock_key=? AND lock_value=?", key, holder);
 }
 ```
-### 2、 Redis 方案
+### 2、Redis 方案
 
 原理: 使用Nx命令 + PX自动续期 的原子命令。
 
@@ -135,7 +135,7 @@ public class OrderService {
  - 可重入：内部用 Hash 记录 uuid:threadId + 重入计数
 
 
-### 3、 ZooKeeper：Curator 方案
+### 3、ZooKeeper：Curator 方案
 
 原理: **基于临时顺序节点 + Watch 监听机制**
 
@@ -205,7 +205,7 @@ public class ZkDistributedLock {
 
 
 
-### 4. etcd（云原生首选）
+### 4、etcd（云原生首选）
    
 基于 Lease（租约）+ Raft CAS：
 
@@ -556,7 +556,7 @@ client.close()：关闭整个 etcd 客户端
 - Watch 的 key 不存在也能监听，后续创建/更新/删除都会收到事件
 
 
-### 5.应用场景和选型对比
+### 5、应用场景和选型对比
 
 **不同应用场景选择**
 
@@ -581,7 +581,7 @@ client.close()：关闭整个 etcd 客户端
 
 
 
-### 5.Fencing token 栅栏令牌
+### 6、Fencing token 栅栏令牌
 
 什么是 fencing token ？
 
@@ -660,7 +660,7 @@ A:                                                             ──→ 写资�
 
 Fencing Token 本职是一张“通行证编号”，每次拿锁时发一张新的，资源端只认最新编号的请求，旧编号的请求一律作废——从而彻底杜绝“客户端以为锁还在，实际上锁已经丢了”导致的数据错乱。
 
-### 6.应用注意事项
+### 7、应用分布式锁注意事项
 
 - 释放锁必须校验 owner（Redis 用 isHeldByCurrentThread，DB 用 lock_value），防止误删其他人的锁
 - unlock / release 必须放 finally, 确保加锁必解锁。
