@@ -137,13 +137,14 @@ public class OrderService {
 
 ### 3、 ZooKeeper：Curator 方案
 
-#### 原理 
-
-**基于临时顺序节点 + Watch 监听机制**
+原理: **基于临时顺序节点 + Watch 监听机制**
 
 （1）在 /lock/resource 下创建 EPHEMERAL_SEQUENTIAL 节点
+
 （2）序号最小者持有锁
+
 （3）其他客户端只监听前一个节点，避免惊群
+
 （4）持锁者崩溃 → 会话断开 → 临时节点自动删除 → 下一节点被唤醒
 
 优点：
