@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Mediator Pattern
+title: Memento Pattern
 parent: Design Patterns
 has_children: false
 nav_order: 28
 ---
 
-Here are java Mediator Design Pattern experience .
+Here are java Memento Design Pattern experience .
 {: .fs-6 .fw-300 }
 
 1. TOC
