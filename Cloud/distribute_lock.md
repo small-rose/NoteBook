@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 分布式锁
+title: Distribute Global Lock
 parent: Cloud
 nav_order: 1
 ---

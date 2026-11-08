@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 分布式会话
+title: Distribute Global Session
 parent: Cloud
 nav_order: 2
 ---

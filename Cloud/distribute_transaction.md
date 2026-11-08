@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 分布式事务
+title: Distribute Global Transactional
 parent: Cloud
 nav_order: 3
 ---
