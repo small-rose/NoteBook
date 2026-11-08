@@ -6,7 +6,7 @@ has_children: false
 nav_order: 13
 ---
 
-Here are java   Singleton Design Pattern experience .
+Here are java Abstract Factory Design Pattern experience .
 {: .fs-6 .fw-300 }
 
 1. TOC

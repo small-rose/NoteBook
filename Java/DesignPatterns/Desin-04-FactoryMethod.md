@@ -6,7 +6,7 @@ has_children: false
 nav_order: 14
 ---
 
-Here are java   Singleton Design Pattern experience .
+Here are java Factory Method Design Pattern experience .
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -27,7 +27,7 @@ Here are java   Singleton Design Pattern experience .
 
 ## 模式结构
 
-```java
+```
 ┌─────────────────┐     build     ┌──────────────────┐
 │   Creator       │──────────────▶│   Product        │
 │ (abstract)      │               │ (interface/abs)  │
@@ -214,7 +214,9 @@ public class OrderController {
 你只需要：
 
 1、新建 ApplePayPayment 实现 Payment 接口。
+
 2、新建 ApplePayPaymentFactory 继承 PaymentFactory。
+
 3、在 getFactory 中添加一个分支（或改为注册表模式彻底消除 switch）。
 
 完全不修改已有的 AlipayPayment、WechatPayment、CardPayment 等类的代码。这就是开闭原则的体现。
