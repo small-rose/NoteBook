@@ -1,9 +1,9 @@
 ---
 layout: default
-title: MySQL Install
+title: MySQL Install Linux
 parent: MySQL
 grand_parent: Database
-nav_order: 81
+nav_order: 80
 ---
 
 # MySQL Install

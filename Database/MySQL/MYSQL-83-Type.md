@@ -3,7 +3,7 @@ layout: default
 title: MySQL Type
 parent: MySQL
 grand_parent: Database
-nav_order: 11
+nav_order: 84
 ---
 
 ## MYSQL全部类型

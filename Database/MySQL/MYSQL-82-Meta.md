@@ -3,7 +3,7 @@ layout: default
 title: MySQL Meta
 parent: MySQL
 grand_parent: Database
-nav_order: 10
+nav_order: 83
 ---
 
 # MySQL Meta

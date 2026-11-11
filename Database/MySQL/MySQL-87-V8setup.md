@@ -3,7 +3,7 @@ layout: default
 title: MySQL V8 Setup
 parent: MySQL
 grand_parent: Database
-nav_order: 85
+nav_order: 88
 ---
 
 
