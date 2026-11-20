@@ -216,7 +216,7 @@ SELECT VERSION();
 
 3. 3306 端口占用
 
-> netstat -ano | findstr 3306
+> `netstat -ano | findstr 3306`
 >
 >改 my.ini 里的 port=3307 然后重启服务。
 
