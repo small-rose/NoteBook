@@ -238,9 +238,17 @@ XA方案缺点：
 - 单点问题：TM 宕机会导致事务悬而未决。
 - 性能差：不适合高并发。
 
-实现：Atomikos、Bitronix、Narayana；Seata AT 模式也支持 XA。
+实现：[Atomikos](https://www.baeldung-cn.com/java-atomikos)、Bitronix、Narayana；Seata AT 模式也支持 XA。
 
 适用：银行转账、订单支付等对一致性要求极高、低并发的场景。
+
+Atomikos 支持的数据库：
+
+- oracle
+- myslq
+- ms sqlserver
+- postgre sql
+- db2
 
 #### 1.2 Seate方案
 
