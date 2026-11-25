@@ -14,7 +14,6 @@ nav_order: 6
 1. TOC
 {:toc}
 
----
 
 ## JSON 相关
 
@@ -62,7 +61,7 @@ public class ParseTest {
 ```
 
 输出结果：
-```
+```text
 MyBean(status=0, returnMsg=SUCCESS)
 ```
 Bean转成对应的JSON字符串:
@@ -80,7 +79,8 @@ public class FormatTest {
 }
 ```
 输出结果：
-```
+
+```text
 {"FLAG":"1","RETURN_MSG":"你的参数没有输入"}
 ```
 
@@ -145,5 +145,4 @@ public class Rules {
     @JSONField(name="g")
     private PicLink picLink ;
 }
-
 ```
