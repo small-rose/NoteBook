@@ -236,9 +236,14 @@ lsmod | grep -e ip_vs -e nf_conntrack_ipv4
 ```bash
 yum install chrond -y
 vim /etc/chrony.conf
----txt
+```
+内容
+```text
 ntpdate ntp1.aliyun.com iburst
----
+```
+
+修改时间
+```bash
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 echo 'Asia/Shanghai' > /etc/timezone
 ```
