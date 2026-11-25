@@ -230,7 +230,7 @@ settings-live template
 
 模板：
 
-```txt
+```text
 log.debug("$METHOD_NAME$::$PLACE_HOLDERS$",$ARGUMENTS$);
 ```
 
@@ -238,7 +238,7 @@ log.debug("$METHOD_NAME$::$PLACE_HOLDERS$",$ARGUMENTS$);
 
 METHOD_NAME 
 
-```txt
+```text
 # 打印方法名称
 methodName()
 ```

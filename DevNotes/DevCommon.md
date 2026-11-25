@@ -230,19 +230,19 @@ D:\dev-tools\JetBrains\IntelliJ IDEA 2020.1\plugins\maven\lib\maven3\conf
 1、新建系统环境变量
 
 
-变量名：GRADLE_HOME
+- 变量名：GRADLE_HOME
 
-变量值：D:\apache\gradle-7.0
+- 变量值：D:\apache\gradle-7.0
      
 
-变量名：GRADLE_USER_HOME  （自定义仓库，可不配置（可以为Maven的仓库目录)）
+- 变量名：GRADLE_USER_HOME  （自定义仓库，可不配置（可以为Maven的仓库目录)）
 
-变量值：D:\apache\maven-repository
+- 变量值：D:\apache\maven-repository
  
  
 环境变量 ：Path (追加)
 
-变量值：%GRADLE_HOME%\bin;
+- 变量值：%GRADLE_HOME%\bin;
 
 2、验证
 
@@ -605,7 +605,7 @@ Spring Boot提供了2种优雅关闭进程的方式：
 
 添加依赖
 
-```XML
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-actuator</artifactId>
