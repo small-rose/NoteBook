@@ -1,6 +1,6 @@
 ---
 layout: default
-title: version mix
+title: Version Mix
 parent: DevNotes
 nav_order: 0
 ---
@@ -18,8 +18,10 @@ nav_order: 0
 {:toc}
 </div>
 
-## 一、Spring Boot 官方推荐的 JDK & Maven 版本（核心依据）
-## 一、主版本对照表（纵向：一行看完一代）
+## 一、Spring Boot 主版本对照表
+
+>纵向：一行看完一代
+
 
 | Spring Boot | JDK 支持范围 | 推荐 JDK* | 最低 Maven | Maven 推荐* | 最低 Gradle | Gradle 推荐* | Spring Framework | Hibernate ORM | Jakarta EE 9+ | 内嵌容器 |
 |---|---|---|---|---|---|---|---|---|---|---|
