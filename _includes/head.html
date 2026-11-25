@@ -1,0 +1,6 @@
+<script>
+    document.querySelectorAll('div.highlighter-rouge[class*="language-"]').forEach(function (el) {
+        var m = el.className.match(/language-([\w-]+)/);
+        if (m) el.setAttribute('data-lang', m[1]);
+    });
+</script>
