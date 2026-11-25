@@ -9,4 +9,20 @@
             if (m) el.setAttribute('data-lang', m[1]);
         });
     });
+
+    // 复制成功提示, 代码块区域的复制按钮无打扰提示
+    function showJtdToast() {
+        var t = document.getElementById('jtd-toast');
+        if (!t) { t = document.createElement('div'); t.id = 'jtd-toast'; document.body.appendChild(t); }
+        t.textContent = '✓ 复制成功';
+        t.classList.add('show');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function () { t.classList.remove('show'); }, 1800);
+    }
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest && e.target.closest('button');
+        if (btn && btn.closest('div.highlighter-rouge') && btn.querySelector('.copy-icon')) {
+            showJtdToast();
+        }
+    }, true);   // ← 第三个参数 true（捕获阶段），必须保留
 </script>
