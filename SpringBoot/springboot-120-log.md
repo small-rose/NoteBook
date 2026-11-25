@@ -215,7 +215,7 @@ SpringBoot默认帮配置好了日志，默认的日志级别是 `info `
 `%n` - 是换行符
 
 如：
-```txt
+```text
 %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
 ```
 

@@ -113,7 +113,7 @@ hostnamectl set-hostname k3s-agent2
 
 然后分别在其中一台 ping 一下另外两台：
 
-```txt
+```text
 ping   k3s-server
 ping   k3s-agent1
 ping   k3s-agent2
@@ -407,7 +407,7 @@ k3s-agent1   Ready    <none>                 13m   v1.25.3+k3s1
 
 （1）下载镜像包 https://github.com/k3s-io/k3s/releases/
 
- (2) 下载 k3s 二进制文件
+（2）下载 k3s 二进制文件
 
 （3）下载安装脚本
 

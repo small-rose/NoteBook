@@ -56,7 +56,7 @@ MySQL 官方内置了 EXPLAIN 关键字可以模拟优化器执行SQL查询语�
 
 ### 3、查询执行计划使用
 
-```txt
+```text
 explain + SQL语句
 ```
 示例：

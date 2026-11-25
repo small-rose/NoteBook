@@ -64,7 +64,7 @@ mysqld --initialize
 
 打开改文件找到对应的密码：
 
-```txt
+```text
 2020-11-19T07:08:46.118531Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
 2020-11-19T07:08:47.275550Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
 2020-11-19T07:08:49.076756Z 6 [Warning] [MY-010453] [Server] root@localhost is created with an empty password ! Please consider switching off the --initialize-insecure option.
@@ -81,7 +81,7 @@ mysqld --initialize
 ```bash
 mysqld.exe -install
 ```
-```txt
+```text
 Service successfully installed
 ```
 安装之后可以进行服务启停：

@@ -51,7 +51,7 @@ Nothing to do
 
 内容如下：
 
-```txt
+```text
 [nginx-stable]
 name=nginx stable repo
 baseurl=http://nginx.org/packages/centos/7/$basearch/

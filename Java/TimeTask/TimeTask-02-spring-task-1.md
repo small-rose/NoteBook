@@ -195,7 +195,7 @@ public class UserTask {
 
 执行结果：
 
-```txt
+```text
  --- 2020-06-25T16:08:18.455-- task for Annotation 
  --- 2020-06-25T16:08:20.458-- task for Annotation
  --- 2020-06-25T16:08:22.460-- task for Annotation
@@ -407,7 +407,7 @@ jobData ：123
 
 执行结果：
 
-```txt
+```text
  jobData : 
  execute buzz code ...2020-06-25T11:32:50.007
  jobData : 

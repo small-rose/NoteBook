@@ -87,7 +87,7 @@ nvm npm_mirror https://npmmirror.com/mirrors/npm/
 ```
 或者找到 `D:\Node\nvm\settings.txt` 配置后面的两行镜像地址:
 
-```txt
+```text
 root: D:\Node\nvm
 path: d:\Node\nvm4w\nodejs
 node_mirror: https://npmmirror.com/mirrors/node/
@@ -123,7 +123,7 @@ nvm use 22.20.0
 nvm ls
 ```
 结果
-```txt
+```text
 * 22.20.0 (Currently using 64-bit executable)
 ```
 
@@ -148,7 +148,7 @@ npm root -g
 ```
 结果
 
-```txt
+```text
 d:\Node\nvm4w\nodejs\node_modules
 ```
 

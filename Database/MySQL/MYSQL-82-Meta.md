@@ -285,7 +285,7 @@ show create table bp_test.t_log;
 Navicat SQL的保存位置
 ----------------------------
 
-```txt
+```text
 C:\Users\{username}\Documents\Navicat\MySQL\servers\
 ```
 

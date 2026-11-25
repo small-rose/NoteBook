@@ -71,7 +71,7 @@ xiaocai:
 
 解析之后得到的 name 值就是：
 
-````txt
+````text
  small \n rose 
 ````
 
@@ -84,7 +84,7 @@ xiaocai:
 
 解析之后得到的 name 值就是：
 
-```txt
+```text
 small
 rose
 ```
@@ -199,7 +199,7 @@ user:
 
 （1）可以引入配置文件处理
 
-```txt
+```text
 <!‐‐ 导入配置文件处理器，配置文件进行绑定就会有提示‐ ‐>
 <dependency>
   <groupId>org.springframework.boot</groupId>
@@ -277,7 +277,7 @@ public class InitValueConfig {
 
 **@ImportResource**：导入Spring的配置文件，让配置文件里面的内容生效；
 
-```txt
+```text
 @ImportResource(locations = {"classpath:beans.xml"})
 ```
 

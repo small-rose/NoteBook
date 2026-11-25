@@ -1217,7 +1217,7 @@ off 是大小写敏感，需要严格区分大小写的。
 
 下面是执行日志:
 
-```txt
+```text
 The files belonging to this database system will be owned by user "kingbase".
 This user must also own the server process.
 
@@ -1370,7 +1370,7 @@ ksql -USYSTEM -W12345678ab  TEST
 \i  /opt/Kingbase/XX/XX.sql(这是sql脚本绝对路径)
 ```
 
-```txt
+```text
 列出数据库:   \l
 列出索引:      \di
 列出表：       \dt

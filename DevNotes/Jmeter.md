@@ -423,7 +423,7 @@ Variable Names(comma-delimited)变量名：applyno (这里相当于给要取的�
 
 这里`crpt_no_20210607.txt`的内容：
 
-```txt
+```text
 5780051517784064
 5780051408732160
 5780051299680256

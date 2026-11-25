@@ -155,7 +155,7 @@ public class IoCTest {
 
 输出结果：
 
-```txt
+```text
 15:06:34.640 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'appConfig'
 15:06:34.656 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'user'
 15:06:34.792 [main] DEBUG org.springframework.core.env.PropertySourcesPropertyResolver - Found key 'spring.liveBeansView.mbeanDomain' in PropertySource 'systemProperties' with value of type String
@@ -250,7 +250,7 @@ public class IoCTest {
 
 运行结果：
 
-```txt
+```text
 16:07:46.227 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'appConfig'
 16:07:46.238 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'emp'
 Employee [id=123, empName=zhangxiaocai.cn, empNote=note_xiaocai]
@@ -415,7 +415,7 @@ public class IoCTest {
 
 运行结果：
 
-```txt
+```text
 17:18:43.019 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'appConfig'
 17:18:43.030 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'user'
 User [id=null, userName=null, note=null]
@@ -603,7 +603,7 @@ public class PayController {
 
 在示例中可以看到，输入值是一个支付操作，但是却有两种支付方式，`SpringIoC` 注入怎么办呢？启动程序发现会有以下错误信息：
 
-```txt
+```text
 Description:
 
 Field payservice in com.smallrose.web.app.controller.PayController required a single bean, but 2 were found:
@@ -754,7 +754,7 @@ public class PersonBean {
 
 Spring Bean 的初始化流程：
 
-```txt
+```text
 资源定位       ——>       Bean定义          ——>     发布Bean定义    ——>    实例化   ——>  依赖注入（DI）
 @ComponentScan    保存到BeanDefinition的实例     IoC容器装载Bean定义    创建Bean实例    @Autowired注入
 ```

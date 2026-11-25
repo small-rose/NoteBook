@@ -198,7 +198,7 @@ public class DemoTask extends TimerTask{
 
 ` Thread.sleep(3000);` 时执行结果： 
 
-```txt
+```text
 execute end time - 2020-07-18T20:00:39.836
 execute end time - 2020-07-18T20:00:44.817
 execute end time - 2020-07-18T20:00:49.817
@@ -208,7 +208,7 @@ execute end time - 2020-07-18T20:00:59.817
 
 ` Thread.sleep(10000);` 时执行结果：
 
-```txt
+```text
  execute time : 2020-07-18T18:18:47.416
  execute time : 2020-07-18T18:18:57.417
  execute time : 2020-07-18T18:19:07.418
@@ -275,7 +275,7 @@ public class DemoTask extends TimerTask{
 
 `Thread.sleep(3000);` 时执行结果： 
 
-```txt
+```text
  execute end time - 2020-07-18T20:06:37.458
  execute end time - 2020-07-18T20:06:40.458
  execute end time - 2020-07-18T20:06:43.459
@@ -286,7 +286,7 @@ public class DemoTask extends TimerTask{
 
 `Thread.sleep(10000);` 时执行结果： 
 
-```txt
+```text
  execute end time - 2020-07-18T20:09:14.068
  execute end time - 2020-07-18T20:09:24.069
  execute end time - 2020-07-18T20:09:34.069
@@ -309,7 +309,7 @@ Date startDate = dateFormatter.parse("2020-07-18 20:16:00");
 
 执行结果如下：
 
-```txt
+```text
  execute end time - 2020-07-18T20:16:03.052
  execute end time - 2020-07-18T20:16:08
  execute end time - 2020-07-18T20:16:13.001

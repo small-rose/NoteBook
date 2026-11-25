@@ -593,13 +593,13 @@ $ find .git/objects/ -type f
 
 第1个版本：
 
-```txt
+```text
 tree1 -----> xctest.txt v1	
 ```
 
 第2个版本：
 
-```txt
+```text
            +------> tree1 -----> xctest.txt v1
            |
 tree2 -----+------> xctest.txt v2
@@ -609,7 +609,7 @@ tree2 -----+------> xctest.txt v2
 
 那么可以推测，第3个版本： 
 
-```txt
+```text
                          +------> tree1 -----> xctest.txt v1
                          |
       +-----> tree2 -----+------> xctest.txt v2
@@ -1573,7 +1573,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 根据提示可以看到 `new.txt` 文件有冲突，那就手工解决就好，实际工作中根据实际沟通情况进行合并即可：`vi new.txt`
 
-```txt
+```text
 new v1
 
 <<<<<<< HEAD
@@ -1586,7 +1586,7 @@ fun008 code v2
 
 修改之后：
 
-```txt
+```text
 new v1
 
 change bug code v2
@@ -1666,7 +1666,7 @@ git的分支模式
 
 - 特性分支 Topic
 
-```txt
+```text
 c1 --------------------------------> master
    \
     -----d1 --- d2---- d3   -------> develop

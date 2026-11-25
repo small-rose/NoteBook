@@ -190,7 +190,7 @@ public class ResourceProperties {
 
 默认路径有：
 
-```txt
+```text
 "classpath:/META-INF/resources/"
 "classpath:/resources/"
 "classpath:/static/"
@@ -252,7 +252,7 @@ spring.mvc.static-path-pattern=/resources/**
 
 `"/**"` 访问当前项目的任何资源，都去（静态资源的文件夹）找映射自定义方式前面提到了默认路径：
 
-```txt
+```text
 "classpath:/META-INF/resources/", 
 "classpath:/resources/",
 "classpath:/static/", 
