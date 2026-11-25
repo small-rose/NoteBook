@@ -20,7 +20,7 @@ nav_order: 0
 
 ## 一、Spring Boot 主版本对照表
 
->纵向：一行看完一代
+>纵向：一行看完一代，版本搭配
 
 
 | Spring Boot | JDK 支持范围 | 推荐 JDK* | 最低 Maven | Maven 推荐* | 最低 Gradle | Gradle 推荐* | Spring Framework | Hibernate ORM | Jakarta EE 9+ | 内嵌容器 |
