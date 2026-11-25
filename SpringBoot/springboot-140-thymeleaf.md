@@ -19,7 +19,7 @@ Thtmeleaf 在 SpringBoot 中使用只要引入
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-          	2.1.6
+          	<version>2.1.6</version>
 		</dependency>
 ```
 
