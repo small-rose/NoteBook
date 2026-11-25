@@ -22,9 +22,9 @@ nav_order: 10
 
 ```yml
 key: value
-key:
+key1:
   key2: value2
-  key2：
+  key12:
     key3: value3
 ```
 
@@ -337,8 +337,8 @@ initvalue:
   port: 8080
   flag: false
   list: 1,2,3
-    maps: "{key1: 'value1', key2: 'value2'}"
-    webServiceMap: "{webServiceURL: 'http://web.com.server/xxx', success: '0000',filePath: '/home/file/'}"
+  maps: "{key1: 'value1', key2: 'value2'}"
+  webServiceMap: "{webServiceURL: 'http://web.com.server/xxx', success: '0000',filePath: '/home/file/'}"
 ```
 
 取值方式比较
