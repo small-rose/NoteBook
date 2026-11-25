@@ -64,7 +64,7 @@ nav_order: 0
 
 ---
 
-## 二、MyBatis 兼容表（独立来源，非 Spring 官方）
+## 二、MyBatis 兼容表
 
 | mybatis-spring-boot-starter | MyBatis-Spring | 适配 Spring Boot | JDK | 状态 |
 |---|---|---|---|---|
@@ -104,16 +104,25 @@ nav_order: 0
 
 4.x 是架构级重构，升级前必须逐条核对：
 
-1. **Undertow 被彻底移除**。它未实现 Servlet 6.1，Spring Framework 7 也删掉了 Undertow 专属的 WebSocket / WebFlux 类。使用 `spring-boot-starter-undertow` 的项目必须**先在 3.x 迁到 Tomcat / Jetty / Reactor Netty**，否则升上去直接构建失败；`server.undertow.*` 全部配置项需在新容器上重做。
-2. **Jackson 3 成为默认**。包名从 `com.fasterxml.jackson` 迁到 `tools.jackson`（`jackson-annotations` 例外，仍留 `com.fasterxml.jackson.annotation`，所以 DTO 上的注解不用改）。`@JsonComponent` → `@JacksonComponent`，`@JsonMixin` → `@JacksonMixin`，`Jackson2ObjectMapperBuilderCustomizer` → `JsonMapperBuilderCustomizer`。**声明 `ObjectMapper` Bean 不再替换自动配置的 mapper**，需改声明 `JsonMapper`。`spring.jackson.read.*` / `write.*` 移到 `spring.jackson.json.read.*` / `write.*`。Jackson 2 依赖仍保留但已进废弃通道，可用 `spring.jackson.use-jackson2-defaults=true` 平滑过渡。
-3. **模块被拆碎**。`spring-boot-autoconfigure` 拆成多个 `spring-boot-{module}`，自动配置类包名迁移（如 `@EntityScan` 移到 `org.springframework.boot.persistence.autoconfigure`）。**Flyway / Liquibase 现在必须显式引 `spring-boot-starter-flyway` / `spring-boot-starter-liquibase`**，否则启动时不执行数据库迁移。过渡期可用 `spring-boot-starter-classic` / `spring-boot-starter-test-classic` 先编译通过，再逐个收敛到精确 starter。
-4. **starter 改名**（旧名在 4.0 仍可用但已废弃）：`spring-boot-starter-web` → `-webmvc`、`-web-services` → `-webservices`、`-oauth2-client` → `-security-oauth2-client`、`-oauth2-resource-server` → `-security-oauth2-resource-server`、`-aop` → `-aspectj`。
-5. **测试基础设施大改**。`@MockBean` / `@SpyBean` **已删除**，改用 `@MockitoBean` / `@MockitoSpyBean`；`@SpringBootTest` 不再自动提供 `MockMvc`（需 `@AutoConfigureMockMvc`），也不再提供 `TestRestTemplate` / `WebClient`（需 `@AutoConfigureRestTestClient` 或迁到新的 `RestTestClient`）；`MockitoTestExecutionListener` 已移除，`@Mock` / `@Captor` 字段需显式挂 `MockitoExtension`。
-6. **Jakarta EE 11**：Servlet 6.1、JPA 3.2、Validation 3.1、WebSocket 2.2；JPA 4.0 / 4.1 分别对应 Spring Data 2025.1 / 2026.0。
-7. **Kotlin 基线抬到 2.x**（Boot 4 要求 2.2+，Boot 3.0 时代是 1.7+），Groovy 需同步升级，老版本会因编译器 API 变更而失败。
-8. **Lombok 需 1.18.30+**，低版本的注解处理器会冲突；Hutool、Guava 等工具库老版本存在反射调用失效问题，建议一并升级。
-9. **GraalVM 原生镜像从实验转生产级**：Boot 4.0 要求 GraalVM Community 25 + Native Build Tools 0.11.3+（4.0.10 对应 0.11.5）。
-10. **Spring Cloud 必须对齐**：4.0 / 4.1 配 2025.1.x（Oakwood），3.5 配 2025.0.x（Northfields），不可混搭。
+1.**Undertow 被彻底移除**。它未实现 Servlet 6.1，Spring Framework 7 也删掉了 Undertow 专属的 WebSocket / WebFlux 类。使用 `spring-boot-starter-undertow` 的项目必须**先在 3.x 迁到 Tomcat / Jetty / Reactor Netty**，否则升上去直接构建失败；`server.undertow.*` 全部配置项需在新容器上重做。
+
+2.**Jackson 3 成为默认**。包名从 `com.fasterxml.jackson` 迁到 `tools.jackson`（`jackson-annotations` 例外，仍留 `com.fasterxml.jackson.annotation`，所以 DTO 上的注解不用改）。`@JsonComponent` → `@JacksonComponent`，`@JsonMixin` → `@JacksonMixin`，`Jackson2ObjectMapperBuilderCustomizer` → `JsonMapperBuilderCustomizer`。**声明 `ObjectMapper` Bean 不再替换自动配置的 mapper**，需改声明 `JsonMapper`。`spring.jackson.read.*` / `write.*` 移到 `spring.jackson.json.read.*` / `write.*`。Jackson 2 依赖仍保留但已进废弃通道，可用 `spring.jackson.use-jackson2-defaults=true` 平滑过渡。
+
+3.**模块被拆碎**。`spring-boot-autoconfigure` 拆成多个 `spring-boot-{module}`，自动配置类包名迁移（如 `@EntityScan` 移到 `org.springframework.boot.persistence.autoconfigure`）。**Flyway / Liquibase 现在必须显式引 `spring-boot-starter-flyway` / `spring-boot-starter-liquibase`**，否则启动时不执行数据库迁移。过渡期可用 `spring-boot-starter-classic` / `spring-boot-starter-test-classic` 先编译通过，再逐个收敛到精确 starter。
+
+4.**starter 改名**（旧名在 4.0 仍可用但已废弃）：`spring-boot-starter-web` → `-webmvc`、`-web-services` → `-webservices`、`-oauth2-client` → `-security-oauth2-client`、`-oauth2-resource-server` → `-security-oauth2-resource-server`、`-aop` → `-aspectj`。
+
+5.**测试基础设施大改**。`@MockBean` / `@SpyBean` **已删除**，改用 `@MockitoBean` / `@MockitoSpyBean`；`@SpringBootTest` 不再自动提供 `MockMvc`（需 `@AutoConfigureMockMvc`），也不再提供 `TestRestTemplate` / `WebClient`（需 `@AutoConfigureRestTestClient` 或迁到新的 `RestTestClient`）；`MockitoTestExecutionListener` 已移除，`@Mock` / `@Captor` 字段需显式挂 `MockitoExtension`。
+
+6.**Jakarta EE 11**：Servlet 6.1、JPA 3.2、Validation 3.1、WebSocket 2.2；JPA 4.0 / 4.1 分别对应 Spring Data 2025.1 / 2026.0。
+
+7.**Kotlin 基线抬到 2.x**（Boot 4 要求 2.2+，Boot 3.0 时代是 1.7+），Groovy 需同步升级，老版本会因编译器 API 变更而失败。
+
+8.**Lombok 需 1.18.30+**，低版本的注解处理器会冲突；Hutool、Guava 等工具库老版本存在反射调用失效问题，建议一并升级。
+
+9.**GraalVM 原生镜像从实验转生产级**：Boot 4.0 要求 GraalVM Community 25 + Native Build Tools 0.11.3+（4.0.10 对应 0.11.5）。
+
+10.**Spring Cloud 必须对齐**：4.0 / 4.1 配 2025.1.x（Oakwood），3.5 配 2025.0.x（Northfields），不可混搭。
 
 ---
 
